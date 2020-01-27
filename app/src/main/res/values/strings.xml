@@ -1,0 +1,67 @@
+<resources>
+    <string name="app_name">prototype1</string>
+    <string name="spinner_country">Country</string>
+    <string name="spinner_region">Region</string>
+    <string name="spinner_cluster">Cluster</string>
+    <string name="instruction">Select a Project\'s country, region and cluster</string>
+
+    <string-array name="countries">
+        <item>Indonesia</item>
+        <item>India</item>
+        <item>Nigeria</item>
+    </string-array>
+
+    <string-array name="indonesia_regions">
+        <item>Java</item>
+    </string-array>
+
+    <string-array name="india_regions">
+        <item>Srinigar</item>
+        <item>Chandigargh</item>
+        <item>Simla</item>
+    </string-array>
+
+    <string-array name="nigeria_regions">
+        <item>Ado</item>
+        <item>Bauchi</item>
+        <item>Sokoto</item>
+    </string-array>
+
+    <string-array name="indonesia_java_clusters">
+        <item>Cluster A1</item>
+        <item>Cluster A2</item>
+    </string-array>
+
+    <string-array name="india_strinigar_clusters">
+        <item>Cluster A1</item>
+        <item>Cluster B1</item>
+        <item>Cluster B2</item>
+    </string-array>
+
+    <string-array name="india_chandigargh_clusters">
+        <item>Cluster A1</item>
+        <item>Cluster B1</item>
+    </string-array>
+
+    <string-array name="india_simla_cluster">
+        <item>Cluster A1</item>
+    </string-array>
+
+    <string-array name="nigeria_ado_cluster">
+        <item>Cluster A1</item>
+        <item>Cluster B1</item>
+        <item>Cluster C1</item>
+    </string-array>
+
+    <string-array name="nigeria_bauchi_cluster">
+        <item>Cluster D1</item>
+        <item>Cluster D2</item>
+    </string-array>
+
+    <string-array name="nigeria_sokoto_cluster">
+        <item>Cluster S1</item>
+        <item>Cluster S2</item>
+        <item>Cluster S3</item>
+    </string-array>
+
+</resources>
