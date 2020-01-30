@@ -1,16 +1,12 @@
-package com.example.prototype1;
+package com.example.mobileApp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -136,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
 //        display rather than the code of the display
 
 
-//        in java/com.example.prototype1:
+//        in java/com.example.mobileApp:
 //        Cluster, Country, Region classes are each a @Entity (table) within the database
 //        I have set up the primary and foreign keys that link the tables together
 

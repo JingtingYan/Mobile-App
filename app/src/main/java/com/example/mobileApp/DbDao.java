@@ -1,4 +1,4 @@
-package com.example.prototype1;
+package com.example.mobileApp;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
