@@ -1,10 +1,14 @@
 <resources>
-    <string name="app_name">prototype1</string>
-    <string name="spinner_country">Country</string>
-    <string name="spinner_region">Region</string>
-    <string name="spinner_cluster">Cluster</string>
-    <string name="instruction">Select a Project\'s country, region and cluster</string>
+    <string name="app_name">Mobile App</string>
 
+    <!-- Location Fragment -->
+    <string name="selection_location_instruction">Select a Project\'s country, region and cluster</string>
+    <string name="project_country">Project Country: </string>
+    <string name="project_region">Project Region: </string>
+    <string name="project_cluster">Project Cluster: </string>
+    <string name="bn_location_next">Next</string>
+
+    <!-- HARDCODING: location data -->
     <string-array name="countries">
         <item>Indonesia</item>
         <item>India</item>
@@ -63,5 +67,6 @@
         <item>Cluster S2</item>
         <item>Cluster S3</item>
     </string-array>
+
 
 </resources>
