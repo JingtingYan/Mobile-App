@@ -1,18 +1,17 @@
 package com.example.mobileApp;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDate;
 
 
-@Entity(tableName = "enumerator")
+@Entity(tableName = "enumerators")
 public class Enumerator {
 
     @PrimaryKey(autoGenerate = true)
-    private int enum_id;
+    private int enumerator_id;
 
     private String enum_prefix;
 
@@ -33,13 +32,14 @@ public class Enumerator {
 
     private String qualifications;
 
-    /* getters & setters */
+
+    /* getter & setter */
     public int getEnum_id() {
-        return enum_id;
+        return enumerator_id;
     }
 
     public void setEnum_id(int enum_id) {
-        this.enum_id = enum_id;
+        this.enumerator_id = enum_id;
     }
 
     public String getEnum_prefix() {
