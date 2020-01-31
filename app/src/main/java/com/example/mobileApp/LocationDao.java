@@ -7,12 +7,12 @@ import androidx.room.Query;
 @Dao
 public interface LocationDao {
 
-    @Query("SELECT * FROM location WHERE parent_loc_id = -1")
+    @Query("SELECT * FROM locations WHERE parent_location_id = -1")
     public Location[] getAllCountries();
 
-    @Query("SELECT * FROM location WHERE parent_loc_id = :countryID")
+    @Query("SELECT * FROM locations WHERE parent_location_id = :countryID")
     public Location[] getRegions(int countryID);
 
-    @Query("SELECT * FROM location WHERE parent_loc_id = :regionID")
+    @Query("SELECT * FROM locations WHERE parent_location_id = :regionID")
     public Location[] getClusters(int regionID);
 }

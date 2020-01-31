@@ -13,8 +13,8 @@ import androidx.room.TypeConverters;
                       QuestionType.class,
                       Question.class,
                       Answer.class},
-          version = 1)
-//@Database(entities = {Enumerator.class}, version = 1, exportSchema = false)
+          version = 1,
+          exportSchema = false)  // ??
 @TypeConverters({LocalDateTypeConverter.class})
 public abstract class MobileAppDatabase extends RoomDatabase {
 
