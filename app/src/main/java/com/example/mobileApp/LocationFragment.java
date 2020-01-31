@@ -42,24 +42,24 @@ public class LocationFragment extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedCountry = parent.getItemAtPosition(position).toString();
-                switch (selectedCountry){
-                    case "Indonesia":
-                        regionSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
-                                android.R.layout.simple_spinner_dropdown_item,
-                                getResources().getStringArray(R.array.indonesia_regions)));
-                        break;
-                    case "India":
-                        regionSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
-                                android.R.layout.simple_spinner_dropdown_item,
-                                getResources().getStringArray(R.array.india_regions)));
-                        break;
-                    case "Nigeria":
-                        regionSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
-                                android.R.layout.simple_spinner_dropdown_item,
-                                getResources().getStringArray(R.array.nigeria_regions)));
-                        break;
-                }
+//                String selectedCountry = parent.getItemAtPosition(position).toString();
+//                switch (selectedCountry){
+//                    case "Indonesia":
+//                        regionSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
+//                                android.R.layout.simple_spinner_dropdown_item,
+//                                getResources().getStringArray(R.array.indonesia_regions)));
+//                        break;
+//                    case "India":
+//                        regionSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
+//                                android.R.layout.simple_spinner_dropdown_item,
+//                                getResources().getStringArray(R.array.india_regions)));
+//                        break;
+//                    case "Nigeria":
+//                        regionSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
+//                                android.R.layout.simple_spinner_dropdown_item,
+//                                getResources().getStringArray(R.array.nigeria_regions)));
+//                        break;
+//                }
             }
 
             @Override
@@ -72,43 +72,43 @@ public class LocationFragment extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedRegion = parent.getItemAtPosition(position).toString();
-                switch (selectedRegion){
-                    case "Java":
-                        clusterSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
-                                android.R.layout.simple_spinner_dropdown_item,
-                                getResources().getStringArray(R.array.indonesia_java_clusters)));
-                        break;
-                    case "Srinigar":
-                        clusterSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
-                                android.R.layout.simple_spinner_dropdown_item,
-                                getResources().getStringArray(R.array.india_strinigar_clusters)));
-                        break;
-                    case "Chandigargh":
-                        clusterSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
-                                android.R.layout.simple_spinner_dropdown_item,
-                                getResources().getStringArray(R.array.india_chandigargh_clusters)));
-                        break;
-                    case "Simla":
-                        clusterSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
-                                android.R.layout.simple_spinner_dropdown_item,
-                                getResources().getStringArray(R.array.india_simla_cluster)));
-                    case "Ado":
-                        clusterSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
-                                android.R.layout.simple_spinner_dropdown_item,
-                                getResources().getStringArray(R.array.nigeria_ado_cluster)));
-                        break;
-                    case "Bauchi":
-                        clusterSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
-                                android.R.layout.simple_spinner_dropdown_item,
-                                getResources().getStringArray(R.array.nigeria_bauchi_cluster)));
-                        break;
-                    case "Sokoto":
-                        clusterSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
-                                android.R.layout.simple_spinner_dropdown_item,
-                                getResources().getStringArray(R.array.nigeria_sokoto_cluster)));
-                        break;
-                }
+//                String selectedRegion = parent.getItemAtPosition(position).toString();
+//                switch (selectedRegion){
+//                    case "Java":
+//                        clusterSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
+//                                android.R.layout.simple_spinner_dropdown_item,
+//                                getResources().getStringArray(R.array.indonesia_java_clusters)));
+//                        break;
+//                    case "Srinigar":
+//                        clusterSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
+//                                android.R.layout.simple_spinner_dropdown_item,
+//                                getResources().getStringArray(R.array.india_strinigar_clusters)));
+//                        break;
+//                    case "Chandigargh":
+//                        clusterSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
+//                                android.R.layout.simple_spinner_dropdown_item,
+//                                getResources().getStringArray(R.array.india_chandigargh_clusters)));
+//                        break;
+//                    case "Simla":
+//                        clusterSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
+//                                android.R.layout.simple_spinner_dropdown_item,
+//                                getResources().getStringArray(R.array.india_simla_cluster)));
+//                    case "Ado":
+//                        clusterSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
+//                                android.R.layout.simple_spinner_dropdown_item,
+//                                getResources().getStringArray(R.array.nigeria_ado_cluster)));
+//                        break;
+//                    case "Bauchi":
+//                        clusterSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
+//                                android.R.layout.simple_spinner_dropdown_item,
+//                                getResources().getStringArray(R.array.nigeria_bauchi_cluster)));
+//                        break;
+//                    case "Sokoto":
+//                        clusterSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
+//                                android.R.layout.simple_spinner_dropdown_item,
+//                                getResources().getStringArray(R.array.nigeria_sokoto_cluster)));
+//                        break;
+//                }
             }
 
             @Override

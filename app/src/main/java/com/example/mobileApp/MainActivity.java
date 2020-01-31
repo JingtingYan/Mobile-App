@@ -6,6 +6,8 @@ import androidx.room.Room;
 
 import android.os.Bundle;
 
+import com.appspector.sdk.AppSpector;
+
 public class MainActivity extends AppCompatActivity {
 
     public static FragmentManager fragmentManager;
@@ -29,6 +31,15 @@ public class MainActivity extends AppCompatActivity {
 
             fragmentManager.beginTransaction().add(R.id.fragment_container, new LocationFragment()).commit();
         }
+
+
+//      To start up AppSpector Connection
+        AppSpector
+                .build(this)
+                .withDefaultMonitors()
+                .run("android_MDNiZGRkNjItNWVlNS00NzljLWJjMWUtZWUzOTdkMzg3MTYw");
+
+
     }
 
 }
