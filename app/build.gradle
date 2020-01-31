@@ -1,11 +1,17 @@
 apply plugin: 'com.android.application'
 
+// AppSpector SDK
+apply plugin: 'com.appspector.sdk'
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.example.mobileApp"
-        minSdkVersion 15
+
+//        Changed the minSDK from 15 to 16. Original is 15
+//        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -20,6 +26,13 @@ android {
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
+    }
+}
+
+//repositories -> AppSpector's maven repositories
+repositories {
+    maven {
+        url "https://maven.appspector.com/artifactory/android-sdk"
     }
 }
 
@@ -43,4 +56,8 @@ dependencies {
     implementation "com.google.android.material:material:$rootProject.materialVersion"
     // Testing
     androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
+
+
+    // AppSpector -> NO-OP Artifact so that AppSpector SDK is not in our app's release APK
+    implementation "com.appspector:android-sdk:1.+"
 }
