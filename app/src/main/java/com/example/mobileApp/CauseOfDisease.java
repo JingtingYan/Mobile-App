@@ -3,14 +3,17 @@ package com.example.mobileApp;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "causes_of_diseases",
+        primaryKeys = {"question_cod_id", "qnnaire_id"},
+        indices = {@Index("qnnaire_id")},
         foreignKeys = {@ForeignKey(entity = Question.class,
                                    parentColumns = "question_id",
-                                   childColumns = "question_at_id",
+                                   childColumns = "question_cod_id",
                                    onDelete = CASCADE,
                                    onUpdate = CASCADE),
                        @ForeignKey(entity = Questionnaire.class,
@@ -20,24 +23,23 @@ import static androidx.room.ForeignKey.CASCADE;
                                    onUpdate = CASCADE)})
 public class CauseOfDisease {
 
-    @PrimaryKey
     // this is a foreign key
-    @NonNull
-    private int question_at_id;
+//  REQUIRED
+    private int question_cod_id;
 
-    @PrimaryKey
     // this is a foreign key
-    @NonNull private int qnnaire_id;
+//    REQUIRED
+    private int qnnaire_id;
 
 
     /* getter and setter */
 
-    public int getQuestion_at_id() {
-        return question_at_id;
+    public int getQuestion_cod_id() {
+        return question_cod_id;
     }
 
-    public void setQuestion_at_id(int question_at_id) {
-        this.question_at_id = question_at_id;
+    public void setQuestion_cod_id(int question_cod_id) {
+        this.question_cod_id = question_cod_id;
     }
 
     public int getQnnaire_id() {

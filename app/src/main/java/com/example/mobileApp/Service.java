@@ -3,11 +3,14 @@ package com.example.mobileApp;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "services",
+        primaryKeys = {"question_service_id", "qnnaire_id"},
+        indices = {@Index("qnnaire_id")},
         foreignKeys = {@ForeignKey(entity = Question.class,
                                    parentColumns = "question_id",
                                    childColumns = "question_service_id",
@@ -20,14 +23,13 @@ import static androidx.room.ForeignKey.CASCADE;
                                    onUpdate = CASCADE)})
 public class Service {
 
-    @PrimaryKey
     // this is a foreign key
-    @NonNull
+    //    REQUIRED
     private int question_service_id;
 
-    @PrimaryKey
     // this is a foreign key
-    @NonNull private int qnnaire_id;
+    //    REQUIRED
+    private int qnnaire_id;
 
 
     /* getter and setter */

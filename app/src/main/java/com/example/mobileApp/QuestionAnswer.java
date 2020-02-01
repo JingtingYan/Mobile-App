@@ -3,11 +3,15 @@ package com.example.mobileApp;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "questions_and_answers",
+        primaryKeys = {"q_id", "ans_id", "qnnaire_id"},
+        indices={@Index(value = {"ans_id", "q_id"}),
+                    @Index("qnnaire_id")},
         foreignKeys = {@ForeignKey(entity = Question.class,
                                    parentColumns = "question_id",
                                    childColumns = "q_id",
@@ -25,17 +29,17 @@ import static androidx.room.ForeignKey.CASCADE;
                                    onDelete = CASCADE)})
 public class QuestionAnswer {
 
-    @PrimaryKey
     // this is a foreign key
-    @NonNull private int q_id;
+    //    REQUIRED
+    private int q_id;
 
-    @PrimaryKey
     // this is a foreign key
-    @NonNull private int ans_id;
+    //    REQUIRED
+    private int ans_id;
 
-    @PrimaryKey
     // this is a foreign key
-    @NonNull private int qnnaire_id;
+    //    REQUIRED
+    private int qnnaire_id;
 
 
     /* getter and setter */

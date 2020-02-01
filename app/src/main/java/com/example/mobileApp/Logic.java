@@ -9,7 +9,12 @@ import androidx.room.PrimaryKey;
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "logic",
-        indices = {@Index(value = {"relation_id"}, unique = true)},
+        indices = { @Index(value = "sequence_num", unique = true),
+                    @Index(value = "rel_id", unique = true),
+                    @Index(value = {"q_id", "qnnaire_id"}),
+                    @Index("rel_ans_id"),
+                    @Index("next_q_id"),
+                    @Index("qnnaire_id")},
         foreignKeys = {@ForeignKey(entity = Question.class,
                                    parentColumns = "question_id",
                                    childColumns = "q_id",
@@ -33,10 +38,12 @@ import static androidx.room.ForeignKey.CASCADE;
 public class Logic {
 
     @PrimaryKey(autoGenerate = true)
-    @NonNull private int sequence_num;
+    //    REQUIRED
+    private int sequence_num;
 
     // this is a foreign key
-    @NonNull private int q_id;
+    //    REQUIRED
+    private int q_id;
 
     // this is a foreign key
     private int rel_ans_id;
@@ -44,12 +51,13 @@ public class Logic {
     // this is a foreign key
     private int next_q_id;
 
-    private String relation_type;
+    private String rel_type;
 
-    private int relation_id;  // unique
+    private int rel_id;  // unique
 
     // this is a foreign key
-    @NonNull private int qnnaire_id;
+    //    REQUIRED
+    private int qnnaire_id;
 
 
     /* getter and setter */
@@ -86,20 +94,20 @@ public class Logic {
         this.next_q_id = next_q_id;
     }
 
-    public String getRelation_type() {
-        return relation_type;
+    public String getRel_type() {
+        return rel_type;
     }
 
-    public void setRelation_type(String relation_type) {
-        this.relation_type = relation_type;
+    public void setRel_type(String rel_type) {
+        this.rel_type = rel_type;
     }
 
-    public int getRelation_id() {
-        return relation_id;
+    public int getRel_id() {
+        return rel_id;
     }
 
-    public void setRelation_id(int relation_id) {
-        this.relation_id = relation_id;
+    public void setRel_id(int rel_id) {
+        this.rel_id = rel_id;
     }
 
     public int getQnnaire_id() {

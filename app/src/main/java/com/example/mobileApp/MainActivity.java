@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         AppSpector
                 .build(this)
                 .withDefaultMonitors()
-                .run("android_MDNiZGRkNjItNWVlNS00NzljLWJjMWUtZWUzOTdkMzg3MTYw");
+                .run("android_Njc0ZGExMjUtMmFhMy00ZTg2LTkxN2YtNGVhMDVmZDM3OWZh");
 
 
     }

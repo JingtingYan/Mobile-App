@@ -3,6 +3,7 @@ package com.example.mobileApp;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDate;
@@ -10,6 +11,9 @@ import java.time.LocalDate;
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "patients",
+        indices = { @Index(value={"patient_id", "hh_id"}),
+                    @Index("hh_id"),
+                    @Index("enum_id")},
         foreignKeys = {@ForeignKey(entity = Household.class,
                                    parentColumns = "household_id",
                                    childColumns = "hh_id",
@@ -23,30 +27,38 @@ import static androidx.room.ForeignKey.CASCADE;
 public class Patient {
 
     @PrimaryKey
-    @NonNull private String patient_id;
+    //    REQUIRED
+    private String patient_id;
 
-    @NonNull private String study_id;
+    //    REQUIRED
+    private String study_id;
 
-    @NonNull private String date_of_birth = "0000-00-00";
+    //    REQUIRED
+    private String date_of_birth = "0000-00-00";
 
     private String prefix;
 
-    @NonNull private String first_name;
+    //    REQUIRED
+    private String first_name;
 
     private String middle_name;
 
-    @NonNull private String last_name;
+    //    REQUIRED
+    private String last_name;
 
     private String suffix;
 
     private String com_name;
 
-    @NonNull private String gender;
+    //    REQUIRED
+    private String gender;
 
     // this is a foreign key
-    @NonNull private String hh_id;
+    //    REQUIRED
+    private String hh_id;
 
-    @NonNull private String dur_hh;
+    //    REQUIRED
+    private String dur_hh;
 
     private String exam_status;
 
@@ -75,7 +87,8 @@ public class Patient {
     private String tel2_owner_rel;
 
     // this is a foreign key
-    @NonNull private String enum_id;
+    //    REQUIRED
+    private String enum_id;
 
     private String national_id;
 
@@ -83,7 +96,8 @@ public class Patient {
 
     private LocalDate deceased_date = null;
 
-    @NonNull private String responder;
+    //    REQUIRED
+    private String responder;
 
     private String proxy_name;
 
@@ -92,30 +106,28 @@ public class Patient {
 
     /* getter and setter */
 
-    @NonNull
+
     public String getPatient_id() {
         return patient_id;
     }
 
-    public void setPatient_id(@NonNull String patient_id) {
+    public void setPatient_id(String patient_id) {
         this.patient_id = patient_id;
     }
 
-    @NonNull
     public String getStudy_id() {
         return study_id;
     }
 
-    public void setStudy_id(@NonNull String study_id) {
+    public void setStudy_id(String study_id) {
         this.study_id = study_id;
     }
 
-    @NonNull
     public String getDate_of_birth() {
         return date_of_birth;
     }
 
-    public void setDate_of_birth(@NonNull String date_of_birth) {
+    public void setDate_of_birth(String date_of_birth) {
         this.date_of_birth = date_of_birth;
     }
 
@@ -127,12 +139,11 @@ public class Patient {
         this.prefix = prefix;
     }
 
-    @NonNull
     public String getFirst_name() {
         return first_name;
     }
 
-    public void setFirst_name(@NonNull String first_name) {
+    public void setFirst_name(String first_name) {
         this.first_name = first_name;
     }
 
@@ -144,12 +155,11 @@ public class Patient {
         this.middle_name = middle_name;
     }
 
-    @NonNull
     public String getLast_name() {
         return last_name;
     }
 
-    public void setLast_name(@NonNull String last_name) {
+    public void setLast_name(String last_name) {
         this.last_name = last_name;
     }
 
@@ -169,30 +179,27 @@ public class Patient {
         this.com_name = com_name;
     }
 
-    @NonNull
     public String getGender() {
         return gender;
     }
 
-    public void setGender(@NonNull String gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
-    @NonNull
     public String getHh_id() {
         return hh_id;
     }
 
-    public void setHh_id(@NonNull String hh_id) {
+    public void setHh_id(String hh_id) {
         this.hh_id = hh_id;
     }
 
-    @NonNull
     public String getDur_hh() {
         return dur_hh;
     }
 
-    public void setDur_hh(@NonNull String dur_hh) {
+    public void setDur_hh(String dur_hh) {
         this.dur_hh = dur_hh;
     }
 
@@ -300,12 +307,11 @@ public class Patient {
         this.tel2_owner_rel = tel2_owner_rel;
     }
 
-    @NonNull
     public String getEnum_id() {
         return enum_id;
     }
 
-    public void setEnum_id(@NonNull String enum_id) {
+    public void setEnum_id(String enum_id) {
         this.enum_id = enum_id;
     }
 
@@ -333,12 +339,11 @@ public class Patient {
         this.deceased_date = deceased_date;
     }
 
-    @NonNull
     public String getResponder() {
         return responder;
     }
 
-    public void setResponder(@NonNull String responder) {
+    public void setResponder(String responder) {
         this.responder = responder;
     }
 

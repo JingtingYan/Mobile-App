@@ -2,17 +2,29 @@ package com.example.mobileApp;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "locations")
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "locations",
+        indices = {@Index("parent_location_id")},
+        foreignKeys = {@ForeignKey(entity = Location.class,
+                                    parentColumns = "location_id",
+                                    childColumns = "parent_location_id",
+                                    onDelete = CASCADE,
+                                    onUpdate = CASCADE)})
 public class Location {
 
     @PrimaryKey(autoGenerate = true)
-    @NonNull private int location_id;
+    //    REQUIRED
+    private int location_id;
 
-    @NonNull private String location_name;
+    private String location_name;
 
-    @NonNull private int parent_location_id;
+    //    REQUIRED
+    private int parent_location_id;
 
 
     /* getter and setter */
@@ -25,12 +37,11 @@ public class Location {
         this.location_id = location_id;
     }
 
-    @NonNull
     public String getLocation_name() {
         return location_name;
     }
 
-    public void setLocation_name(@NonNull String location_name) {
+    public void setLocation_name(String location_name) {
         this.location_name = location_name;
     }
 

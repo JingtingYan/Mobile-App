@@ -10,7 +10,7 @@ android {
         applicationId "com.example.mobileApp"
 
 //        Changed the minSDK from 15 to 16. Original is 15
-        minSdkVersion 16
+        minSdkVersion 15
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -58,5 +58,6 @@ dependencies {
 
 
     // AppSpector -> NO-OP Artifact so that AppSpector SDK is not in our app's release APK
-    implementation "com.appspector:android-sdk:1.+"
+    debugImplementation "com.appspector:android-sdk:1.+"
+    releaseImplementation "com.appspector:android-sdk-noop:1.+"
 }

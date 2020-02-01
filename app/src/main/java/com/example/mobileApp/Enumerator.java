@@ -2,6 +2,7 @@ package com.example.mobileApp;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDate;
@@ -15,31 +16,35 @@ public class Enumerator {
 
     private String enum_prefix;
 
-    @NonNull private String enum_first;
+//    REQUIRED
+    private String enum_first;
 
     private String enum_middle;
 
-    @NonNull private String enum_last;
+//    REQUIRED
+    private String enum_last;
 
     private String enum_suffix;
 
     private String organization;
 
-    @NonNull private LocalDate dob;
+//    REQUIRED
+    private LocalDate dob;
 
     // set default value of active_flag to be false
-    @NonNull private boolean active_flag = false;
+//    REQUIRED
+    private boolean active_flag = false;
 
     private String qualifications;
 
 
     /* getter & setter */
 
-    public int getEnum_id() {
+    public int getEnumerator_id() {
         return enumerator_id;
     }
 
-    public void setEnum_id(int enum_id) {
+    public void setEnumerator_id(int enum_id) {
         this.enumerator_id = enum_id;
     }
 
@@ -51,12 +56,11 @@ public class Enumerator {
         this.enum_prefix = enum_prefix;
     }
 
-    @NonNull
     public String getEnum_first() {
         return enum_first;
     }
 
-    public void setEnum_first(@NonNull String enum_first) {
+    public void setEnum_first(String enum_first) {
         this.enum_first = enum_first;
     }
 
@@ -68,12 +72,11 @@ public class Enumerator {
         this.enum_middle = enum_middle;
     }
 
-    @NonNull
     public String getEnum_last() {
         return enum_last;
     }
 
-    public void setEnum_last(@NonNull String enum_last) {
+    public void setEnum_last(String enum_last) {
         this.enum_last = enum_last;
     }
 
@@ -93,12 +96,11 @@ public class Enumerator {
         this.organization = organization;
     }
 
-    @NonNull
     public LocalDate getDob() {
         return dob;
     }
 
-    public void setDob(@NonNull LocalDate dob) {
+    public void setDob(LocalDate dob) {
         this.dob = dob;
     }
 

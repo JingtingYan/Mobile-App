@@ -4,14 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "patient_assessment_status")
+@Entity(tableName = "patient_assessment_status", primaryKeys = {"patient_id", "qnnaire_id"})
+
 public class PatientAssessmentStatus {
 
-    @PrimaryKey
-    @NonNull private String patient_id;
+    //    REQUIRED
+    private String patient_id;
 
-    @PrimaryKey
-    @NonNull private String qnnaire_id;
+    //    REQUIRED
+    private String qnnaire_id;
 
     private String qnnaire_status;
 
@@ -24,21 +25,20 @@ public class PatientAssessmentStatus {
 
     /* getter and setter */
 
-    @NonNull
+
     public String getPatient_id() {
         return patient_id;
     }
 
-    public void setPatient_id(@NonNull String patient_id) {
+    public void setPatient_id(String patient_id) {
         this.patient_id = patient_id;
     }
 
-    @NonNull
     public String getQnnaire_id() {
         return qnnaire_id;
     }
 
-    public void setQnnaire_id(@NonNull String qnnaire_id) {
+    public void setQnnaire_id(String qnnaire_id) {
         this.qnnaire_id = qnnaire_id;
     }
 

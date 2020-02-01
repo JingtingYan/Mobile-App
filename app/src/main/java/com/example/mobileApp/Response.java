@@ -3,14 +3,20 @@ package com.example.mobileApp;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "responses",
+@Entity(tableName = "response",
+        indices = {@Index(value = {"patient_id", "q_id","qnnaire_id"}),
+                    @Index("ans_id"),
+                    @Index("q_id"),
+                    @Index("qnnaire_id")},
+        primaryKeys = {"patient_id", "q_id", "ans_id", "qnnaire_id"},
         foreignKeys = {@ForeignKey(entity = Patient.class,
                                    parentColumns = "patient_id",
-                                   childColumns = "p_id",
+                                   childColumns = "patient_id",
                                    onDelete = CASCADE,
                                    onUpdate = CASCADE),
                        @ForeignKey(entity = Question.class,
@@ -30,37 +36,37 @@ import static androidx.room.ForeignKey.CASCADE;
                                    onUpdate = CASCADE)})
 public class Response {
 
-    @PrimaryKey
     // this is a foreign key
-    @NonNull private String p_id;
+    //    REQUIRED
+    private String patient_id;
 
-    @PrimaryKey
     // this is a foreign key
-    @NonNull private int q_id;
+    //    REQUIRED
+    private int q_id;
 
-    @PrimaryKey
     // this is a foreign key
-    @NonNull private int ans_id;
+    //    REQUIRED
+    private int ans_id;
 
     private String text;
 
-    @PrimaryKey
     // this is a foreign key
-    @NonNull private int qnnaire_id;
+    //    REQUIRED
+    private int qnnaire_id;
 
     // date is in format "YYYY-MM-DD"
-    @NonNull private String date;
+    //    REQUIRED
+    private String date;
 
 
     /* getter and setter */
 
-    @NonNull
-    public String getP_id() {
-        return p_id;
+    public String getPatient_id() {
+        return patient_id;
     }
 
-    public void setP_id(@NonNull String p_id) {
-        this.p_id = p_id;
+    public void setPatient_id(String patient_id) {
+        this.patient_id = patient_id;
     }
 
     public int getQ_id() {
@@ -95,12 +101,11 @@ public class Response {
         this.qnnaire_id = qnnaire_id;
     }
 
-    @NonNull
     public String getDate() {
         return date;
     }
 
-    public void setDate(@NonNull String date) {
+    public void setDate(String date) {
         this.date = date;
     }
 }

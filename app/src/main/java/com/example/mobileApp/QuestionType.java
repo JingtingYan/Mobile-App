@@ -8,9 +8,11 @@ import androidx.room.PrimaryKey;
 public class QuestionType {
 
     @PrimaryKey(autoGenerate = true)
-    @NonNull private int question_type_id;
+    //    REQUIRED
+    private int question_type_id;
 
-    @NonNull private String question_type;
+    //    REQUIRED
+    private String question_type;
 
 
     /* getter and setter */
@@ -23,12 +25,11 @@ public class QuestionType {
         this.question_type_id = question_type_id;
     }
 
-    @NonNull
     public String getQuestion_type() {
         return question_type;
     }
 
-    public void setQuestion_type(@NonNull String question_type) {
+    public void setQuestion_type(String question_type) {
         this.question_type = question_type;
     }
 }

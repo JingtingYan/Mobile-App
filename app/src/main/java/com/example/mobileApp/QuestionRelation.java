@@ -3,13 +3,20 @@ package com.example.mobileApp;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "question_relations",
+        primaryKeys = {"rel_id","q_id","rel_q_id","rel_ans_id","qnnaire_id"},
+        indices = {@Index(value={"q_id","qnnaire_id"}),
+                    @Index(value={"rel_id","q_id", "qnnaire_id"}),
+                    @Index("rel_q_id"),
+                    @Index("rel_ans_id"),
+                    @Index("qnnaire_id")},
         foreignKeys = {@ForeignKey(entity = Logic.class,
-                                   parentColumns = "relation_id",
+                                   parentColumns = "rel_id",
                                    childColumns = "rel_id",
                                    onUpdate = CASCADE,
                                    onDelete = CASCADE),
@@ -35,25 +42,25 @@ import static androidx.room.ForeignKey.CASCADE;
                                    onDelete = CASCADE)})
 public class QuestionRelation {
 
-    @PrimaryKey
     // this is a foreign key
-    @NonNull private int rel_id;
+    //    REQUIRED
+    private int rel_id;
 
-    @PrimaryKey
     // this is a foreign key
-    @NonNull private int q_id;
+    //    REQUIRED
+    private int q_id;
 
-    @PrimaryKey
     // this is a foreign key
-    @NonNull private int rel_q_id;
+    //    REQUIRED
+    private int rel_q_id;
 
-    @PrimaryKey
     // this is a foreign key
-    @NonNull private int rel_ans_id;
+    //    REQUIRED
+    private int rel_ans_id;
 
-    @PrimaryKey
     // this is a foreign key
-    @NonNull private int qnnaire_id;
+    //    REQUIRED
+    private int qnnaire_id;
 
 
     /* getter and setter */

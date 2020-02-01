@@ -3,11 +3,13 @@ package com.example.mobileApp;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "answers",
+        indices = {@Index("qnnaire_id")},
         foreignKeys = {@ForeignKey(entity = Questionnaire.class,
                                    parentColumns = "questionnaire_id",
                                    childColumns = "qnnaire_id",
@@ -16,12 +18,15 @@ import static androidx.room.ForeignKey.CASCADE;
 public class Answer {
 
     @PrimaryKey(autoGenerate = true)
-    @NonNull private int answer_id;
+//  REQUIRED
+    private int answer_id;
 
-    @NonNull private String answer_string;
+//  REQUIRED
+    private String answer_string;
 
     // this is a foreign key
-    @NonNull private String qnnaire_id;
+//  REQUIRED
+    private int qnnaire_id;
 
 
     /* getter and setter */
@@ -34,21 +39,20 @@ public class Answer {
         this.answer_id = answer_id;
     }
 
-    @NonNull
     public String getAnswer_string() {
         return answer_string;
     }
 
-    public void setAnswer_string(@NonNull String answer_string) {
+    public void setAnswer_string(String answer_string)
+    {
         this.answer_string = answer_string;
     }
 
-    @NonNull
-    public String getQnnaire_id() {
+    public int getQnnaire_id() {
         return qnnaire_id;
     }
 
-    public void setQnnaire_id(@NonNull String qnnaire_id) {
+    public void setQnnaire_id(int qnnaire_id) {
         this.qnnaire_id = qnnaire_id;
     }
 }

@@ -3,11 +3,15 @@ package com.example.mobileApp;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "questions",
+        indices = {@Index(value= {"question_id", "qnnaire_id"}),
+                    @Index("q_type_id"),
+                    @Index("qnnaire_id")},
         foreignKeys = {@ForeignKey(entity = QuestionType.class,
                                    parentColumns = "question_type_id",
                                    childColumns = "q_type_id",
@@ -21,12 +25,15 @@ import static androidx.room.ForeignKey.CASCADE;
 public class Question {
 
     @PrimaryKey(autoGenerate = true)
-    @NonNull private int question_id;
+    //    REQUIRED
+    private int question_id;
 
-    @NonNull private String question_string;
+    //    REQUIRED
+    private String question_string;
 
     // this is a foreign key
-    @NonNull private String q_type_id;
+    //    REQUIRED
+    private int q_type_id;
 
     private int answer_min;
 
@@ -35,7 +42,8 @@ public class Question {
     private String question_instruction;
 
     // this is a foreign key
-    @NonNull private String qnnaire_id;
+    //    REQUIRED
+    private int qnnaire_id;
 
     private String question_media;
 
@@ -50,21 +58,19 @@ public class Question {
         this.question_id = question_id;
     }
 
-    @NonNull
     public String getQuestion_string() {
         return question_string;
     }
 
-    public void setQuestion_string(@NonNull String question_string) {
+    public void setQuestion_string(String question_string) {
         this.question_string = question_string;
     }
 
-    @NonNull
-    public String getQ_type_id() {
+    public int getQ_type_id() {
         return q_type_id;
     }
 
-    public void setQ_type_id(@NonNull String q_type_id) {
+    public void setQ_type_id(int q_type_id) {
         this.q_type_id = q_type_id;
     }
 
@@ -92,12 +98,11 @@ public class Question {
         this.question_instruction = question_instruction;
     }
 
-    @NonNull
-    public String getQnnaire_id() {
+    public int getQnnaire_id() {
         return qnnaire_id;
     }
 
-    public void setQnnaire_id(@NonNull String qnnaire_id) {
+    public void setQnnaire_id(int qnnaire_id) {
         this.qnnaire_id = qnnaire_id;
     }
 

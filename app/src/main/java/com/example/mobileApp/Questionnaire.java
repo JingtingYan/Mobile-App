@@ -2,17 +2,21 @@ package com.example.mobileApp;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "questionnaires")
+@Entity(tableName = "questionnaires", indices={@Index("questionnaire_id")})
 public class Questionnaire {
 
     @PrimaryKey(autoGenerate = true)
-    @NonNull private int questionnaire_id;
+    //    REQUIRED
+    private int questionnaire_id;
 
-    @NonNull private String questionnaire_name;
+    //    REQUIRED
+    private String questionnaire_name;
 
-    @NonNull private String questionnaire_version;
+    //    REQUIRED
+    private String questionnaire_version;
 
     private boolean active_flag = false;
 
@@ -27,21 +31,19 @@ public class Questionnaire {
         this.questionnaire_id = questionnaire_id;
     }
 
-    @NonNull
     public String getQuestionnaire_name() {
         return questionnaire_name;
     }
 
-    public void setQuestionnaire_name(@NonNull String questionnaire_name) {
+    public void setQuestionnaire_name(String questionnaire_name) {
         this.questionnaire_name = questionnaire_name;
     }
 
-    @NonNull
     public String getQuestionnaire_version() {
         return questionnaire_version;
     }
 
-    public void setQuestionnaire_version(@NonNull String questionnaire_version) {
+    public void setQuestionnaire_version(String questionnaire_version) {
         this.questionnaire_version = questionnaire_version;
     }
 
