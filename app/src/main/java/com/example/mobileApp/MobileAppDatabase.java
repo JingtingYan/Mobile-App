@@ -12,7 +12,15 @@ import androidx.room.TypeConverters;
                       Questionnaire.class,
                       QuestionType.class,
                       Question.class,
-                      Answer.class},
+                      Answer.class,
+                      QuestionAnswer.class,
+                      Response.class,
+                      Logic.class,
+                      QuestionRelation.class,
+                      Diagnosis.class,
+                      Service.class,
+                      CauseOfDisease.class,
+                      AT.class},
           version = 1,
           exportSchema = false)  // ??
 @TypeConverters({LocalDateTypeConverter.class})
@@ -27,4 +35,12 @@ public abstract class MobileAppDatabase extends RoomDatabase {
     public abstract QuestionTypeDao questionTypeDao();
     public abstract QuestionDao questionDao();
     public abstract AnswerDao answerDao();
+    public abstract QuestionAnswerDao questionAnswerDao();
+    public abstract ResponseDao responseDao();
+    public abstract LogicDao logicDao();
+    public abstract QuestionRelationDao questionRelationDao();
+    public abstract DiagnosisDao diagnosisDao();
+    public abstract ServiceDao serviceDao();
+    public abstract CauseOfDiseaseDao causeOfDiseaseDao();
+    public abstract ATDao atDao();
 }

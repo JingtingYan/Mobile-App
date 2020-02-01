@@ -16,6 +16,7 @@ public class Location {
 
 
     /* getter and setter */
+
     public int getLocation_id() {
         return location_id;
     }

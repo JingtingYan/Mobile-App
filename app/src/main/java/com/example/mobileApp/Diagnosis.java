@@ -1,0 +1,49 @@
+package com.example.mobileApp;
+
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.PrimaryKey;
+
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "diagnosis",
+        foreignKeys = {@ForeignKey(entity = Question.class,
+                                   parentColumns = "question_id",
+                                   childColumns = "question_diagnosis_id",
+                                   onDelete = CASCADE,
+                                   onUpdate = CASCADE),
+                       @ForeignKey(entity = Questionnaire.class,
+                                   parentColumns = "questionnaire_id",
+                                   childColumns = "qnnaire_id",
+                                   onDelete = CASCADE,
+                                   onUpdate = CASCADE)})
+public class Diagnosis {
+
+    @PrimaryKey
+    // this is a foreign key
+    @NonNull private int question_diagnosis_id;
+
+    @PrimaryKey
+    // this is a foreign key
+    @NonNull private int qnnaire_id;
+
+
+    /* getter and setter */
+
+    public int getQuestion_diagnosis_id() {
+        return question_diagnosis_id;
+    }
+
+    public void setQuestion_diagnosis_id(int question_diagnosis_id) {
+        this.question_diagnosis_id = question_diagnosis_id;
+    }
+
+    public int getQnnaire_id() {
+        return qnnaire_id;
+    }
+
+    public void setQnnaire_id(int qnnaire_id) {
+        this.qnnaire_id = qnnaire_id;
+    }
+}

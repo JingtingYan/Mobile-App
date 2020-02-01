@@ -34,6 +34,7 @@ public class Enumerator {
 
 
     /* getter & setter */
+
     public int getEnum_id() {
         return enumerator_id;
     }
