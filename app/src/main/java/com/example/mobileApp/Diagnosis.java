@@ -4,14 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
-import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "diagnosis",
         primaryKeys = {"question_diagnosis_id", "qnnaire_id"},
         indices = {@Index("qnnaire_id")},
-        foreignKeys = {@ForeignKey(entity = Question.class,
+        foreignKeys = {@ForeignKey(entity = QuestionTable.class,
                                    parentColumns = "question_id",
                                    childColumns = "question_diagnosis_id",
                                    onDelete = CASCADE,

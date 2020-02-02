@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
-import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
@@ -20,17 +19,17 @@ import static androidx.room.ForeignKey.CASCADE;
                                    childColumns = "rel_id",
                                    onUpdate = CASCADE,
                                    onDelete = CASCADE),
-                       @ForeignKey(entity = Question.class,
+                       @ForeignKey(entity = QuestionTable.class,
                                    parentColumns = "question_id",
                                    childColumns = "q_id",
                                    onUpdate = CASCADE,
                                    onDelete = CASCADE),
-                       @ForeignKey(entity = Question.class,
+                       @ForeignKey(entity = QuestionTable.class,
                                    parentColumns = "question_id",
                                    childColumns = "rel_q_id",
                                    onUpdate = CASCADE,
                                    onDelete = CASCADE),
-                       @ForeignKey(entity = Answer.class,
+                       @ForeignKey(entity = AnswerTables.class,
                                    parentColumns = "answer_id",
                                    childColumns = "rel_ans_id",
                                    onUpdate = CASCADE,

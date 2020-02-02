@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
-import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
@@ -12,12 +11,12 @@ import static androidx.room.ForeignKey.CASCADE;
         primaryKeys = {"q_id", "ans_id", "qnnaire_id"},
         indices={@Index(value = {"ans_id", "q_id"}),
                     @Index("qnnaire_id")},
-        foreignKeys = {@ForeignKey(entity = Question.class,
+        foreignKeys = {@ForeignKey(entity = QuestionTable.class,
                                    parentColumns = "question_id",
                                    childColumns = "q_id",
                                    onUpdate = CASCADE,
                                    onDelete = CASCADE),
-                       @ForeignKey(entity = Answer.class,
+                       @ForeignKey(entity = AnswerTables.class,
                                    parentColumns = "answer_id",
                                    childColumns = "ans_id",
                                    onUpdate = CASCADE,
