@@ -10,7 +10,7 @@ public interface LogicDao {
 
     // used in nextQuestion stored procedure
     @Query("SELECT * FROM logic " +
-            "WHERE logic.q_id = :currQ " +
-            "AND logic.qnnaire_id = :currQnn")
-    List<Logic> getSkipLogic(int currQ, int currQnn);
+            "WHERE q_id = :currQ " +
+            "AND qnnaire_id = :currQnn")
+    List<LogicTable> getSkipLogic(int currQ, int currQnn);
 }

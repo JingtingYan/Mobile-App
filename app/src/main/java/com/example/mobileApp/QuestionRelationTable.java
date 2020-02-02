@@ -14,7 +14,7 @@ import static androidx.room.ForeignKey.CASCADE;
                     @Index("rel_q_id"),
                     @Index("rel_ans_id"),
                     @Index("qnnaire_id")},
-        foreignKeys = {@ForeignKey(entity = Logic.class,
+        foreignKeys = {@ForeignKey(entity = LogicTable.class,
                                    parentColumns = "rel_id",
                                    childColumns = "rel_id",
                                    onUpdate = CASCADE,
@@ -29,17 +29,17 @@ import static androidx.room.ForeignKey.CASCADE;
                                    childColumns = "rel_q_id",
                                    onUpdate = CASCADE,
                                    onDelete = CASCADE),
-                       @ForeignKey(entity = AnswerTables.class,
+                       @ForeignKey(entity = AnswerTable.class,
                                    parentColumns = "answer_id",
                                    childColumns = "rel_ans_id",
                                    onUpdate = CASCADE,
                                    onDelete = CASCADE),
-                       @ForeignKey(entity = Questionnaire.class,
+                       @ForeignKey(entity = QuestionnaireTable.class,
                                    parentColumns = "questionnaire_id",
                                    childColumns = "qnnaire_id",
                                    onUpdate = CASCADE,
                                    onDelete = CASCADE)})
-public class QuestionRelation {
+public class QuestionRelationTable {
 
     // this is a foreign key
     //    REQUIRED

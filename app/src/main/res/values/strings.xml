@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Mobile App</string>
 
-    <!-- Location Fragment -->
+    <!-- LocationTable Fragment -->
     <string name="selection_location_instruction">Select a Project\'s country, region and cluster</string>
     <string name="project_country">Project Country: </string>
     <string name="project_region">Project Region: </string>

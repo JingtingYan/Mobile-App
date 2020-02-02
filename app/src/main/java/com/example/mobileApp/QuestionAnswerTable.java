@@ -10,23 +10,23 @@ import static androidx.room.ForeignKey.CASCADE;
 @Entity(tableName = "questions_and_answers",
         primaryKeys = {"q_id", "ans_id", "qnnaire_id"},
         indices={@Index(value = {"ans_id", "q_id"}),
-                    @Index("qnnaire_id")},
+                 @Index("qnnaire_id")},
         foreignKeys = {@ForeignKey(entity = QuestionTable.class,
                                    parentColumns = "question_id",
                                    childColumns = "q_id",
                                    onUpdate = CASCADE,
                                    onDelete = CASCADE),
-                       @ForeignKey(entity = AnswerTables.class,
+                       @ForeignKey(entity = AnswerTable.class,
                                    parentColumns = "answer_id",
                                    childColumns = "ans_id",
                                    onUpdate = CASCADE,
                                    onDelete = CASCADE),
-                       @ForeignKey(entity = Questionnaire.class,
+                       @ForeignKey(entity = QuestionnaireTable.class,
                                    parentColumns = "questionnaire_id",
                                    childColumns = "qnnaire_id",
                                    onUpdate = CASCADE,
                                    onDelete = CASCADE)})
-public class QuestionAnswer {
+public class QuestionAnswerTable {
 
     // this is a foreign key
     //    REQUIRED

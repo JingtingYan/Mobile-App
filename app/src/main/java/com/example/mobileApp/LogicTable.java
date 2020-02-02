@@ -20,7 +20,7 @@ import static androidx.room.ForeignKey.CASCADE;
                                    childColumns = "q_id",
                                    onDelete = CASCADE,
                                    onUpdate = CASCADE),
-                       @ForeignKey(entity = AnswerTables.class,
+                       @ForeignKey(entity = AnswerTable.class,
                                    parentColumns = "answer_id",
                                    childColumns = "rel_ans_id",
                                    onDelete = CASCADE,
@@ -30,12 +30,12 @@ import static androidx.room.ForeignKey.CASCADE;
                                    childColumns = "next_q_id",
                                    onDelete = CASCADE,
                                    onUpdate = CASCADE),
-                       @ForeignKey(entity = Questionnaire.class,
+                       @ForeignKey(entity = QuestionnaireTable.class,
                                    parentColumns = "questionnaire_id",
                                    childColumns = "qnnaire_id",
                                    onDelete = CASCADE,
                                    onUpdate = CASCADE)})
-public class Logic {
+public class LogicTable {
 
     @PrimaryKey(autoGenerate = true)
     //    REQUIRED

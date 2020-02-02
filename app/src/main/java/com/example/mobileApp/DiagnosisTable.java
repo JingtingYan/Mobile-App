@@ -7,28 +7,28 @@ import androidx.room.Index;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "causes_of_diseases",
-        primaryKeys = {"question_cod_id", "qnnaire_id"},
+@Entity(tableName = "diagnosis",
+        primaryKeys = {"question_diagnosis_id", "qnnaire_id"},
         indices = {@Index("qnnaire_id")},
         foreignKeys = {@ForeignKey(entity = QuestionTable.class,
                                    parentColumns = "question_id",
-                                   childColumns = "question_cod_id",
+                                   childColumns = "question_diagnosis_id",
                                    onDelete = CASCADE,
                                    onUpdate = CASCADE),
-                       @ForeignKey(entity = Questionnaire.class,
+                       @ForeignKey(entity = QuestionnaireTable.class,
                                    parentColumns = "questionnaire_id",
                                    childColumns = "qnnaire_id",
                                    onDelete = CASCADE,
                                    onUpdate = CASCADE)})
-public class CauseOfDisease {
-
-    // this is a foreign key
-//  REQUIRED
-    @NonNull
-    private Integer question_cod_id = 0;
+public class DiagnosisTable {
 
     // this is a foreign key
 //    REQUIRED
+    @NonNull
+    private Integer question_diagnosis_id = 0;
+
+    // this is a foreign key
+//    REQUIREd
     @NonNull
     private Integer qnnaire_id = 0;
 
@@ -36,12 +36,12 @@ public class CauseOfDisease {
     /* getter and setter */
 
     @NonNull
-    public Integer getQuestion_cod_id() {
-        return question_cod_id;
+    public Integer getQuestion_diagnosis_id() {
+        return question_diagnosis_id;
     }
 
-    public void setQuestion_cod_id(@NonNull Integer question_cod_id) {
-        this.question_cod_id = question_cod_id;
+    public void setQuestion_diagnosis_id(@NonNull Integer question_diagnosis_id) {
+        this.question_diagnosis_id = question_diagnosis_id;
     }
 
     @NonNull

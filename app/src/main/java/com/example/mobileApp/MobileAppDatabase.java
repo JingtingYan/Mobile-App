@@ -7,23 +7,23 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {Enumerator.class,
-                      Location.class,
-                      Household.class,
-                      Patient.class,
-                      PatientAssessmentStatus.class,
-                      Questionnaire.class,
-                      QuestionType.class,
+@Database(entities = {EnumeratorTable.class,
+                      LocationTable.class,
+                      HouseholdTable.class,
+                      PatientTable.class,
+                      PatientAssessmentStatusTable.class,
+                      QuestionnaireTable.class,
+                      QuestionTypeTable.class,
                       QuestionTable.class,
-                      AnswerTables.class,
-                      QuestionAnswer.class,
+                      AnswerTable.class,
+                      QuestionAnswerTable.class,
                       ResponseTable.class,
-                      Logic.class,
-                      QuestionRelation.class,
-                      Diagnosis.class,
-                      Service.class,
-                      CauseOfDisease.class,
-                      AT.class},
+                      LogicTable.class,
+                      QuestionRelationTable.class,
+                      DiagnosisTable.class,
+                      ServiceTable.class,
+                      CauseOfDiseaseTable.class,
+                      AssistiveTechnologyTable.class},
           version = 1,
           exportSchema = false)  // ??
 @TypeConverters({LocalDateTypeConverter.class})
@@ -45,7 +45,7 @@ public abstract class MobileAppDatabase extends RoomDatabase {
     public abstract DiagnosisDao diagnosisDao();
     public abstract ServiceDao serviceDao();
     public abstract CauseOfDiseaseDao causeOfDiseaseDao();
-    public abstract ATDao atDao();
+    public abstract AssistiveTechnologyDao atDao();
 
 
     // Singleton

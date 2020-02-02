@@ -14,17 +14,17 @@ import static androidx.room.ForeignKey.CASCADE;
         indices = { @Index(value={"patient_id", "hh_id"}),
                     @Index("hh_id"),
                     @Index("enum_id")},
-        foreignKeys = {@ForeignKey(entity = Household.class,
+        foreignKeys = {@ForeignKey(entity = HouseholdTable.class,
                                    parentColumns = "household_id",
                                    childColumns = "hh_id",
                                    onDelete = CASCADE,
                                    onUpdate = CASCADE),
-                       @ForeignKey(entity = Enumerator.class,
+                       @ForeignKey(entity = EnumeratorTable.class,
                                    parentColumns = "enumerator_id",
                                    childColumns = "enum_id",
                                    onDelete = CASCADE,
                                    onUpdate = CASCADE)})
-public class Patient {
+public class PatientTable {
 
     @PrimaryKey
     //    REQUIRED

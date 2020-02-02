@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 
 @Entity(tableName = "enumerators")
-public class Enumerator {
+public class EnumeratorTable {
 
     @PrimaryKey(autoGenerate = true)
     @NonNull

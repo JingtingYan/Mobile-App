@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "patient_assessment_status", primaryKeys = {"patient_id", "qnnaire_id"})
 
-public class PatientAssessmentStatus {
+public class PatientAssessmentStatusTable {
 
     //    REQUIRED
     @NonNull

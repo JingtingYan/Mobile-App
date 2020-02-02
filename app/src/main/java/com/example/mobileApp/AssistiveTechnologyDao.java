@@ -3,5 +3,5 @@ package com.example.mobileApp;
 import androidx.room.Dao;
 
 @Dao
-public interface ATDao {
+public interface AssistiveTechnologyDao {
 }

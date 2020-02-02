@@ -10,12 +10,12 @@ import java.util.List;
 public interface HouseholdDao
 {
     @Insert
-    void insert(Household household);
+    void insert(HouseholdTable household);
 
-    @Query("SELECT * from households WHERE households.household_id = :hh_id")
-    Household getHouseholdforPatient(int hh_id);
+    @Query("SELECT * from households WHERE household_id = :hh_id")
+    HouseholdTable getHouseholdforPatient(int hh_id);
 
-    @Query("SELECT * from households WHERE households.parent_loc_id = :clusterId")
-    List<Household> getHouseholdsforCluster(int clusterId);
+    @Query("SELECT * from households WHERE parent_loc_id = :clusterId")
+    List<HouseholdTable> getHouseholdsforCluster(int clusterId);
 
 }

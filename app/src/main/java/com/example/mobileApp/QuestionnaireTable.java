@@ -6,7 +6,7 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "questionnaires", indices={@Index("questionnaire_id")})
-public class Questionnaire {
+public class QuestionnaireTable {
 
     @PrimaryKey(autoGenerate = true)
     //    REQUIRED

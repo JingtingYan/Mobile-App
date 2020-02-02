@@ -7,28 +7,28 @@ import androidx.room.Index;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "AT",
-        primaryKeys = {"question_at_id", "qnnaire_id"},
+@Entity(tableName = "causes_of_diseases",
+        primaryKeys = {"question_cod_id", "qnnaire_id"},
         indices = {@Index("qnnaire_id")},
         foreignKeys = {@ForeignKey(entity = QuestionTable.class,
                                    parentColumns = "question_id",
-                                   childColumns = "question_at_id",
+                                   childColumns = "question_cod_id",
                                    onDelete = CASCADE,
                                    onUpdate = CASCADE),
-                       @ForeignKey(entity = Questionnaire.class,
+                       @ForeignKey(entity = QuestionnaireTable.class,
                                    parentColumns = "questionnaire_id",
                                    childColumns = "qnnaire_id",
                                    onDelete = CASCADE,
                                    onUpdate = CASCADE)})
-public class AT {
+public class CauseOfDiseaseTable {
 
     // this is a foreign key
 //  REQUIRED
     @NonNull
-    private Integer question_at_id = 0;
+    private Integer question_cod_id = 0;
 
     // this is a foreign key
-//   REQUIRED
+//    REQUIRED
     @NonNull
     private Integer qnnaire_id = 0;
 
@@ -36,12 +36,12 @@ public class AT {
     /* getter and setter */
 
     @NonNull
-    public Integer getQuestion_at_id() {
-        return question_at_id;
+    public Integer getQuestion_cod_id() {
+        return question_cod_id;
     }
 
-    public void setQuestion_at_id(@NonNull Integer question_at_id) {
-        this.question_at_id = question_at_id;
+    public void setQuestion_cod_id(@NonNull Integer question_cod_id) {
+        this.question_cod_id = question_cod_id;
     }
 
     @NonNull

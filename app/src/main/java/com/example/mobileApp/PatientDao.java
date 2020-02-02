@@ -10,10 +10,10 @@ import java.util.List;
 public interface PatientDao
 {
     @Insert
-    void insert(Patient patient);
+    void insert(PatientTable patient);
 
 
-    @Query("SELECT * FROM patients WHERE patients.hh_id = :hh_id")
-    List<Patient> getPatientsforHousehold(int hh_id);
+    @Query("SELECT * FROM patients WHERE hh_id = :hh_id")
+    List<PatientTable> getPatientsforHousehold(int hh_id);
 
 }

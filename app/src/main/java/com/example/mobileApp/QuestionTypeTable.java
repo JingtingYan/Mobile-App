@@ -5,7 +5,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "question_types")
-public class QuestionType {
+public class QuestionTypeTable {
 
     @PrimaryKey(autoGenerate = true)
     //    REQUIRED
