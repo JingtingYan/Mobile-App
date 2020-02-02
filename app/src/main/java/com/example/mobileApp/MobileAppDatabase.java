@@ -1,6 +1,9 @@
 package com.example.mobileApp;
 
+import android.content.Context;
+
 import androidx.room.Database;
+import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
@@ -43,4 +46,21 @@ public abstract class MobileAppDatabase extends RoomDatabase {
     public abstract ServiceDao serviceDao();
     public abstract CauseOfDiseaseDao causeOfDiseaseDao();
     public abstract ATDao atDao();
+
+
+    // Singleton
+    private static MobileAppDatabase INSTANCE;
+
+    static MobileAppDatabase getDatabase(final Context context) {
+        if (INSTANCE == null) {
+            synchronized (MobileAppDatabase.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), MobileAppDatabase.class, "app_database")
+                            //.allowMainThreadQueries()
+                            .build();
+                }
+            }
+        }
+        return INSTANCE;
+    }
 }
