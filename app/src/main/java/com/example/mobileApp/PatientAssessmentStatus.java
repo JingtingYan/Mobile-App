@@ -9,10 +9,12 @@ import androidx.room.PrimaryKey;
 public class PatientAssessmentStatus {
 
     //    REQUIRED
-    private String patient_id;
+    @NonNull
+    private String patient_id = "";
 
     //    REQUIRED
-    private String qnnaire_id;
+    @NonNull
+    private String qnnaire_id = "";
 
     private String qnnaire_status;
 
@@ -25,12 +27,12 @@ public class PatientAssessmentStatus {
 
     /* getter and setter */
 
-
+    @NonNull
     public String getPatient_id() {
         return patient_id;
     }
 
-    public void setPatient_id(String patient_id) {
+    public void setPatient_id(@NonNull String patient_id) {
         this.patient_id = patient_id;
     }
 

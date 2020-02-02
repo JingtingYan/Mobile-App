@@ -19,21 +19,23 @@ public class Location {
 
     @PrimaryKey(autoGenerate = true)
     //    REQUIRED
-    private int location_id;
+    @NonNull
+    private Integer location_id = 0;
 
     private String location_name;
 
     //    REQUIRED
-    private int parent_location_id;
+    private Integer parent_location_id;
 
 
     /* getter and setter */
 
-    public int getLocation_id() {
+    @NonNull
+    public Integer getLocation_id() {
         return location_id;
     }
 
-    public void setLocation_id(int location_id) {
+    public void setLocation_id(@NonNull Integer location_id) {
         this.location_id = location_id;
     }
 
@@ -45,12 +47,11 @@ public class Location {
         this.location_name = location_name;
     }
 
-    public int getParent_location_id() {
+    public Integer getParent_location_id() {
         return parent_location_id;
     }
 
-    public void setParent_location_id(int parent_location_id) {
+    public void setParent_location_id(Integer parent_location_id) {
         this.parent_location_id = parent_location_id;
     }
-
 }

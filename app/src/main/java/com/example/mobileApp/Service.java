@@ -25,28 +25,32 @@ public class Service {
 
     // this is a foreign key
     //    REQUIRED
-    private int question_service_id;
+    @NonNull
+    private Integer question_service_id = 0;
 
     // this is a foreign key
     //    REQUIRED
-    private int qnnaire_id;
+    @NonNull
+    private Integer qnnaire_id = 0;
 
 
     /* getter and setter */
 
-    public int getQuestion_service_id() {
+    @NonNull
+    public Integer getQuestion_service_id() {
         return question_service_id;
     }
 
-    public void setQuestion_service_id(int question_service_id) {
+    public void setQuestion_service_id(@NonNull Integer question_service_id) {
         this.question_service_id = question_service_id;
     }
 
-    public int getQnnaire_id() {
+    @NonNull
+    public Integer getQnnaire_id() {
         return qnnaire_id;
     }
 
-    public void setQnnaire_id(int qnnaire_id) {
+    public void setQnnaire_id(@NonNull Integer qnnaire_id) {
         this.qnnaire_id = qnnaire_id;
     }
 }

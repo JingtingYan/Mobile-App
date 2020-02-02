@@ -44,64 +44,74 @@ public class QuestionRelation {
 
     // this is a foreign key
     //    REQUIRED
-    private int rel_id;
+    @NonNull
+    private Integer rel_id = 0;
 
     // this is a foreign key
     //    REQUIRED
-    private int q_id;
+    @NonNull
+    private Integer q_id = 0;
 
     // this is a foreign key
     //    REQUIRED
-    private int rel_q_id;
+    @NonNull
+    private Integer rel_q_id = 0;
 
     // this is a foreign key
     //    REQUIRED
-    private int rel_ans_id;
+    @NonNull
+    private Integer rel_ans_id = 0;
 
     // this is a foreign key
     //    REQUIRED
-    private int qnnaire_id;
+    @NonNull
+    private Integer qnnaire_id = 0;
 
 
     /* getter and setter */
 
-    public int getRel_id() {
+    @NonNull
+    public Integer getRel_id() {
         return rel_id;
     }
 
-    public void setRel_id(int rel_id) {
+    public void setRel_id(@NonNull Integer rel_id) {
         this.rel_id = rel_id;
     }
 
-    public int getQ_id() {
+    @NonNull
+    public Integer getQ_id() {
         return q_id;
     }
 
-    public void setQ_id(int q_id) {
+    public void setQ_id(@NonNull Integer q_id) {
         this.q_id = q_id;
     }
 
-    public int getRel_q_id() {
+    @NonNull
+    public Integer getRel_q_id() {
         return rel_q_id;
     }
 
-    public void setRel_q_id(int rel_q_id) {
+    public void setRel_q_id(@NonNull Integer rel_q_id) {
         this.rel_q_id = rel_q_id;
     }
 
-    public int getRel_ans_id() {
+    @NonNull
+    public Integer getRel_ans_id() {
         return rel_ans_id;
     }
 
-    public void setRel_ans_id(int rel_ans_id) {
+    public void setRel_ans_id(@NonNull Integer rel_ans_id) {
         this.rel_ans_id = rel_ans_id;
     }
 
-    public int getQnnaire_id() {
+    @NonNull
+    public Integer getQnnaire_id() {
         return qnnaire_id;
     }
 
-    public void setQnnaire_id(int qnnaire_id) {
+    public void setQnnaire_id(@NonNull Integer qnnaire_id) {
         this.qnnaire_id = qnnaire_id;
     }
 }

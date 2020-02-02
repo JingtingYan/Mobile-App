@@ -26,67 +26,73 @@ public class Question {
 
     @PrimaryKey(autoGenerate = true)
     //    REQUIRED
-    private int question_id;
+    @NonNull
+    private Integer question_id = 0;
 
     //    REQUIRED
-    private String question_string;
+    @NonNull
+    private String question_string = "";
 
     // this is a foreign key
     //    REQUIRED
-    private int q_type_id;
+    @NonNull
+    private Integer q_type_id = 0;
 
-    private int answer_min;
+    private Integer answer_min;
 
-    private int answer_max;
+    private Integer answer_max;
 
     private String question_instruction;
 
     // this is a foreign key
     //    REQUIRED
-    private int qnnaire_id;
+    private Integer qnnaire_id;
 
     private String question_media;
 
 
     /* getter and setter */
 
-    public int getQuestion_id() {
+    @NonNull
+    public Integer getQuestion_id() {
         return question_id;
     }
 
-    public void setQuestion_id(int question_id) {
+    public void setQuestion_id(@NonNull Integer question_id) {
         this.question_id = question_id;
     }
 
+    @NonNull
     public String getQuestion_string() {
         return question_string;
     }
 
-    public void setQuestion_string(String question_string) {
+    public void setQuestion_string(@NonNull String question_string) {
         this.question_string = question_string;
     }
 
-    public int getQ_type_id() {
+    @NonNull
+    public Integer getQ_type_id() {
         return q_type_id;
     }
 
-    public void setQ_type_id(int q_type_id) {
+    public void setQ_type_id(@NonNull Integer q_type_id) {
         this.q_type_id = q_type_id;
     }
 
-    public int getAnswer_min() {
+    public Integer getAnswer_min() {
         return answer_min;
     }
 
-    public void setAnswer_min(int answer_min) {
+    public void setAnswer_min(Integer answer_min) {
         this.answer_min = answer_min;
     }
 
-    public int getAnswer_max() {
+    public Integer getAnswer_max() {
         return answer_max;
     }
 
-    public void setAnswer_max(int answer_max) {
+    public void setAnswer_max(Integer answer_max) {
         this.answer_max = answer_max;
     }
 
@@ -98,11 +104,11 @@ public class Question {
         this.question_instruction = question_instruction;
     }
 
-    public int getQnnaire_id() {
+    public Integer getQnnaire_id() {
         return qnnaire_id;
     }
 
-    public void setQnnaire_id(int qnnaire_id) {
+    public void setQnnaire_id(Integer qnnaire_id) {
         this.qnnaire_id = qnnaire_id;
     }
 

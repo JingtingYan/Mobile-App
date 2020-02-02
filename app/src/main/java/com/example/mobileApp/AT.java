@@ -25,28 +25,32 @@ public class AT {
 
     // this is a foreign key
 //  REQUIRED
-    private int question_at_id;
+    @NonNull
+    private Integer question_at_id = 0;
 
     // this is a foreign key
 //   REQUIRED
-    private int qnnaire_id;
+    @NonNull
+    private Integer qnnaire_id = 0;
 
 
     /* getter and setter */
 
-    public int getQuestion_at_id() {
+    @NonNull
+    public Integer getQuestion_at_id() {
         return question_at_id;
     }
 
-    public void setQuestion_at_id(int question_at_id) {
+    public void setQuestion_at_id(@NonNull Integer question_at_id) {
         this.question_at_id = question_at_id;
     }
 
-    public int getQnnaire_id() {
+    @NonNull
+    public Integer getQnnaire_id() {
         return qnnaire_id;
     }
 
-    public void setQnnaire_id(int qnnaire_id) {
+    public void setQnnaire_id(@NonNull Integer qnnaire_id) {
         this.qnnaire_id = qnnaire_id;
     }
 }

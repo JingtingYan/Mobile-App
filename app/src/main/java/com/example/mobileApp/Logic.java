@@ -39,58 +39,60 @@ public class Logic {
 
     @PrimaryKey(autoGenerate = true)
     //    REQUIRED
-    private int sequence_num;
+    @NonNull
+    private Integer sequence_num = 0;
 
     // this is a foreign key
     //    REQUIRED
-    private int q_id;
+    private Integer q_id;
 
     // this is a foreign key
-    private int rel_ans_id;
+    private Integer rel_ans_id;
 
     // this is a foreign key
-    private int next_q_id;
+    private Integer next_q_id;
 
     private String rel_type;
 
-    private int rel_id;  // unique
+    private Integer rel_id;  // unique
 
     // this is a foreign key
     //    REQUIRED
-    private int qnnaire_id;
+    private Integer qnnaire_id;
 
 
     /* getter and setter */
 
-    public int getSequence_num() {
+    @NonNull
+    public Integer getSequence_num() {
         return sequence_num;
     }
 
-    public void setSequence_num(int sequence_num) {
+    public void setSequence_num(@NonNull Integer sequence_num) {
         this.sequence_num = sequence_num;
     }
 
-    public int getQ_id() {
+    public Integer getQ_id() {
         return q_id;
     }
 
-    public void setQ_id(int q_id) {
+    public void setQ_id(Integer q_id) {
         this.q_id = q_id;
     }
 
-    public int getRel_ans_id() {
+    public Integer getRel_ans_id() {
         return rel_ans_id;
     }
 
-    public void setRel_ans_id(int rel_ans_id) {
+    public void setRel_ans_id(Integer rel_ans_id) {
         this.rel_ans_id = rel_ans_id;
     }
 
-    public int getNext_q_id() {
+    public Integer getNext_q_id() {
         return next_q_id;
     }
 
-    public void setNext_q_id(int next_q_id) {
+    public void setNext_q_id(Integer next_q_id) {
         this.next_q_id = next_q_id;
     }
 
@@ -102,19 +104,19 @@ public class Logic {
         this.rel_type = rel_type;
     }
 
-    public int getRel_id() {
+    public Integer getRel_id() {
         return rel_id;
     }
 
-    public void setRel_id(int rel_id) {
+    public void setRel_id(Integer rel_id) {
         this.rel_id = rel_id;
     }
 
-    public int getQnnaire_id() {
+    public Integer getQnnaire_id() {
         return qnnaire_id;
     }
 
-    public void setQnnaire_id(int qnnaire_id) {
+    public void setQnnaire_id(Integer qnnaire_id) {
         this.qnnaire_id = qnnaire_id;
     }
 }

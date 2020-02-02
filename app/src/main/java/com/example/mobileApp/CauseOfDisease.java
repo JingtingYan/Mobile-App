@@ -25,28 +25,32 @@ public class CauseOfDisease {
 
     // this is a foreign key
 //  REQUIRED
-    private int question_cod_id;
+    @NonNull
+    private Integer question_cod_id = 0;
 
     // this is a foreign key
 //    REQUIRED
-    private int qnnaire_id;
+    @NonNull
+    private Integer qnnaire_id = 0;
 
 
     /* getter and setter */
 
-    public int getQuestion_cod_id() {
+    @NonNull
+    public Integer getQuestion_cod_id() {
         return question_cod_id;
     }
 
-    public void setQuestion_cod_id(int question_cod_id) {
+    public void setQuestion_cod_id(@NonNull Integer question_cod_id) {
         this.question_cod_id = question_cod_id;
     }
 
-    public int getQnnaire_id() {
+    @NonNull
+    public Integer getQnnaire_id() {
         return qnnaire_id;
     }
 
-    public void setQnnaire_id(int qnnaire_id) {
+    public void setQnnaire_id(@NonNull Integer qnnaire_id) {
         this.qnnaire_id = qnnaire_id;
     }
 }

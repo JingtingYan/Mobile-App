@@ -28,7 +28,8 @@ public class Patient {
 
     @PrimaryKey
     //    REQUIRED
-    private String patient_id;
+    @NonNull
+    private String patient_id = "";
 
     //    REQUIRED
     private String study_id;
@@ -92,7 +93,7 @@ public class Patient {
 
     private String national_id;
 
-    private boolean deceased = false;
+    private Integer deceased = 0;
 
     private LocalDate deceased_date = null;
 
@@ -107,11 +108,12 @@ public class Patient {
     /* getter and setter */
 
 
+    @NonNull
     public String getPatient_id() {
         return patient_id;
     }
 
-    public void setPatient_id(String patient_id) {
+    public void setPatient_id(@NonNull String patient_id) {
         this.patient_id = patient_id;
     }
 
@@ -323,11 +325,11 @@ public class Patient {
         this.national_id = national_id;
     }
 
-    public boolean isDeceased() {
+    public Integer getDeceased() {
         return deceased;
     }
 
-    public void setDeceased(boolean deceased) {
+    public void setDeceased(Integer deceased) {
         this.deceased = deceased;
     }
 

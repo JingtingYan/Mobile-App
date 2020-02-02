@@ -38,21 +38,25 @@ public class Response {
 
     // this is a foreign key
     //    REQUIRED
-    private String patient_id;
+    @NonNull
+    private String patient_id = "";
 
     // this is a foreign key
     //    REQUIRED
-    private int q_id;
+    @NonNull
+    private Integer q_id = 0;
 
     // this is a foreign key
     //    REQUIRED
-    private int ans_id;
+    @NonNull
+    private Integer ans_id = 0;
 
     private String text;
 
     // this is a foreign key
     //    REQUIRED
-    private int qnnaire_id;
+    @NonNull
+    private Integer qnnaire_id = 0;
 
     // date is in format "YYYY-MM-DD"
     //    REQUIRED
@@ -61,27 +65,30 @@ public class Response {
 
     /* getter and setter */
 
+    @NonNull
     public String getPatient_id() {
         return patient_id;
     }
 
-    public void setPatient_id(String patient_id) {
+    public void setPatient_id(@NonNull String patient_id) {
         this.patient_id = patient_id;
     }
 
-    public int getQ_id() {
+    @NonNull
+    public Integer getQ_id() {
         return q_id;
     }
 
-    public void setQ_id(int q_id) {
+    public void setQ_id(@NonNull Integer q_id) {
         this.q_id = q_id;
     }
 
-    public int getAns_id() {
+    @NonNull
+    public Integer getAns_id() {
         return ans_id;
     }
 
-    public void setAns_id(int ans_id) {
+    public void setAns_id(@NonNull Integer ans_id) {
         this.ans_id = ans_id;
     }
 
@@ -93,11 +100,12 @@ public class Response {
         this.text = text;
     }
 
-    public int getQnnaire_id() {
+    @NonNull
+    public Integer getQnnaire_id() {
         return qnnaire_id;
     }
 
-    public void setQnnaire_id(int qnnaire_id) {
+    public void setQnnaire_id(@NonNull Integer qnnaire_id) {
         this.qnnaire_id = qnnaire_id;
     }
 

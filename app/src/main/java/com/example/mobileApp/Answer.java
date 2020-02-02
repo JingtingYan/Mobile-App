@@ -19,23 +19,24 @@ public class Answer {
 
     @PrimaryKey(autoGenerate = true)
 //  REQUIRED
-    private int answer_id;
+    @NonNull private Integer answer_id = 0;
 
 //  REQUIRED
     private String answer_string;
 
     // this is a foreign key
 //  REQUIRED
-    private int qnnaire_id;
+    private Integer qnnaire_id;
 
 
     /* getter and setter */
 
-    public int getAnswer_id() {
+    @NonNull
+    public Integer getAnswer_id() {
         return answer_id;
     }
 
-    public void setAnswer_id(int answer_id) {
+    public void setAnswer_id(@NonNull Integer answer_id) {
         this.answer_id = answer_id;
     }
 
@@ -43,16 +44,15 @@ public class Answer {
         return answer_string;
     }
 
-    public void setAnswer_string(String answer_string)
-    {
+    public void setAnswer_string(String answer_string) {
         this.answer_string = answer_string;
     }
 
-    public int getQnnaire_id() {
+    public Integer getQnnaire_id() {
         return qnnaire_id;
     }
 
-    public void setQnnaire_id(int qnnaire_id) {
+    public void setQnnaire_id(Integer qnnaire_id) {
         this.qnnaire_id = qnnaire_id;
     }
 }

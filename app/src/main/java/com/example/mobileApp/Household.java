@@ -25,15 +25,16 @@ public class Household {
 
     @PrimaryKey
 //    REQUIRED
+    @NonNull
     private String household_id;
 
     // this is a foreign key
     //    REQUIRED
-    private int parent_loc_id;
+    private Integer parent_loc_id;
 
     // this is a foreign key
     //    REQUIRED
-    private int enum_id;
+    private Integer enum_id;
 
     // date is in format "YYYY-MM-DD"
     //    REQUIRED
@@ -50,7 +51,7 @@ public class Household {
 
     private String reason_refusal;
 
-    private int visit_num;
+    private Integer visit_num;
 
     //    REQUIRED
     private String key_informer;
@@ -108,30 +109,30 @@ public class Household {
     /* getter and setter */
 
 
+    @NonNull
     public String getHousehold_id() {
-        return this.household_id;
+        return household_id;
     }
 
-    public void setHousehold_id(String hh_id) {
-        this.household_id = hh_id;
+    public void setHousehold_id(@NonNull String household_id) {
+        this.household_id = household_id;
     }
 
-    public int getParent_loc_id() {
+    public Integer getParent_loc_id() {
         return parent_loc_id;
     }
 
-    public void setParent_loc_id(int parent_loc_id) {
+    public void setParent_loc_id(Integer parent_loc_id) {
         this.parent_loc_id = parent_loc_id;
     }
 
-    public int getEnum_id() {
+    public Integer getEnum_id() {
         return enum_id;
     }
 
-    public void setEnum_id(int enum_id) {
+    public void setEnum_id(Integer enum_id) {
         this.enum_id = enum_id;
     }
-
 
     public String getDate() {
         return date;
@@ -181,11 +182,11 @@ public class Household {
         this.reason_refusal = reason_refusal;
     }
 
-    public int getVisit_num() {
+    public Integer getVisit_num() {
         return visit_num;
     }
 
-    public void setVisit_num(int visit_num) {
+    public void setVisit_num(Integer visit_num) {
         this.visit_num = visit_num;
     }
 

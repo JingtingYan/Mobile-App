@@ -9,19 +9,21 @@ public class QuestionType {
 
     @PrimaryKey(autoGenerate = true)
     //    REQUIRED
-    private int question_type_id;
+    @NonNull
+    private Integer question_type_id = 0;
 
     //    REQUIRED
-    private String question_type;
+    private String question_type = "";
 
 
     /* getter and setter */
 
-    public int getQuestion_type_id() {
+    @NonNull
+    public Integer getQuestion_type_id() {
         return question_type_id;
     }
 
-    public void setQuestion_type_id(int question_type_id) {
+    public void setQuestion_type_id(@NonNull Integer question_type_id) {
         this.question_type_id = question_type_id;
     }
 

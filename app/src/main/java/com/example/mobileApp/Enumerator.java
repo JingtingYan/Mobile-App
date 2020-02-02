@@ -12,7 +12,8 @@ import java.time.LocalDate;
 public class Enumerator {
 
     @PrimaryKey(autoGenerate = true)
-    private int enumerator_id;
+    @NonNull
+    private Integer enumerator_id = 0;
 
     private String enum_prefix;
 
@@ -33,19 +34,20 @@ public class Enumerator {
 
     // set default value of active_flag to be false
 //    REQUIRED
-    private boolean active_flag = false;
+    private Integer active_flag = 0;
 
     private String qualifications;
 
 
     /* getter & setter */
 
-    public int getEnumerator_id() {
+    @NonNull
+    public Integer getEnumerator_id() {
         return enumerator_id;
     }
 
-    public void setEnumerator_id(int enum_id) {
-        this.enumerator_id = enum_id;
+    public void setEnumerator_id(@NonNull Integer enumerator_id) {
+        this.enumerator_id = enumerator_id;
     }
 
     public String getEnum_prefix() {
@@ -104,11 +106,11 @@ public class Enumerator {
         this.dob = dob;
     }
 
-    public boolean isActive_flag() {
+    public Integer getActive_flag() {
         return active_flag;
     }
 
-    public void setActive_flag(boolean active_flag) {
+    public void setActive_flag(Integer active_flag) {
         this.active_flag = active_flag;
     }
 

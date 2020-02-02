@@ -10,7 +10,8 @@ public class Questionnaire {
 
     @PrimaryKey(autoGenerate = true)
     //    REQUIRED
-    private int questionnaire_id;
+    @NonNull
+    private Integer questionnaire_id = 0;
 
     //    REQUIRED
     private String questionnaire_name;
@@ -18,16 +19,17 @@ public class Questionnaire {
     //    REQUIRED
     private String questionnaire_version;
 
-    private boolean active_flag = false;
+    private Integer active_flag = 0;
 
 
     /* getter and setter */
 
-    public int getQuestionnaire_id() {
+    @NonNull
+    public Integer getQuestionnaire_id() {
         return questionnaire_id;
     }
 
-    public void setQuestionnaire_id(int questionnaire_id) {
+    public void setQuestionnaire_id(@NonNull Integer questionnaire_id) {
         this.questionnaire_id = questionnaire_id;
     }
 
@@ -47,11 +49,11 @@ public class Questionnaire {
         this.questionnaire_version = questionnaire_version;
     }
 
-    public boolean isActive_flag() {
+    public Integer getActive_flag() {
         return active_flag;
     }
 
-    public void setActive_flag(boolean active_flag) {
+    public void setActive_flag(Integer active_flag) {
         this.active_flag = active_flag;
     }
 }
