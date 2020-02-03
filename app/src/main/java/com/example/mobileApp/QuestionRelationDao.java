@@ -24,7 +24,7 @@ public interface QuestionRelationDao
     int correctCount(int relID, int currQ, int currQnn);
 
 //    Used in andLogic and orLogic
-    @Query("SELECT COUNT(resp.q_id) FROM response AS resp " +
+    @Query("SELECT COUNT(resp.q_id) FROM responses AS resp " +
             "INNER JOIN question_relations AS qrel " +
             "ON resp.q_id = qrel.rel_q_id " +
             "AND resp.ans_id = qrel.rel_ans_id " +

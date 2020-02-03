@@ -12,14 +12,14 @@ public interface ResponseDao
     @Insert
     void insert(ResponseTable response);
 
-    @Query("DELETE FROM response WHERE response.patient_id = :patientID AND response.q_id = :questionID AND response.qnnaire_id = :qnnaireID")
+    @Query("DELETE FROM responses WHERE responses.patient_id = :patientID AND responses.q_id = :questionID AND responses.qnnaire_id = :qnnaireID")
     void deleteResponse(int patientID, int questionID, int qnnaireID);
 
 //    Used in "next" stored procedure
-    @Query("SELECT * FROM response WHERE response.patient_id = :patientID AND response.q_id = :currentQuestion AND response.qnnaire_id = :currentQnn")
+    @Query("SELECT * FROM responses WHERE responses.patient_id = :patientID AND responses.q_id = :currentQuestion AND responses.qnnaire_id = :currentQnn")
     List<ResponseTable> getResponse(int patientID, int currentQuestion, int currentQnn);
 
 
-    @Query("SELECT COUNT(*) FROM response WHERE response.patient_id = :patientID AND response.q_id = :currentQuestion AND response.qnnaire_id = :currentQnn")
+    @Query("SELECT COUNT(*) FROM responses WHERE responses.patient_id = :patientID AND responses.q_id = :currentQuestion AND responses.qnnaire_id = :currentQnn")
     int getResponseCount(int patientID, int currentQuestion, int currentQnn);
 }

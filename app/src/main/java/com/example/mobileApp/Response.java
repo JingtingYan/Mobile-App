@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class Response {
 
+    private Integer index;
     private String patientId;
     private Integer q_id;
     private Integer a_id;
@@ -11,13 +12,22 @@ public class Response {
     private String text;
     private LocalDate date;
 
-    public Response(String patientId, Integer q_id, Integer a_id, Integer qnnaire_id, String text, LocalDate date) {
+    public Response(Integer index, String patientId, Integer q_id, Integer a_id, Integer qnnaire_id, String text, LocalDate date) {
+        this.index = index;
         this.patientId = patientId;
         this.q_id = q_id;
         this.a_id = a_id;
         this.qnnaire_id = qnnaire_id;
         this.text = text;
         this.date = date;
+    }
+
+    public Integer getIndex() {
+        return index;
+    }
+
+    public void setIndex(Integer index) {
+        this.index = index;
     }
 
     public String getPatientId() {

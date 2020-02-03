@@ -1,19 +1,23 @@
 package com.example.mobileApp;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "patient_assessment_status", primaryKeys = {"patient_id", "qnnaire_id"})
+@Entity(tableName = "patient_assessment_status",
+        indices = {@Index(value = {"patient_id", "qnnaire_id"}, unique = true)})
 
 public class PatientAssessmentStatusTable {
 
     //    REQUIRED
     @NonNull
+    @PrimaryKey(autoGenerate = true)
+    private Integer index = 0;
+
     private String patient_id = "";
 
-    //    REQUIRED
-    @NonNull
     private String qnnaire_id = "";
 
     private String qnnaire_status;
@@ -28,11 +32,19 @@ public class PatientAssessmentStatusTable {
     /* getter and setter */
 
     @NonNull
+    public Integer getIndex() {
+        return index;
+    }
+
+    public void setIndex(@NonNull Integer index) {
+        this.index = index;
+    }
+
     public String getPatient_id() {
         return patient_id;
     }
 
-    public void setPatient_id(@NonNull String patient_id) {
+    public void setPatient_id(String patient_id) {
         this.patient_id = patient_id;
     }
 
