@@ -59,8 +59,8 @@ dependencies {
 
 
     // AppSpector -> NO-OP Artifact so that AppSpector SDK is not in our app's release APK
-//    debugImplementation "com.appspector:android-sdk:1.+"
-//    releaseImplementation "com.appspector:android-sdk-noop:1.+"
+    //    debugImplementation "com.appspector:android-sdk:1.+"
+    //    releaseImplementation "com.appspector:android-sdk-noop:1.+"
 
     // Stetho
     implementation 'com.facebook.stetho:stetho:1.5.1'
