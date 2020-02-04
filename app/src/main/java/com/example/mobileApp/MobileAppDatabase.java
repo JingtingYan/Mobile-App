@@ -7,6 +7,9 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 @Database(entities = {EnumeratorTable.class,
                       LocationTable.class,
                       HouseholdTable.class,
@@ -25,7 +28,7 @@ import androidx.room.TypeConverters;
                       CauseOfDiseaseTable.class,
                       AssistiveTechnologyTable.class},
           version = 1,
-          exportSchema = false)  // ??
+          exportSchema = false)  // ignore database migrations atm
 @TypeConverters({LocalDateTypeConverter.class})
 public abstract class MobileAppDatabase extends RoomDatabase {
 
@@ -49,15 +52,18 @@ public abstract class MobileAppDatabase extends RoomDatabase {
 
 
     // Singleton
-    private static MobileAppDatabase INSTANCE;
+    private static volatile MobileAppDatabase INSTANCE;
+    // run database operations asynchronously on a background thread
+    private static final int NUMBER_OF_THREADS = 4;
+    static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
     static MobileAppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (MobileAppDatabase.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), MobileAppDatabase.class, "app_database")
-                            //.allowMainThreadQueries()
-                            .build();
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                                                    MobileAppDatabase.class,
+                                                    "app_database").build();
                 }
             }
         }
