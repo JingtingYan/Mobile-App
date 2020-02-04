@@ -16,7 +16,9 @@ public class Repository
 
     public Repository(Context ctx)
     {
+        System.out.println("\n\nREPO: MAKING DATABASE\n\n");
         this.db = MobileAppDatabase.getDatabase(ctx);
+        System.out.println("REPO: DATABASE MADE!!\n\n");
         this.locationDao = db.locationDao();
     }
 
