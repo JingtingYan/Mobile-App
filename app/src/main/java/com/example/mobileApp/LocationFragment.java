@@ -4,6 +4,7 @@ package com.example.mobileApp;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,8 @@ public class LocationFragment extends Fragment {
     private Spinner countrySpinner, regionSpinner, clusterSpinner;
     private Button bnNext;
 
+    private LocationViewModel locationViewModel;
+
 
     public LocationFragment() {
         // Required empty public constructor
@@ -37,6 +40,8 @@ public class LocationFragment extends Fragment {
         countrySpinner = view.findViewById(R.id.spinner_select_country);
         regionSpinner = view.findViewById(R.id.spinner_select_region);
         clusterSpinner = view.findViewById(R.id.spinner_select_cluster);
+
+        locationViewModel = new ViewModelProvider(this).get(LocationViewModel.class);
 
         countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 

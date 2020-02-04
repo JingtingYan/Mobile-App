@@ -51,7 +51,7 @@ public abstract class MobileAppDatabase extends RoomDatabase {
     public abstract AssistiveTechnologyDao atDao();
 
 
-    // Singleton
+    /* Singleton */
     private static volatile MobileAppDatabase INSTANCE;
     // run database operations asynchronously on a background thread
     private static final int NUMBER_OF_THREADS = 4;
