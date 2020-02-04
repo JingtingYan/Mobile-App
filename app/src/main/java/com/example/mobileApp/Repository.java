@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,6 @@ public class Repository
         this.locationDao = db.locationDao();
     }
 
-//    Location Page Functions
     LiveData<List<Location>> getCountries()
     {
         List<Location> countries = new ArrayList<Location>();
