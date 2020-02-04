@@ -11,10 +11,10 @@ import static androidx.room.ForeignKey.CASCADE;
 @Entity(tableName = "locations",
         indices = {@Index("parent_location_id")},
         foreignKeys = {@ForeignKey(entity = LocationTable.class,
-                                    parentColumns = "location_id",
-                                    childColumns = "parent_location_id",
-                                    onDelete = CASCADE,
-                                    onUpdate = CASCADE)})
+                parentColumns = "location_id",
+                childColumns = "parent_location_id",
+                onDelete = CASCADE,
+                onUpdate = CASCADE)})
 public class LocationTable {
 
     @PrimaryKey(autoGenerate = true)
@@ -27,6 +27,11 @@ public class LocationTable {
     //    REQUIRED
     private Integer parent_location_id;
 
+
+    public LocationTable(String location_name, Integer parent_location_id) {
+        this.location_name = location_name;
+        this.parent_location_id = parent_location_id;
+    }
 
     /* getter and setter */
 

@@ -4,6 +4,8 @@ package com.example.mobileApp;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import java.util.List;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +25,8 @@ public class LocationFragment extends Fragment {
 
     private Spinner countrySpinner, regionSpinner, clusterSpinner;
     private Button bnNext;
+
+    private LocationViewModel locationViewModel;
 
 
     public LocationFragment() {
@@ -37,6 +43,15 @@ public class LocationFragment extends Fragment {
         countrySpinner = view.findViewById(R.id.spinner_select_country);
         regionSpinner = view.findViewById(R.id.spinner_select_region);
         clusterSpinner = view.findViewById(R.id.spinner_select_cluster);
+
+//        locationViewModel = new ViewModelProvider(this).get(LocationViewModel.class);
+
+//        locationViewModel.getSpinnerCountries().observe(getViewLifecycleOwner(), new Observer<List<Location>>() {
+//            @Override
+//            public void onChanged(List<Location> locations) {
+        // Update the cached copy of the words in the adapter.
+//            }
+//        });
 
         countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
