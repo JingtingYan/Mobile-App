@@ -6,7 +6,7 @@ import androidx.room.Room;
 
 import android.os.Bundle;
 
-import com.appspector.sdk.AppSpector;
+import com.facebook.stetho.Stetho;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Stetho.initializeWithDefaults(this);
         setContentView(R.layout.activity_main);
 
         fragmentManager = getSupportFragmentManager();
@@ -26,16 +27,15 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            fragmentManager.beginTransaction().add(R.id.fragment_container, new LocationFragment()).commit();
+            fragmentManager.beginTransaction().add(R.id.fragment_container, new LoginFragment()).commit();
         }
 
 
 //      To start up AppSpector Connection
-        AppSpector
-                .build(this)
-                .withDefaultMonitors()
-                .run("android_Njc0ZGExMjUtMmFhMy00ZTg2LTkxN2YtNGVhMDVmZDM3OWZh");
-
+//        AppSpector
+//                .build(this)
+//                .withDefaultMonitors()
+//                .run("android_Njc0ZGExMjUtMmFhMy00ZTg2LTkxN2YtNGVhMDVmZDM3OWZh");
 
     }
 
