@@ -68,5 +68,10 @@
         <item>Cluster S3</item>
     </string-array>
 
+    <!-- Login Fragment -->
+    <string name="login_instruction">User login</string>
+    <string name="login_username_hint">Username</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_bn">LOGIN</string>
 
 </resources>

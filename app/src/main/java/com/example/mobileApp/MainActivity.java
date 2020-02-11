@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            fragmentManager.beginTransaction().add(R.id.fragment_container, new LocationFragment()).commit();
+            fragmentManager.beginTransaction().add(R.id.fragment_container, new LoginFragment()).commit();
         }
 
 
