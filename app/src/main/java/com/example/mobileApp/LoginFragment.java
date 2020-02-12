@@ -10,7 +10,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -20,6 +33,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
     private EditText txtUsername, txtPassword;
     private Button bnLogin;
+    private TextView result;  // debug
+    private static final String postURL = "http://10.0.2.2:8000";
 
 
     public LoginFragment() {
@@ -36,6 +51,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         txtUsername = view.findViewById(R.id.txt_login_username);
         txtPassword = view.findViewById(R.id.txt_login_password);
         bnLogin = view.findViewById(R.id.bn_login);
+        result = view.findViewById(R.id.login_result);  // debug
 
         bnLogin.setOnClickListener(this);
 
@@ -47,13 +63,40 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         String username = txtUsername.getText().toString();
         String password = txtPassword.getText().toString();
 
-        // debug
-        Toast.makeText(getActivity(), username + "\n" + password, Toast.LENGTH_SHORT).show();
+        /* POST json object (username & password) to server */
+        JSONObject object = new JSONObject();
+        try {
+            object.put("username", username);
+            object.put("password", password);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
+        String url = postURL;
+        JsonObjectRequest jsonPostRequest = new JsonObjectRequest(Request.Method.POST, url, object,
+           new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                result.setText("POST response: " + response.toString());
+                //Toast.makeText(getActivity(), "POST response: " + response.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                result.setText(String.valueOf(error));
+                //Toast.makeText(getActivity(), String.valueOf(error), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        MySingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(jsonPostRequest);
+
+        /*
         MainActivity.fragmentManager.beginTransaction()
                                     .replace(R.id.fragment_container, new LocationFragment())
                                     .addToBackStack(null)
                                     .commit();
+         */
 
         // clear previous input
         txtUsername.setText("");

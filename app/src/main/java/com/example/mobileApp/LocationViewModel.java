@@ -86,9 +86,9 @@ public class LocationViewModel extends AndroidViewModel {
         this.spinnerClusters = spinnerClusters;
     }
 
+    /*
     LiveData<List<Location>> getCountries() {
         return countries;
     }
-
-
+     */
 }

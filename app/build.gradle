@@ -64,4 +64,7 @@ dependencies {
 
     // Stetho
     implementation 'com.facebook.stetho:stetho:1.5.1'
+
+    // Volley
+    implementation 'com.android.volley:volley:1.1.1'
 }
