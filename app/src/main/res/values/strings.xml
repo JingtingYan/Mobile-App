@@ -1,77 +1,30 @@
 <resources>
+
     <string name="app_name">Mobile App</string>
 
-    <!-- LocationTable Fragment -->
+    <!-- Location Fragment -->
     <string name="selection_location_instruction">Select a Project\'s country, region and cluster</string>
     <string name="project_country">Project Country: </string>
     <string name="project_region">Project Region: </string>
     <string name="project_cluster">Project Cluster: </string>
+    <string name="project_country_prompt">Select a country…</string>
+    <string name="project_region_prompt">Select a region…</string>
+    <string name="project_cluster_prompt">Select a cluster…</string>
     <string name="bn_location_next">Next</string>
-
-    <!-- HARDCODING: location data -->
-    <string-array name="countries">
-        <item>Indonesia</item>
-        <item>India</item>
-        <item>Nigeria</item>
-    </string-array>
-
-    <string-array name="indonesia_regions">
-        <item>Java</item>
-    </string-array>
-
-    <string-array name="india_regions">
-        <item>Srinigar</item>
-        <item>Chandigargh</item>
-        <item>Simla</item>
-    </string-array>
-
-    <string-array name="nigeria_regions">
-        <item>Ado</item>
-        <item>Bauchi</item>
-        <item>Sokoto</item>
-    </string-array>
-
-    <string-array name="indonesia_java_clusters">
-        <item>Cluster A1</item>
-        <item>Cluster A2</item>
-    </string-array>
-
-    <string-array name="india_strinigar_clusters">
-        <item>Cluster A1</item>
-        <item>Cluster B1</item>
-        <item>Cluster B2</item>
-    </string-array>
-
-    <string-array name="india_chandigargh_clusters">
-        <item>Cluster A1</item>
-        <item>Cluster B1</item>
-    </string-array>
-
-    <string-array name="india_simla_cluster">
-        <item>Cluster A1</item>
-    </string-array>
-
-    <string-array name="nigeria_ado_cluster">
-        <item>Cluster A1</item>
-        <item>Cluster B1</item>
-        <item>Cluster C1</item>
-    </string-array>
-
-    <string-array name="nigeria_bauchi_cluster">
-        <item>Cluster D1</item>
-        <item>Cluster D2</item>
-    </string-array>
-
-    <string-array name="nigeria_sokoto_cluster">
-        <item>Cluster S1</item>
-        <item>Cluster S2</item>
-        <item>Cluster S3</item>
-    </string-array>
+    <string name="bn_location_load">Load</string>
 
     <!-- Login Fragment -->
     <string name="login_instruction">User login</string>
     <string name="login_username_hint">Username</string>
     <string name="login_password_hint">Password</string>
     <string name="login_bn">LOGIN</string>
+
+    <!-- DataSync Fragment -->
+    <string name="textView5">Data Synchronisation</string>
+    <string name="bn_download_data">Download Data</string>
+    <string name="bn_upload_data">Upload Data</string>
+    <string name="bn_delete_data">Delete Data</string>
+    <string name="bn_data_sync_next">Next</string>
+
 
 </resources>

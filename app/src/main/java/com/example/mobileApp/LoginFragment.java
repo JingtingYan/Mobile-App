@@ -10,20 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.mobileApp.utilities.Constants;
+import com.example.mobileApp.utilities.MySingleton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
+import static com.example.mobileApp.utilities.Constants.LOGIN_URL;
 
 
 /**
@@ -33,14 +30,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
     private EditText txtUsername, txtPassword;
     private Button bnLogin;
-    private TextView result;  // debug
-    private static final String postURL = "http://10.0.2.2:8000";
-
 
     public LoginFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,7 +44,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         txtUsername = view.findViewById(R.id.txt_login_username);
         txtPassword = view.findViewById(R.id.txt_login_password);
         bnLogin = view.findViewById(R.id.bn_login);
-        result = view.findViewById(R.id.login_result);  // debug
 
         bnLogin.setOnClickListener(this);
 
@@ -72,34 +64,24 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
             e.printStackTrace();
         }
 
-        String url = postURL;
-        JsonObjectRequest jsonPostRequest = new JsonObjectRequest(Request.Method.POST, url, object,
-           new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                result.setText("POST response: " + response.toString());
-                //Toast.makeText(getActivity(), "POST response: " + response.toString(), Toast.LENGTH_SHORT).show();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                result.setText(String.valueOf(error));
-                //Toast.makeText(getActivity(), String.valueOf(error), Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        JsonObjectRequest jsonPostRequest = new JsonObjectRequest(Request.Method.POST, LOGIN_URL, object,
+                response -> {
+                    try {
+                        Constants.setTOKEN(response.getString("token"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    // successfully logged in - go to next page
+                    MainActivity.fragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, new DataSyncFragment())
+                            .addToBackStack(null)
+                            .commit();
+                    // clear previous input
+                    txtUsername.setText("");
+                    txtPassword.setText("");
+                }, error ->
+                    Toast.makeText(getActivity(), "Invalid username or password...", Toast.LENGTH_LONG).show());
 
         MySingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(jsonPostRequest);
-
-        /*
-        MainActivity.fragmentManager.beginTransaction()
-                                    .replace(R.id.fragment_container, new LocationFragment())
-                                    .addToBackStack(null)
-                                    .commit();
-         */
-
-        // clear previous input
-        txtUsername.setText("");
-        txtPassword.setText("");
     }
 }

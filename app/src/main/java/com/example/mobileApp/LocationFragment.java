@@ -1,10 +1,11 @@
 package com.example.mobileApp;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
@@ -14,20 +15,29 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.toolbox.StringRequest;
+import com.example.mobileApp.datatype.Location;
+import com.example.mobileApp.utilities.MySingleton;
+import com.example.mobileApp.viewmodel.LocationViewModel;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LocationFragment extends Fragment {
+public class LocationFragment extends Fragment implements View.OnClickListener{
 
     private Spinner countrySpinner, regionSpinner, clusterSpinner;
     private Button bnNext;
 
     private LocationViewModel locationViewModel;
-
 
     public LocationFragment() {
         // Required empty public constructor
@@ -43,38 +53,22 @@ public class LocationFragment extends Fragment {
         countrySpinner = view.findViewById(R.id.spinner_select_country);
         regionSpinner = view.findViewById(R.id.spinner_select_region);
         clusterSpinner = view.findViewById(R.id.spinner_select_cluster);
+        bnNext = view.findViewById(R.id.bn_location_next);
 
-//        locationViewModel = new ViewModelProvider(this).get(LocationViewModel.class);
+        bnNext.setOnClickListener(this);
 
-//        locationViewModel.getSpinnerCountries().observe(getViewLifecycleOwner(), new Observer<List<Location>>() {
-//            @Override
-//            public void onChanged(List<Location> locations) {
-        // Update the cached copy of the words in the adapter.
-//            }
-//        });
+        initViewModel();
+
+        initCountrySpinner();
 
         countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                String selectedCountry = parent.getItemAtPosition(position).toString();
-//                switch (selectedCountry){
-//                    case "Indonesia":
-//                        regionSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
-//                                android.R.layout.simple_spinner_dropdown_item,
-//                                getResources().getStringArray(R.array.indonesia_regions)));
-//                        break;
-//                    case "India":
-//                        regionSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
-//                                android.R.layout.simple_spinner_dropdown_item,
-//                                getResources().getStringArray(R.array.india_regions)));
-//                        break;
-//                    case "Nigeria":
-//                        regionSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
-//                                android.R.layout.simple_spinner_dropdown_item,
-//                                getResources().getStringArray(R.array.nigeria_regions)));
-//                        break;
-//                }
+                Location selectedCountry = (Location) parent.getItemAtPosition(position);
+                if (position > 0) {
+                    Integer countryID = selectedCountry.getLocationID();
+                    locationViewModel.loadRegionSpinner(countryID);
+                }
             }
 
             @Override
@@ -84,46 +78,13 @@ public class LocationFragment extends Fragment {
         });
 
         regionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                String selectedRegion = parent.getItemAtPosition(position).toString();
-//                switch (selectedRegion){
-//                    case "Java":
-//                        clusterSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
-//                                android.R.layout.simple_spinner_dropdown_item,
-//                                getResources().getStringArray(R.array.indonesia_java_clusters)));
-//                        break;
-//                    case "Srinigar":
-//                        clusterSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
-//                                android.R.layout.simple_spinner_dropdown_item,
-//                                getResources().getStringArray(R.array.india_strinigar_clusters)));
-//                        break;
-//                    case "Chandigargh":
-//                        clusterSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
-//                                android.R.layout.simple_spinner_dropdown_item,
-//                                getResources().getStringArray(R.array.india_chandigargh_clusters)));
-//                        break;
-//                    case "Simla":
-//                        clusterSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
-//                                android.R.layout.simple_spinner_dropdown_item,
-//                                getResources().getStringArray(R.array.india_simla_cluster)));
-//                    case "Ado":
-//                        clusterSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
-//                                android.R.layout.simple_spinner_dropdown_item,
-//                                getResources().getStringArray(R.array.nigeria_ado_cluster)));
-//                        break;
-//                    case "Bauchi":
-//                        clusterSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
-//                                android.R.layout.simple_spinner_dropdown_item,
-//                                getResources().getStringArray(R.array.nigeria_bauchi_cluster)));
-//                        break;
-//                    case "Sokoto":
-//                        clusterSpinner.setAdapter(new ArrayAdapter<String>(parent.getContext(),
-//                                android.R.layout.simple_spinner_dropdown_item,
-//                                getResources().getStringArray(R.array.nigeria_sokoto_cluster)));
-//                        break;
-//                }
+                Location selectedRegion = (Location) parent.getItemAtPosition(position);
+                if (position > 0) {
+                    Integer regionID = selectedRegion.getLocationID();
+                    locationViewModel.loadClusterSpinner(regionID);
+                }
             }
 
             @Override
@@ -135,7 +96,10 @@ public class LocationFragment extends Fragment {
         clusterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                Location selectedCluster = (Location) parent.getItemAtPosition(position);
+                if (position > 0) {
+                    Integer clusterID = selectedCluster.getLocationID();
+                }
             }
 
             @Override
@@ -147,4 +111,96 @@ public class LocationFragment extends Fragment {
         return view;
     }
 
+    private void initViewModel() {
+
+        locationViewModel = new ViewModelProvider(this).get(LocationViewModel.class);
+
+        locationViewModel.spinnerRegions.observe(getViewLifecycleOwner(), this::updateRegionSpinner);
+
+        locationViewModel.spinnerClusters.observe(getViewLifecycleOwner(), this::updateClusterSpinner);
+    }
+
+    private void initCountrySpinner() {
+        // display all countries in countrySpinner
+        ArrayAdapter<Location> countryAdapter = new ArrayAdapter<Location>(
+                getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, locationViewModel.loadCountrySpinner()) {
+
+            @Override
+            public boolean isEnabled(int position){
+                return position != 0;   // Disable the first item (hint) from Spinner
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView textView = (TextView) view;
+                if(position == 0){
+                    textView.setTextColor(Color.GRAY);    // Set the text color of hint to be gray
+                } else {
+                    textView.setTextColor(Color.BLACK);
+                }
+                return view;
+            }
+        };
+
+        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        countrySpinner.setAdapter(countryAdapter);
+    }
+
+    private void updateRegionSpinner(List<Location> locations) {
+        ArrayAdapter<Location> regionAdapter = new ArrayAdapter<Location>(
+                getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, locations) {
+
+            @Override
+            public boolean isEnabled(int position){
+                return position != 0;   // Disable the first item (hint) from Spinner
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView textView = (TextView) view;
+                if(position == 0){
+                    textView.setTextColor(Color.GRAY);    // Set the text color of hint to be gray
+                } else {
+                    textView.setTextColor(Color.BLACK);
+                }
+                return view;
+            }
+        };
+
+        regionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        regionSpinner.setAdapter(regionAdapter);
+    }
+
+    private void updateClusterSpinner(List<Location> locations) {
+        ArrayAdapter<Location> clusterAdapter = new ArrayAdapter<Location>(
+                getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, locations) {
+
+            @Override
+            public boolean isEnabled(int position){
+                return position != 0;   // Disable the first item (hint) from Spinner
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView textView = (TextView) view;
+                if(position == 0){
+                    textView.setTextColor(Color.GRAY);    // Set the text color of hint to be gray
+                } else {
+                    textView.setTextColor(Color.BLACK);
+                }
+                return view;
+            }
+        };
+
+        clusterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        clusterSpinner.setAdapter(clusterAdapter);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
 }

@@ -2,7 +2,6 @@ package com.example.mobileApp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.room.Room;
 
 import android.os.Bundle;
 
@@ -11,12 +10,11 @@ import com.facebook.stetho.Stetho;
 public class MainActivity extends AppCompatActivity {
 
     public static FragmentManager fragmentManager;
-    public static MobileAppDatabase mobileAppDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Stetho.initializeWithDefaults(this);
+        Stetho.initializeWithDefaults(this);    // debugging
         setContentView(R.layout.activity_main);
 
         fragmentManager = getSupportFragmentManager();
@@ -29,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
             fragmentManager.beginTransaction().add(R.id.fragment_container, new LoginFragment()).commit();
         }
+
 
 
 //      To start up AppSpector Connection
