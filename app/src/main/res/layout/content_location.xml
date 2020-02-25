@@ -5,18 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2C8E918A"
-    tools:context=".LocationFragment">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".LocationActivity"
+    tools:showIn="@layout/activity_location">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:gravity="center"
         android:text="@string/selection_location_instruction"
         android:textColor="#090808"

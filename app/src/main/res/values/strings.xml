@@ -3,6 +3,7 @@
     <string name="app_name">Mobile App</string>
 
     <!-- Location Fragment -->
+    <string name="title_activity_location">Location Selection</string>
     <string name="selection_location_instruction">Select a Project\'s country, region and cluster</string>
     <string name="project_country">Project Country: </string>
     <string name="project_region">Project Region: </string>
@@ -20,7 +21,7 @@
     <string name="login_bn">LOGIN</string>
 
     <!-- DataSync Fragment -->
-    <string name="textView5">Data Synchronisation</string>
+    <string name="title_activity_data_sync">Data Synchronisation</string>
     <string name="bn_download_data">Download Data</string>
     <string name="bn_upload_data">Upload Data</string>
     <string name="bn_delete_data">Delete Data</string>
