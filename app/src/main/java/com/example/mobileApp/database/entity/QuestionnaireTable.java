@@ -8,10 +8,10 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "questionnaires", indices={@Index("questionnaire_id")})
 public class QuestionnaireTable {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     //    REQUIRED
     @NonNull
-    private Integer questionnaire_id = 0;
+    private Integer questionnaire_id;
 
     //    REQUIRED
     private String questionnaire_name;
@@ -20,6 +20,13 @@ public class QuestionnaireTable {
     private String questionnaire_version;
 
     private Integer active_flag = 0;
+
+
+    public QuestionnaireTable(@NonNull Integer questionnaire_id, String questionnaire_name, String questionnaire_version) {
+        this.questionnaire_id = questionnaire_id;
+        this.questionnaire_name = questionnaire_name;
+        this.questionnaire_version = questionnaire_version;
+    }
 
 
     /* getter and setter */

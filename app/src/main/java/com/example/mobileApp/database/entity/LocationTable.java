@@ -5,8 +5,6 @@ import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-import static androidx.room.ForeignKey.CASCADE;
-
 @Entity(tableName = "locations",
         indices = {@Index("parent_location_id")})
 public class LocationTable {

@@ -1,8 +1,11 @@
 package com.example.mobileApp.database.dao;
 
 import androidx.room.Dao;
-import androidx.room.Ignore;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+
+import com.example.mobileApp.database.entity.QuestionRelationTable;
 
 import java.util.List;
 
@@ -33,5 +36,9 @@ public interface QuestionRelationDao
             "AND resp.qnnaire_id = :currQnn")
     int responseCount(int patientID, int checkQuestion, int currQnn);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAll(List<QuestionRelationTable> questionRelations);
 
+    @Query("DELETE FROM question_relations")
+    void deleteAll();
 }

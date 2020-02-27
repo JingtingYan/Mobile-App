@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity{
         JsonObjectRequest jsonPostRequest = new JsonObjectRequest(Request.Method.POST, LOGIN_URL, object,
                 response -> {
                     try {
-                        Constants.setTOKEN(response.getString("token"));
+                        Constants.setToken(response.getString("token"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

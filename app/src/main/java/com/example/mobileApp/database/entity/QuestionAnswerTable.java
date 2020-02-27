@@ -2,49 +2,36 @@ package com.example.mobileApp.database.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
-
-import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "questions_and_answers",
         indices={@Index(value = {"ans_id", "q_id", "qnnaire_id"}, unique = true),
                  @Index("q_id"),
-                 @Index("qnnaire_id")},
-        foreignKeys = {@ForeignKey(entity = QuestionTable.class,
-                                   parentColumns = "question_id",
-                                   childColumns = "q_id",
-                                   onUpdate = CASCADE,
-                                   onDelete = CASCADE),
-                       @ForeignKey(entity = AnswerTable.class,
-                                   parentColumns = "answer_id",
-                                   childColumns = "ans_id",
-                                   onUpdate = CASCADE,
-                                   onDelete = CASCADE),
-                       @ForeignKey(entity = QuestionnaireTable.class,
-                                   parentColumns = "questionnaire_id",
-                                   childColumns = "qnnaire_id",
-                                   onUpdate = CASCADE,
-                                   onDelete = CASCADE)})
+                 @Index("qnnaire_id")})
 public class QuestionAnswerTable {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @NonNull
     //    REQUIRED
-    private Integer index;
+    private Integer index;  // remove auto-generate
 
-    // this is a foreign key
     //    REQUIRED
-    private Integer q_id = 0;
+    private Integer q_id;   // remove default = 0
 
-    // this is a foreign key
     //    REQUIRED
-    private Integer ans_id = 0;
+    private Integer ans_id; // remove default = 0
 
-    // this is a foreign key
     //    REQUIRED
-    private Integer qnnaire_id = 0;
+    private Integer qnnaire_id; // remove default = 0
+
+
+    public QuestionAnswerTable(@NonNull Integer index, Integer q_id, Integer ans_id, Integer qnnaire_id) {
+        this.index = index;
+        this.q_id = q_id;
+        this.ans_id = ans_id;
+        this.qnnaire_id = qnnaire_id;
+    }
 
 
     /* getter and setter */

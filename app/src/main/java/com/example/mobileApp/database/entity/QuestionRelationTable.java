@@ -13,57 +13,37 @@ import static androidx.room.ForeignKey.CASCADE;
                    @Index("q_id"),
                    @Index("rel_q_id"),
                    @Index("rel_ans_id"),
-                   @Index("qnnaire_id")},
-        foreignKeys = {@ForeignKey(entity = LogicTable.class,
-                                   parentColumns = "rel_id",
-                                   childColumns = "rel_id",
-                                   onUpdate = CASCADE,
-                                   onDelete = CASCADE),
-                       @ForeignKey(entity = QuestionTable.class,
-                                   parentColumns = "question_id",
-                                   childColumns = "q_id",
-                                   onUpdate = CASCADE,
-                                   onDelete = CASCADE),
-                       @ForeignKey(entity = QuestionTable.class,
-                                   parentColumns = "question_id",
-                                   childColumns = "rel_q_id",
-                                   onUpdate = CASCADE,
-                                   onDelete = CASCADE),
-                       @ForeignKey(entity = AnswerTable.class,
-                                   parentColumns = "answer_id",
-                                   childColumns = "rel_ans_id",
-                                   onUpdate = CASCADE,
-                                   onDelete = CASCADE),
-                       @ForeignKey(entity = QuestionnaireTable.class,
-                                   parentColumns = "questionnaire_id",
-                                   childColumns = "qnnaire_id",
-                                   onUpdate = CASCADE,
-                                   onDelete = CASCADE)})
+                   @Index("qnnaire_id")})
 public class QuestionRelationTable {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @NonNull
-    private Integer index = 0;
+    private Integer index;  // remove auto-generate
 
-    // this is a foreign key
     //    REQUIRED
-    private Integer rel_id = 0;
+    private Integer rel_id; // remove default = 0
 
-    // this is a foreign key
     //    REQUIRED
-    private Integer q_id = 0;
+    private Integer q_id;   // remove default = 0
 
-    // this is a foreign key
     //    REQUIRED
-    private Integer rel_q_id = 0;
+    private Integer rel_q_id;   // remove default = 0
 
-    // this is a foreign key
     //    REQUIRED
-    private Integer rel_ans_id = 0;
+    private Integer rel_ans_id; // remove default = 0
 
-    // this is a foreign key
     //    REQUIRED
-    private Integer qnnaire_id = 0;
+    private Integer qnnaire_id; // remove default = 0
+
+
+    public QuestionRelationTable(@NonNull Integer index, Integer rel_id, Integer q_id, Integer rel_q_id, Integer rel_ans_id, Integer qnnaire_id) {
+        this.index = index;
+        this.rel_id = rel_id;
+        this.q_id = q_id;
+        this.rel_q_id = rel_q_id;
+        this.rel_ans_id = rel_ans_id;
+        this.qnnaire_id = qnnaire_id;
+    }
 
 
     /* getter and setter */

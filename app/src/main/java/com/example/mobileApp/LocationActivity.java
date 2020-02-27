@@ -1,9 +1,11 @@
 package com.example.mobileApp;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import com.example.mobileApp.datatype.Location;
+import com.example.mobileApp.utilities.Constants;
 import com.example.mobileApp.viewmodel.LocationViewModel;
 
 import androidx.annotation.NonNull;
@@ -34,6 +36,7 @@ public class LocationActivity extends AppCompatActivity {
     @BindView(R.id.bn_location_next) Button bnNext;
 
     private LocationViewModel locationViewModel;
+    private static String country, region, cluster;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +145,7 @@ public class LocationActivity extends AppCompatActivity {
         Location selectedCountry = (Location) spinner.getItemAtPosition(position);
         if (position > 0) {
             Integer countryID = selectedCountry.getLocationID();
+            country = selectedCountry.getLocationName();
             locationViewModel.loadRegionSpinner(countryID);
         }
     }
@@ -150,6 +154,7 @@ public class LocationActivity extends AppCompatActivity {
         Location selectedRegion = (Location) spinner.getItemAtPosition(position);
         if (position > 0) {
             Integer regionID = selectedRegion.getLocationID();
+            region = selectedRegion.getLocationName();
             locationViewModel.loadClusterSpinner(regionID);
         }
     }
@@ -157,12 +162,17 @@ public class LocationActivity extends AppCompatActivity {
     @OnItemSelected(R.id.spinner_select_cluster) void onClusterSelected(Spinner spinner, int position) {
         Location selectedCluster = (Location) spinner.getItemAtPosition(position);
         if (position > 0) {
-            Integer clusterID = selectedCluster.getLocationID();
+            //Integer clusterID = selectedCluster.getLocationID();
+            cluster = selectedCluster.getLocationName();
         }
     }
 
     @OnClick(R.id.bn_location_next) void onClick() {
+        Constants.setCountry(country);
+        Constants.setRegion(region);
+        Constants.setCluster(cluster);
 
+        Intent intent = new Intent(this, HouseholdMainActivity.class);
+        startActivity(intent);
     }
-
 }

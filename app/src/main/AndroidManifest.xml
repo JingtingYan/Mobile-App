@@ -15,9 +15,13 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".HouseholdMainActivity"
+            android:label="@string/title_activity_household_home"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".DataSyncActivity"
             android:label="@string/title_activity_data_sync"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LocationActivity"
             android:label="@string/title_activity_location"
