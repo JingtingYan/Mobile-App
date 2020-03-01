@@ -6,13 +6,7 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 
-@Entity(tableName = "logic",
-        indices = { @Index(value = "sequence_num", unique = true),
-                    @Index(value = "rel_id", unique = true),
-                    @Index(value = {"q_id", "qnnaire_id"}),
-                    @Index("rel_ans_id"),
-                    @Index("next_q_id"),
-                    @Index("qnnaire_id")})
+@Entity(tableName = "logic")    // remove indices
 public class LogicTable {
 
     @PrimaryKey

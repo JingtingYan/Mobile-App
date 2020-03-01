@@ -9,18 +9,18 @@ public class Question {
     private String questionString;
     private String questionInstruction;
     private Integer questionType;
-    private Integer ansMin;
-    private Integer ansMax;
+    //private Integer ansMin;
+    //private Integer ansMax;
     private List<Answer> answers;
     private String questionMedia;
 
-    public Question(Integer questionID, String questionString, String questionInstruction, Integer questionType, Integer ansMin, Integer ansMax, List<Answer> answers, String questionMedia) {
+    public Question(Integer questionID, String questionString, String questionInstruction, Integer questionType, List<Answer> answers, String questionMedia) {
         this.questionID = questionID;
         this.questionString = questionString;
         this.questionInstruction = questionInstruction;
         this.questionType = questionType;
-        this.ansMin = ansMin;
-        this.ansMax = ansMax;
+        //this.ansMin = ansMin;
+        //this.ansMax = ansMax;
         this.answers = answers;
         this.questionMedia = questionMedia;
     }
@@ -39,14 +39,6 @@ public class Question {
 
     public Integer getQuestionType() {
         return questionType;
-    }
-
-    public Integer getAnsMin() {
-        return ansMin;
-    }
-
-    public Integer getAnsMax() {
-        return ansMax;
     }
 
     public List<Answer> getAnswers() {

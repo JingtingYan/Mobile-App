@@ -2,11 +2,19 @@ package com.example.mobileApp.utilities;
 
 public class Constants {
 
-    /* Shared data that will be used throughout the App */
+    /* Some attributes that will be shared throughout the App (multiple Activities & Fragments) */
+    // API authentication
     private static String token;
+    // location-related data
     private static String country;
     private static String region;
     private static String cluster;
+    // questionnaire-related data
+    private static Integer currentQuestionnaireID;
+    private static String HouseholdRosterQuestionnaireStartDate;
+    // patient-related data
+    private static String currentPatientID;
+
 
     public static String getToken() {
         return token;
@@ -40,6 +48,30 @@ public class Constants {
         Constants.cluster = cluster;
     }
 
+    public static Integer getCurrentQuestionnaireID() {
+        return currentQuestionnaireID;
+    }
+
+    public static void setCurrentQuestionnaireID(Integer currentQuestionnaireID) {
+        Constants.currentQuestionnaireID = currentQuestionnaireID;
+    }
+
+    public static String getCurrentPatientID() {
+        return currentPatientID;
+    }
+
+    public static void setCurrentPatientID(String currentPatientID) {
+        Constants.currentPatientID = currentPatientID;
+    }
+
+    public static String getHouseholdRosterQuestionnaireStartDate() {
+        return HouseholdRosterQuestionnaireStartDate;
+    }
+
+    public static void setHouseholdRosterQuestionnaireStartDate(String householdRosterQuestionnaireStartDate) {
+        HouseholdRosterQuestionnaireStartDate = householdRosterQuestionnaireStartDate;
+    }
+
 
     /* Other constants */
     public static final String LOGIN_URL = "http://10.0.2.2:8000/tables/login/";
@@ -50,4 +82,6 @@ public class Constants {
     public static final String GET_QA_URL = "http://10.0.2.2:8000/tables/QA/";
     public static final String GET_LOGIC_URL = "http://10.0.2.2:8000/tables/Logic/";
     public static final String GET_QUESTION_RELATION_URL = "http://10.0.2.2:8000/tables/QRel/";
+
+    public static final Integer HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID = 2;
 }

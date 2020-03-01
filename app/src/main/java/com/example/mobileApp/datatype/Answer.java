@@ -1,5 +1,7 @@
 package com.example.mobileApp.datatype;
 
+import javax.annotation.Nonnull;
+
 public class Answer {
 
     private Integer answerID;
@@ -15,6 +17,14 @@ public class Answer {
     }
 
     public String getAnswerString() {
+        return answerString;
+    }
+
+    // Override the toString() method because the ArrayAdapter will display
+    // the toString of the given Answer object.
+    @Nonnull
+    @Override
+    public String toString() {
         return answerString;
     }
 }

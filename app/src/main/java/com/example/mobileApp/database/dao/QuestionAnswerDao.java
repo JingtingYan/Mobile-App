@@ -12,6 +12,12 @@ import java.util.List;
 @Dao
 public interface QuestionAnswerDao {
 
+    // get id for each answer choice for a question
+    @Query("SELECT DISTINCT ans_id FROM questions_and_answers AS qa " +
+           "WHERE qa.q_id = :qnID " +
+           "AND qa.qnnaire_id = :qnnID")
+    List<Integer> getAllAnsID(int qnID, int qnnID);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<QuestionAnswerTable> qas);
 

@@ -4,74 +4,40 @@ import java.time.LocalDate;
 
 public class Response {
 
-    private Integer index;
-    private String patientId;
-    private Integer q_id;
-    private Integer a_id;
-    private Integer qnnaire_id;
-    private String text;
+    private String patientID;
+    private Integer qnID;
+    private Integer ansID;
+    private Integer qnnID;
+    private String ansText;
     private LocalDate date;
 
-    public Response(Integer index, String patientId, Integer q_id, Integer a_id, Integer qnnaire_id, String text, LocalDate date) {
-        this.index = index;
-        this.patientId = patientId;
-        this.q_id = q_id;
-        this.a_id = a_id;
-        this.qnnaire_id = qnnaire_id;
-        this.text = text;
+    public Response(String patientID, Integer qnID, Integer ansID, Integer qnnID, String ansText, LocalDate date) {
+        this.patientID = patientID;
+        this.qnID = qnID;
+        this.ansID = ansID;
+        this.qnnID = qnnID;
+        this.ansText = ansText;
         this.date = date;
     }
 
-    public Integer getIndex() {
-        return index;
+    public void setPatientID(String patientID) {
+        this.patientID = patientID;
     }
 
-    public void setIndex(Integer index) {
-        this.index = index;
+    public void setQnID(Integer qnID) {
+        this.qnID = qnID;
     }
 
-    public String getPatientId() {
-        return patientId;
+    public void setAnsID(Integer ansID) {
+        this.ansID = ansID;
     }
 
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
+    public void setQnnID(Integer qnnID) {
+        this.qnnID = qnnID;
     }
 
-    public Integer getQ_id() {
-        return q_id;
-    }
-
-    public void setQ_id(Integer q_id) {
-        this.q_id = q_id;
-    }
-
-    public Integer getA_id() {
-        return a_id;
-    }
-
-    public void setA_id(Integer a_id) {
-        this.a_id = a_id;
-    }
-
-    public Integer getQnnaire_id() {
-        return qnnaire_id;
-    }
-
-    public void setQnnaire_id(Integer qnnaire_id) {
-        this.qnnaire_id = qnnaire_id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public LocalDate getDate() {
-        return date;
+    public void setAnsText(String ansText) {
+        this.ansText = ansText;
     }
 
     public void setDate(LocalDate date) {

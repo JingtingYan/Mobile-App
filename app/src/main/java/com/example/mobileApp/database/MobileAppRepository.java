@@ -1,6 +1,7 @@
 package com.example.mobileApp.database;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.mobileApp.database.entity.AnswerTable;
 import com.example.mobileApp.database.entity.LocationTable;
@@ -9,7 +10,9 @@ import com.example.mobileApp.database.entity.QuestionAnswerTable;
 import com.example.mobileApp.database.entity.QuestionRelationTable;
 import com.example.mobileApp.database.entity.QuestionTable;
 import com.example.mobileApp.database.entity.QuestionnaireTable;
+import com.example.mobileApp.datatype.Answer;
 import com.example.mobileApp.datatype.Location;
+import com.example.mobileApp.datatype.Question;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,17 +29,17 @@ import java.util.concurrent.Future;
 
 public class MobileAppRepository {
 
-    private static MobileAppRepository ourInstance;
+    private static MobileAppRepository repoInstance;
 
     private MobileAppDatabase db;
     private ExecutorService executor = Executors.newFixedThreadPool(1);
 
 
     public static MobileAppRepository getInstance(Context context) {
-        if (ourInstance == null) {
-            ourInstance = new MobileAppRepository(context);
+        if (repoInstance == null) {
+            repoInstance = new MobileAppRepository(context);
         }
-        return ourInstance;
+        return repoInstance;
     }
 
     private MobileAppRepository(Context context) {
@@ -44,6 +47,7 @@ public class MobileAppRepository {
     }
 
 
+    /* methods used to load data for LocationActivity */
     public List<Location> getSpinnerCountries() throws ExecutionException, InterruptedException {
         Future<List<Location>> task = executor.submit(() -> {
             List<LocationTable> locationTables = db.locationDao().getAllCountries();
@@ -89,6 +93,7 @@ public class MobileAppRepository {
     }
 
 
+    /* methods used to load data for DataSyncActivity */
     public void deleteLocationData() {
         executor.execute(() -> db.locationDao().deleteAll());
     }
@@ -247,13 +252,28 @@ public class MobileAppRepository {
             Integer sequence_num = jsonObject.getInt("seq_num");
             Integer q_id = jsonObject.getInt("logic_questionID");
             //Integer rel_ans_id = jsonObject.getInt("rel_ans_ID");
-            Integer next_q_id = jsonObject.getInt("next_qID");
+            //Integer next_q_id = jsonObject.getInt("next_qID");
             String rel_type = jsonObject.getString("rel_type");
             //Integer rel_id = jsonObject.getInt("rel_ID");
             Integer qnnaire_id = jsonObject.getInt("questionnaireID");
 
             /* this needs to be fixed later */
-            Integer rel_ans_id = 0, rel_id = 0;
+            Integer rel_ans_id, next_q_id, rel_id;
+            if (!jsonObject.isNull("rel_ans_ID")) {
+                rel_ans_id = jsonObject.getInt("rel_ans_ID");
+            } else {
+                rel_ans_id = -1;
+            }
+            if (!jsonObject.isNull("next_qID")) {
+                next_q_id = jsonObject.getInt("next_qID");
+            } else {
+                next_q_id = -1;
+            }
+            if (!jsonObject.isNull("rel_ID")) {
+                rel_id = jsonObject.getInt("rel_ID");
+            } else {
+                rel_id = -1;
+            }
 
             logicTables.add(new LogicTable(sequence_num, q_id, rel_ans_id, next_q_id, rel_type,
                                 rel_id, qnnaire_id));
@@ -285,5 +305,106 @@ public class MobileAppRepository {
         }
 
         return questionRelationTables;
+    }
+
+
+    /* methods used to load data for HouseholdCreateFragment */
+    public Question loadFirstQuestion(Integer qnnID) throws ExecutionException, InterruptedException {
+        Log.i("Repo", "call loadFirstQuestion");    // debug
+
+        Integer firstQnID = getFirstQnID(qnnID);
+        List<Answer> answers = getQnAns(firstQnID, qnnID);
+
+        Future<Question> task = executor.submit(() -> {
+            QuestionTable questionTable = db.questionDao().getQuestion(firstQnID, qnnID);
+            Log.i("Repo - get the first question: ", questionTable.getQuestion_string());   // debug
+            return new Question(questionTable.getQuestion_id(), questionTable.getQuestion_string(),
+                    questionTable.getQuestion_instruction(), questionTable.getQ_type_id(),
+                    answers, questionTable.getQuestion_media());
+        });
+
+        Log.i("Repo", "finish loadFirstQuestion");    // debug
+        return task.get();
+    }
+
+    // helper function to get the first question in a questionnaire
+    // getFirstQnID queries in the QuestionTable and returns the questionID for the first question
+    private Integer getFirstQnID(Integer qnnID) throws ExecutionException, InterruptedException {
+        Log.i("Repo", "call getFirstQnID");    // debug
+        Future<Integer> task =executor.submit(() -> {
+            List<Integer> qnIDs = db.questionDao().getAllQnsID(qnnID);
+            Log.i("Repo - the no. of qns in qnn is: ", String.valueOf(qnIDs.size()));   // debug
+            Log.i("Repo - FirstQnID is:", qnIDs.get(0).toString());    // debug
+            return qnIDs.get(0);
+        });
+
+        Log.i("Repo", "finish getFirstQnID");    // debug
+        return task.get();
+    }
+
+    // this method may need to be modified later
+    public Question loadNextQuestion(Integer currQnID, Integer qnnID) throws ExecutionException, InterruptedException {
+        Log.i("Repo", "call loadNextQuestion");    // debug
+        Integer nextQnID = getNextQnID(currQnID, qnnID);
+        List<Answer> answers = getQnAns(nextQnID, qnnID);
+
+        Future<Question> task = executor.submit(() -> {
+           QuestionTable questionTable = db.questionDao().getQuestion(nextQnID, qnnID);
+            return new Question(questionTable.getQuestion_id(), questionTable.getQuestion_string(),
+                                questionTable.getQuestion_instruction(), questionTable.getQ_type_id(),
+                                answers, questionTable.getQuestion_media());
+        });
+
+        Log.i("Repo", "finish loadNextQuestion");    // debug
+        return task.get();
+    }
+
+    // this method needs to be modified later - include AND, OR type
+    public Integer getNextQnID(Integer currQnID, Integer currQnnID) throws ExecutionException, InterruptedException {
+        Log.i("Repo", "call getNextQnID");    // debug
+        Future<Integer> task = executor.submit(() -> {
+            List<Integer> qnsID = db.logicDao().getNextQnsID(currQnID, currQnnID);
+            return qnsID.get(0);
+        });
+
+        Log.i("Repo", "finish getNextQnID");    // debug
+        return task.get();
+    }
+
+    private List<Answer> getQnAns(Integer qnID, Integer currQnnID) throws ExecutionException, InterruptedException {
+        Log.i("Repo", "call getQnAns");    // debug
+        List<Answer> result = new ArrayList<>();
+        List<Integer> ansIDs = getAllAnsID(qnID, currQnnID);
+        Log.i("Repo - all ans IDs are", ansIDs.toString());     // debug
+
+        for (Integer ansID : ansIDs) {
+            result.add(getSingleAns(ansID, currQnnID));
+        }
+
+        Log.i("Repo", "finish getQnAns");    // debug
+        return result;
+    }
+
+    // helper function to get all answer choices for a question
+    // getAllAnsID queries in the QuestionAnswerTable and returns the ID for all the answer choices for a question
+    private List<Integer> getAllAnsID(Integer qnID, Integer qnnID) throws ExecutionException, InterruptedException {
+        Log.i("Repo", "call getAllAnsID");  // debug
+        Future<List<Integer>> task = executor.submit(() -> db.questionAnswerDao().getAllAnsID(qnID, qnnID));
+        Log.i("Repo", "finish getAllAnsID");  // debug
+        return task.get();
+    }
+
+    // helper function to get all answer choices for a question
+    // getSingleAns queries in the AnswerTable and creates an Answer object of a given answer ID
+    private Answer getSingleAns(Integer ansID, Integer qnnID) throws ExecutionException, InterruptedException {
+        Log.i("Repo", "call getSingleAns");    // debug
+        Future<Answer> task = executor.submit(() -> {
+            AnswerTable answerTable = db.answerDao().getAnswer(ansID, qnnID);
+            Log.i("Repo - get the single answer choice: ", answerTable.getAnswer_string());     // debug
+            return new Answer(answerTable.getAnswer_id(), answerTable.getAnswer_string());
+        });
+
+        Log.i("Repo", "finish getSingleAns");    // debug
+        return task.get();
     }
 }

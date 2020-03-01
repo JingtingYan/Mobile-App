@@ -12,8 +12,13 @@ import java.util.List;
 @Dao
 public interface QuestionDao {
 
+    // get the QuestionTable object for a certain question in a certain questionnaire
     @Query("SELECT * FROM questions WHERE questions.question_id = :q_id AND questions.qnnaire_id = :qnnaire_id")
     QuestionTable getQuestion(int q_id, int qnnaire_id);
+
+    // get the list of questions' IDs for a certain questionnaire
+    @Query("SELECT DISTINCT question_id FROM questions WHERE qnnaire_id = :qnnID")
+    List<Integer> getAllQnsID(int qnnID);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<QuestionTable> questions);

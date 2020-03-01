@@ -8,8 +8,13 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.example.mobileApp.database.MobileAppDatabase;
+import com.example.mobileApp.database.dao.AnswerDao;
 import com.example.mobileApp.database.dao.LocationDao;
+import com.example.mobileApp.database.dao.QuestionDao;
+import com.example.mobileApp.database.entity.AnswerTable;
 import com.example.mobileApp.database.entity.LocationTable;
+import com.example.mobileApp.database.entity.QuestionTable;
+import com.example.mobileApp.datatype.Answer;
 import com.example.mobileApp.utilities.SampleData;
 
 import org.junit.After;
@@ -23,15 +28,22 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 public class DatabaseTest {
-    public static final String TAG = "JUnit";
+    private static final String TAG = "JUnit";
     private MobileAppDatabase database;
+
+    private AnswerDao answerDao;
     private LocationDao locationDao;
+    private QuestionDao questionDao;
 
     @Before
     public void createDb() {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         database = Room.inMemoryDatabaseBuilder(context, MobileAppDatabase.class).build();
+
+        answerDao = database.answerDao();
         locationDao = database.locationDao();
+        questionDao = database.questionDao();
+
         Log.i(TAG, "database created");
     }
 
@@ -64,5 +76,38 @@ public class DatabaseTest {
         assertEquals(original4.getLocation_name(), result4.getLocation_name());
 
         assertEquals(4, count);
+    }
+
+    @Test
+    public void getAllQuestionsInQuestionnaire() {
+        int questionnaireID = 2;
+        questionDao.insertAll(SampleData.getQuestions());
+        List<Integer> allQuestionsID = questionDao.getAllQnsID(questionnaireID);
+
+        assertEquals(20, allQuestionsID.size());
+    }
+
+    @Test
+    public void getSingleQuestionInQuestionnaire() {
+        List<QuestionTable> questionTables = SampleData.getQuestions();
+        questionDao.insertAll(questionTables);
+
+        QuestionTable expectedFirstQn = questionTables.get(0);
+        QuestionTable queriedFirstQn  = questionDao.getQuestion(questionTables.get(0).getQuestion_id(), questionTables.get(0).getQnnaire_id());
+
+        assertEquals(expectedFirstQn.getQuestion_instruction(), queriedFirstQn.getQuestion_instruction());
+        assertEquals(expectedFirstQn.getQuestion_string(), queriedFirstQn.getQuestion_string());
+        assertEquals(expectedFirstQn.getQ_type_id(), queriedFirstQn.getQ_type_id());
+    }
+
+    @Test
+    public void getSingleAnswerChoiceByID() {
+        List<AnswerTable> answerTables = SampleData.getAnswers();
+        answerDao.insertAll(answerTables);
+
+        AnswerTable expectedFirstAns = answerTables.get(0);
+        AnswerTable queriedFirstAns = answerDao.getAnswer(answerTables.get(0).getAnswer_id(), answerTables.get(0).getQnnaire_id());
+
+        assertEquals(expectedFirstAns.getAnswer_string(), queriedFirstAns.getAnswer_string());
     }
 }

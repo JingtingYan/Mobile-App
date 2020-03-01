@@ -12,6 +12,9 @@ import java.util.List;
 @Dao
 public interface AnswerDao {
 
+    @Query("SELECT * FROM answers WHERE answer_id = :ansID AND qnnaire_id = :qnnID")
+    AnswerTable getAnswer(int ansID, int qnnID);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<AnswerTable> answers);
 
