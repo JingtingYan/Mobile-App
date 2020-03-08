@@ -10,9 +10,12 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import com.example.mobileApp.database.MobileAppDatabase;
 import com.example.mobileApp.database.dao.AnswerDao;
 import com.example.mobileApp.database.dao.LocationDao;
+import com.example.mobileApp.database.dao.QuestionAnswerDao;
 import com.example.mobileApp.database.dao.QuestionDao;
+import com.example.mobileApp.database.dao.ResponseDao;
 import com.example.mobileApp.database.entity.AnswerTable;
 import com.example.mobileApp.database.entity.LocationTable;
+import com.example.mobileApp.database.entity.QuestionAnswerTable;
 import com.example.mobileApp.database.entity.QuestionTable;
 import com.example.mobileApp.datatype.Answer;
 import com.example.mobileApp.utilities.SampleData;
@@ -34,6 +37,8 @@ public class DatabaseTest {
     private AnswerDao answerDao;
     private LocationDao locationDao;
     private QuestionDao questionDao;
+    private QuestionAnswerDao questionAnswerDao;
+    private ResponseDao responseDao;
 
     @Before
     public void createDb() {
@@ -43,6 +48,8 @@ public class DatabaseTest {
         answerDao = database.answerDao();
         locationDao = database.locationDao();
         questionDao = database.questionDao();
+        questionAnswerDao = database.questionAnswerDao();
+        responseDao = database.responseDao();
 
         Log.i(TAG, "database created");
     }
@@ -109,5 +116,15 @@ public class DatabaseTest {
         AnswerTable queriedFirstAns = answerDao.getAnswer(answerTables.get(0).getAnswer_id(), answerTables.get(0).getQnnaire_id());
 
         assertEquals(expectedFirstAns.getAnswer_string(), queriedFirstAns.getAnswer_string());
+    }
+
+    @Test
+    public void getLastIndex() {
+        // manually entered index starts from 0
+        List<QuestionAnswerTable> questionAnswerTables = SampleData.getQAs();
+        questionAnswerDao.insertAll(questionAnswerTables);
+
+        int lastQAIndex = questionAnswerDao.getLastIndex();
+        assertEquals(60, lastQAIndex);
     }
 }

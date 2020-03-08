@@ -14,18 +14,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".HouseholdMainActivity"
-            android:label="@string/title_activity_household_home"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name=".DataSyncActivity"
-            android:label="@string/title_activity_data_sync"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".LocationActivity"
-            android:label="@string/title_activity_location"
-            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".HouseholdMainActivity" />
+        <activity android:name=".LocationActivity" />
+
+        <activity android:name=".DataSyncActivity"
+            android:parentActivityName=".MainActivity">
+            <!-- add parent activity meta-data to support 4.0 or lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,6 +33,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".OverflowMenuActivity" />
+        <activity android:name=".NavigationDrawerActivity" />
     </application>
 
 </manifest>

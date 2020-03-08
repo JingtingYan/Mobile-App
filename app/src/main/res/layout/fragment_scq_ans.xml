@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- This xml file defines the layout for Single Choice Question Answer Choices Fragment.
+     The top-level layout container is a ConstraintLayout. It contains a Spinner (a dropdown
+     list) which is defined by a customised ArrayAdapter (in SCQAnsFragment.java) and is a
+     placeholder to dynamically load SCQ answer choices (as dropdown list items). -->
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"

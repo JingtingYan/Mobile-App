@@ -6,8 +6,14 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
 import com.example.mobileApp.database.MobileAppRepository;
+import com.example.mobileApp.database.entity.ResponseTable;
 
 import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class DataSyncViewModel extends AndroidViewModel {
 
@@ -17,6 +23,49 @@ public class DataSyncViewModel extends AndroidViewModel {
         super(application);
 
         repo = MobileAppRepository.getInstance(application.getApplicationContext());
+    }
+
+    public JSONObject getResponseJSONObject() {
+        JSONObject result = new JSONObject();
+        List<JSONObject> jsonArray = new ArrayList<>();
+        List<ResponseTable> responseTables = new ArrayList<>();
+
+        try {
+            responseTables.addAll(repo.getResponses());
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        for (ResponseTable responseTable : responseTables) {
+            try {
+                jsonArray.add(responseTableConverter(responseTable));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            result.put("data", jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    // helper function to parse a ResponseTable object to JSON object format
+    private JSONObject responseTableConverter(ResponseTable responseTable) throws JSONException {
+        JSONObject result = new JSONObject();
+
+        result.put("index", responseTable.getIndex());
+        result.put("patientID", responseTable.getPatient_id());
+        result.put("questionID", responseTable.getQ_id());
+        result.put("answerID", responseTable.getAns_id());
+        result.put("text", responseTable.getText());
+        result.put("questionnaireID", responseTable.getQnnaire_id());
+        result.put("date", responseTable.getDate());
+
+        return result;
     }
 
     public void deleteLocationData() {
@@ -45,6 +94,10 @@ public class DataSyncViewModel extends AndroidViewModel {
 
     public void deleteQuestionRelationData() {
         repo.deleteQuestionRelationData();
+    }
+
+    public void deleteResponseData() {
+        repo.deleteResponseData();
     }
 
     public void addLocationData(String jsonArray) {

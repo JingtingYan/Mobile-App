@@ -17,55 +17,46 @@ import static androidx.room.ForeignKey.CASCADE;
         indices = {@Index(value = {"patient_id", "q_id", "ans_id", "qnnaire_id"}, unique = true),
                    @Index("q_id"),
                    @Index("ans_id"),
-                   @Index("qnnaire_id")},
-        foreignKeys = {@ForeignKey(entity = PatientTable.class,
-                                   parentColumns = "patient_id",
-                                   childColumns = "patient_id",
-                                   onDelete = CASCADE,
-                                   onUpdate = CASCADE),
-                       @ForeignKey(entity = QuestionTable.class,
-                                   parentColumns = "question_id",
-                                   childColumns = "q_id",
-                                   onDelete = CASCADE,
-                                   onUpdate = CASCADE),
-                       @ForeignKey(entity = AnswerTable.class,
-                                   parentColumns = "answer_id",
-                                   childColumns = "ans_id",
-                                   onDelete = CASCADE,
-                                   onUpdate = CASCADE),
-                       @ForeignKey(entity = QuestionnaireTable.class,
-                                   parentColumns = "questionnaire_id",
-                                   childColumns = "qnnaire_id",
-                                   onDelete = CASCADE,
-                                   onUpdate = CASCADE)})
+                   @Index("qnnaire_id")})   // remove foreign keys
 public class ResponseTable {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @NonNull
-    private Integer index = 0;
+    private Integer index;  // remove auto-increment; remove default = 0
 
     // this is a foreign key
     //    REQUIRED
-    private String patient_id = "";
+    private String patient_id;
 
     // this is a foreign key
     //    REQUIRED
-    private Integer q_id = 0;
+    private Integer q_id;
 
     // this is a foreign key
     //    REQUIRED
-    private Integer ans_id = 0;
+    private Integer ans_id;
 
     private String text;
 
     // this is a foreign key
     //    REQUIRED
-    private Integer qnnaire_id = 0;
+    private Integer qnnaire_id;
 
     // date is in format "YYYY-MM-DD"
     //    REQUIRED
     private String date;
 
+
+    public ResponseTable(@NonNull Integer index, String patient_id, Integer q_id,
+                         Integer ans_id, String text, Integer qnnaire_id, String date) {
+        this.index = index;
+        this.patient_id = patient_id;
+        this.q_id = q_id;
+        this.ans_id = ans_id;
+        this.text = text;
+        this.qnnaire_id = qnnaire_id;
+        this.date = date;
+    }
 
     /* getter and setter */
 

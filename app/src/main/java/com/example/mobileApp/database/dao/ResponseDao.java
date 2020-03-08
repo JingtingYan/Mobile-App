@@ -2,6 +2,7 @@ package com.example.mobileApp.database.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.example.mobileApp.database.entity.ResponseTable;
@@ -21,7 +22,18 @@ public interface ResponseDao
     @Query("SELECT * FROM responses WHERE responses.patient_id = :patientID AND responses.q_id = :currentQuestion AND responses.qnnaire_id = :currentQnn")
     List<ResponseTable> getResponse(int patientID, int currentQuestion, int currentQnn);
 
-
     @Query("SELECT COUNT(*) FROM responses WHERE responses.patient_id = :patientID AND responses.q_id = :currentQuestion AND responses.qnnaire_id = :currentQnn")
     int getResponseCount(int patientID, int currentQuestion, int currentQnn);
+
+    @Query("SELECT COUNT(*) FROM responses")
+    int countAllResponses();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAll(List<ResponseTable> responses);
+
+    @Query("SELECT * FROM responses")
+    List<ResponseTable> getAllResponses();
+
+    @Query("DELETE FROM responses")
+    void deleteAll();
 }

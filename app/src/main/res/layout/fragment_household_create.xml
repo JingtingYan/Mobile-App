@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- This xml file defines the overall layout for Household Create Fragment.
+     This fragment is used to implement Household Roster Questionnaire and create a new
+     household by collecting patient responses for the questions in this questionnaire.
+     For each time, there'll be one single question displayed on this page.
+     It mainly contains four parts:
+      1. A text field that can dynamically load question instruction.
+      2. A text field that can dynamically load question string.
+      3. A placeholder (FrameLayout) to dynamically load each question's answer choices.
+         There're three types of questions: Text Entry Question, Single Choice Question (SCQ),
+         and Multiple Choice Question (MCQ).
+      4. A NEXT button clicked to load next question in the Household Roster Questionnaire. -->
+
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -49,7 +62,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_qn_string">
-
     </FrameLayout>
 
     <Button

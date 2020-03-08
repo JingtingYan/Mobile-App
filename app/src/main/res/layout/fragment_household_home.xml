@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- This xml file defines the layout and content for Household Home Fragment. -->
+
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -16,12 +19,13 @@
         android:layout_marginEnd="70dp"
         android:background="#3C03A9F4"
         android:gravity="center"
-        android:text="@string/bn_hh_home_create"
+        android:text="Create new household"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/bn_hh_home_search_patient"
@@ -32,12 +36,13 @@
         android:layout_marginEnd="70dp"
         android:background="#3C03A9F4"
         android:gravity="center"
-        android:text="@string/bn_hh_home_search_patient"
+        android:text="Create new patient"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bn_hh_home_create" />
+        app:layout_constraintTop_toBottomOf="@+id/bn_hh_home_create"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/bn_hh_home_search_hh"
@@ -48,11 +53,12 @@
         android:layout_marginEnd="70dp"
         android:background="#3C03A9F4"
         android:gravity="center"
-        android:text="@string/bn_hh_home_search_hh"
+        android:text="Search for existing patient"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bn_hh_home_search_patient" />
+        app:layout_constraintTop_toBottomOf="@+id/bn_hh_home_search_patient"
+        tools:ignore="HardcodedText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

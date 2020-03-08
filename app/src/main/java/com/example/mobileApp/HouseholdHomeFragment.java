@@ -1,6 +1,5 @@
 package com.example.mobileApp;
 
-
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -36,7 +35,7 @@ public class HouseholdHomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_household_home, container, false);
 
         ButterKnife.bind(this, view);
-        getActivity().setTitle(R.string.title_activity_household_home);
+        requireActivity().setTitle(R.string.title_activity_household_home);
 
         return view;
     }

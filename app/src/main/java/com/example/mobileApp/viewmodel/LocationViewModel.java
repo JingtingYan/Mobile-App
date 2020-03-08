@@ -17,7 +17,7 @@ public class LocationViewModel extends AndroidViewModel {
 
     private MobileAppRepository repo;
 
-    private List<Location> spinnerCountries;
+    private List<Location> spinnerCountries = new ArrayList<>();
     public MutableLiveData<List<Location>> spinnerRegions = new MutableLiveData<>();
     public MutableLiveData<List<Location>> spinnerClusters = new MutableLiveData<>();
 
@@ -34,7 +34,7 @@ public class LocationViewModel extends AndroidViewModel {
 
     public List<Location> loadCountrySpinner() {
         try {
-            spinnerCountries = repo.getSpinnerCountries();
+            spinnerCountries.addAll(repo.getSpinnerCountries());
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }

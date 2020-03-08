@@ -20,6 +20,30 @@ public class Response {
         this.date = date;
     }
 
+    public String getPatientID() {
+        return patientID;
+    }
+
+    public Integer getQnID() {
+        return qnID;
+    }
+
+    public Integer getAnsID() {
+        return ansID;
+    }
+
+    public Integer getQnnID() {
+        return qnnID;
+    }
+
+    public String getAnsText() {
+        return ansText;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
     public void setPatientID(String patientID) {
         this.patientID = patientID;
     }

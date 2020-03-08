@@ -86,10 +86,14 @@ public class HouseholdCreateFragment extends Fragment {
 
     @OnClick(R.id.bn_hh_create_next) void onClickNext() {
         storeQnResponse(householdCreateViewModel.getQnType());
+
         if (householdCreateViewModel.hasNextQuestion()) {
             loadNextQuestion();
         } else {
-            Toast.makeText(requireContext(), "this is the last question", Toast.LENGTH_SHORT).show();
+            // move to the end page of Household Roaster Questionnaire
+            HouseholdMainActivity.fragmentManager.beginTransaction()
+                    .replace(R.id.household_fragment_container, new HouseholdCreateFinishFragment())
+                    .commit();
         }
     }
 

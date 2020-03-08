@@ -26,7 +26,7 @@ public class HouseholdSearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_household_search, container, false);
-        getActivity().setTitle(R.string.title_search_hh);
+        requireActivity().setTitle(R.string.title_search_hh);
 
         return view;
     }

@@ -1,15 +1,19 @@
 <resources>
 
+    <!-- Corresponding toolbar title for each Activity or Fragment -->
     <string name="app_name">Mobile App</string>
+    <string name="title_activity_data_sync">Data Synchronisation</string>
+    <string name="title_activity_location">Location Selection</string>
+    <string name="title_activity_household_home">Household Home</string>
+    <string name="title_create_hh">HOUSEHOLD ROSTER QUESTIONNAIRE</string>
 
-    <!-- Main Activity (login page) -->
+
+    <!-- activity_main.xml (login page) -->
     <string name="login_instruction">User login</string>
     <string name="login_username_hint">Username</string>
     <string name="login_password_hint">Password</string>
-    <string name="login_bn">LOGIN</string>
 
-    <!-- Location Activity -->
-    <string name="title_activity_location">Location Selection</string>
+    <!-- activity_location.xml -->
     <string name="selection_location_instruction">Select a Project\'s country, region and cluster</string>
     <string name="project_country">Project Country: </string>
     <string name="project_region">Project Region: </string>
@@ -17,33 +21,30 @@
     <string name="project_country_prompt">Select a country…</string>
     <string name="project_region_prompt">Select a region…</string>
     <string name="project_cluster_prompt">Select a cluster…</string>
-    <string name="bn_location_next">Next</string>
-    <string name="bn_location_load">Load</string>
 
-    <!-- DataSync Activity -->
-    <string name="title_activity_data_sync">Data Synchronisation</string>
-    <string name="bn_download_data">Download Data</string>
-    <string name="bn_upload_data">Upload Data</string>
-    <string name="bn_delete_data">Delete Data</string>
-    <string name="bn_data_sync_next">Next</string>
-
-    <!-- Layout: Project Header -->
-    <string name="title_activity_household_home">Household Home</string>
+    <!-- layout_project_header.xml -->
     <string name="hh_home_project">Project: </string>
     <string name="hh_home_country">Country</string>
     <string name="hh_home_region">Region</string>
     <string name="hh_home_cluster">Cluster</string>
     <string name="hh_home_separator"> > </string>
 
-    <!-- HouseholdHome Fragment -->
-    <string name="bn_hh_home_create">Create new household</string>
-    <string name="bn_hh_home_search_patient">Search for existing patient</string>
-    <string name="bn_hh_home_search_hh">Search for existing household</string>
+    <!-- fragment_household_create.xml -->
+    <string name="qn_instruction">Question Instruction</string>
+    <string name="qn_string">Question String</string>
+    <string name="ans_text_entry">Enter your answer here</string>
+    <string name="default_qn_instruction_text_entry">This is a text entry question.
+            Please enter the response in the text field then click NEXT.</string>
+    <string name="default_qn_instruction_scq">This is a single choice question.
+            Please select one answer choice from the dropdown list then click NEXT.</string>
+    <string name="default_qn_instruction_mcq">This is a multiple choice question.
+            Please select appropriate answers by ticking the checkbox then click NEXT.</string>
 
-    <!-- HouseholdCreate Fragment -->
-    <!-- Prepopulate Household Questionnaire questions
-         because this questionnaire can be considered to be static (according to our clients) -->
-    <string name="title_create_hh">HOUSEHOLD ROSTER QUESTIONNAIRE</string>
+    <!-- fragment_household_create_finish.xml -->
+    <string name="hh_finish_prompt">You have finished all the questions in Household Roaster Questionnaire. \n\n
+            Click FINISH to create this new household.</string>
+
+    <!-- Household Questionnaire questions (will be removed later) -->
     <string name="bn_hh_next">Next</string>
     <string name="interviewer_id">Interviewer ID: </string>
     <string name="region_id">Region Number: </string>
@@ -81,10 +82,5 @@
     <!-- HouseholdSearch Fragment -->
     <string name="title_search_hh"> Search </string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <!-- Layout: Question & Answers -->
-    <string name="qn_instruction">Question Instruction</string>
-    <string name="qn_string">Question String</string>
-    <string name="ans_text_entry">Enter your answer here</string>
 
 </resources>

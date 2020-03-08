@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- This xml file defines the layout and render of the combination of toolbar and navigation drawer.
+     The top-level layout is a DrawerLayout and it contains two children:
+      1. A LinearLayout contains toolbar and a placeholder for each Activity's main contents.
+      2. A NavigationView which defines the layout and render of the navigation bar.
+         The contents of navigation bar (header and menu items) are added. -->
+
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/layout_nav_drawer">
+
+    <!-- This LinearLayout represents the contents of the main screen -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- The toolbar is displayed at the top -->
+        <include
+            layout="@layout/layout_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </include>
+
+        <!-- Placeholder to load the Activity's main contents -->
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <!-- Add the navigation drawer that comes from the left -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@android:color/white"
+        app:menu="@menu/navigation_drawer_menu"
+        app:headerLayout="@layout/layout_nav_drawer_header">
+    </com.google.android.material.navigation.NavigationView>
+
+</androidx.drawerlayout.widget.DrawerLayout>

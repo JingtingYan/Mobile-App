@@ -1,8 +1,17 @@
 package com.example.mobileApp.utilities;
 
+/**
+ * The Constants class stores almost all of the static/final values that are required when
+ * using the app. This class is created to follow a better development practice.
+ *
+ * @author Jingting Yan
+ * @version 1.0
+ * @since March 2020
+ */
 public class Constants {
 
-    /* Some attributes that will be shared throughout the App (multiple Activities & Fragments) */
+    /* Some static values that will be shared throughout the App (multiple Activities & Fragments) */
+
     // API authentication
     private static String token;
     // location-related data
@@ -73,8 +82,12 @@ public class Constants {
     }
 
 
-    /* Other constants */
+    /* Other static final constants */
+
+    // Authentication API
     public static final String LOGIN_URL = "http://10.0.2.2:8000/tables/login/";
+
+    // Data Sync APIs
     public static final String GET_LOCATION_URL = "http://10.0.2.2:8000/tables/Location/";
     public static final String GET_QUESTIONNAIRE_URL = "http://10.0.2.2:8000/tables/Questionnaire/";
     public static final String GET_QUESTION_URL = "http://10.0.2.2:8000/tables/Question/";
@@ -83,5 +96,8 @@ public class Constants {
     public static final String GET_LOGIC_URL = "http://10.0.2.2:8000/tables/Logic/";
     public static final String GET_QUESTION_RELATION_URL = "http://10.0.2.2:8000/tables/QRel/";
 
+    public static final String POST_RESPONSE_URL = "http://10.0.2.2:8000/tables/Response/";
+
+    // Questionnaires
     public static final Integer HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID = 2;
 }

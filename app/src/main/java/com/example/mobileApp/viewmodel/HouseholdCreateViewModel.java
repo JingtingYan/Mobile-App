@@ -27,9 +27,6 @@ public class HouseholdCreateViewModel extends AndroidViewModel {
     public MutableLiveData<String> qnInstruction = new MutableLiveData<>();
     public MutableLiveData<String> qnString = new MutableLiveData<>();
 
-    private static String TextQnResponse;
-    private static Answer SCQResponse;
-    private static List<Answer> MCQResponse;
     private List<Response> allResponses = new ArrayList<>();
 
     public HouseholdCreateViewModel(@NonNull Application application) {
@@ -92,6 +89,7 @@ public class HouseholdCreateViewModel extends AndroidViewModel {
         Response response = new Response(Constants.getCurrentPatientID(), currQn.getQuestionID(),
                 selectedAns.getAnswerID(), Constants.getCurrentQuestionnaireID(), "", LocalDate.now());
         allResponses.add(response);
+        Log.i("patientID", Constants.getCurrentPatientID());    //debug
     }
 
     public void storeMCQResponse(List<Answer> selectedAns) {
@@ -99,6 +97,7 @@ public class HouseholdCreateViewModel extends AndroidViewModel {
             Response response = new Response(Constants.getCurrentPatientID(), currQn.getQuestionID(),
                     answer.getAnswerID(), Constants.getCurrentQuestionnaireID(), "", LocalDate.now());
             allResponses.add(response);
+            Log.i("patientID", Constants.getCurrentPatientID());    //debug
         }
     }
 
@@ -106,5 +105,14 @@ public class HouseholdCreateViewModel extends AndroidViewModel {
         Response response = new Response(Constants.getCurrentPatientID(), currQn.getQuestionID(),
                 -1, Constants.getCurrentQuestionnaireID(), responseString, LocalDate.now());
         allResponses.add(response);
+        Log.i("patientID", Constants.getCurrentPatientID());    //debug
+    }
+
+    public void storeResponsesToDb() {
+        try {
+            repo.storeResponsesToDb(allResponses);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -23,4 +23,11 @@ public interface QuestionAnswerDao {
 
     @Query("DELETE FROM questions_and_answers")
     void deleteAll();
+
+    @Query("SELECT MAX(`index`) FROM questions_and_answers")
+    int getLastIndex();
+
+    // debug
+    @Query("SELECT COUNT(*) FROM questions_and_answers")
+    int countAllQAs();
 }

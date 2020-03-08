@@ -10,9 +10,12 @@ import com.example.mobileApp.database.entity.QuestionAnswerTable;
 import com.example.mobileApp.database.entity.QuestionRelationTable;
 import com.example.mobileApp.database.entity.QuestionTable;
 import com.example.mobileApp.database.entity.QuestionnaireTable;
+import com.example.mobileApp.database.entity.ResponseTable;
 import com.example.mobileApp.datatype.Answer;
 import com.example.mobileApp.datatype.Location;
 import com.example.mobileApp.datatype.Question;
+import com.example.mobileApp.datatype.Response;
+import com.example.mobileApp.utilities.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -120,6 +123,10 @@ public class MobileAppRepository {
 
     public void deleteQuestionRelationData() {
         executor.execute(() -> db.questionRelationDao().deleteAll());
+    }
+
+    public void deleteResponseData() {
+        executor.execute(() -> db.responseDao().deleteAll());
     }
 
     public void addLocationData(String jsonArray) throws JSONException {
@@ -307,6 +314,11 @@ public class MobileAppRepository {
         return questionRelationTables;
     }
 
+    public List<ResponseTable> getResponses() throws ExecutionException, InterruptedException {
+        Future<List<ResponseTable>> task = executor.submit(() -> db.responseDao().getAllResponses());
+        return task.get();
+    }
+
 
     /* methods used to load data for HouseholdCreateFragment */
     public Question loadFirstQuestion(Integer qnnID) throws ExecutionException, InterruptedException {
@@ -406,5 +418,31 @@ public class MobileAppRepository {
 
         Log.i("Repo", "finish getSingleAns");    // debug
         return task.get();
+    }
+
+    public void storeResponsesToDb(List<Response> responses) throws ExecutionException, InterruptedException {
+        List<ResponseTable> responseTables = responsesConverter(responses);
+        executor.execute(() -> db.responseDao().insertAll(responseTables));
+    }
+
+    private int getResponseTableLastIndex() throws ExecutionException, InterruptedException {
+        Future<Integer> task = executor.submit(() -> {
+            int responseCount = db.responseDao().countAllResponses();
+            return (responseCount == 0) ? 0 : (responseCount - 1);
+        });
+        return task.get();
+    }
+
+    private List<ResponseTable> responsesConverter(List<Response> responses) throws ExecutionException, InterruptedException {
+        List<ResponseTable> result = new ArrayList<>();
+        int lastIndex = getResponseTableLastIndex();
+
+        for (int i = 0; i < responses.size(); i++) {
+            Response response = responses.get(i);
+            result.add(new ResponseTable(lastIndex + 1 + i, response.getPatientID(), response.getQnID(),
+                       response.getAnsID(), response.getAnsText(), response.getQnnID(), response.getDate().toString()));
+            Log.i("patientID", response.getPatientID());    // debug
+        }
+        return result;
     }
 }
