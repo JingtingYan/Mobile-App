@@ -93,6 +93,8 @@ public class MainActivity extends OverflowMenuActivity{
                 response -> {
                     try {
                         Constants.setToken(response.getString("token"));
+                        // let the enumeratorID the same as user token -- can be changed to other values as well
+                        Constants.setEnumeratorID(response.getString("token"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

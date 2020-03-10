@@ -1,5 +1,7 @@
 package com.example.mobileApp.database.dao;
 
+import android.database.Cursor;
+
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -13,8 +15,8 @@ import java.util.List;
 public interface LogicDao {
 
     // used in nextQuestion stored procedure
-    @Query("SELECT * FROM logic WHERE q_id = :currQ AND qnnaire_id = :currQnn")
-    List<LogicTable> getSkipLogic(int currQ, int currQnn);
+    @Query("SELECT * FROM logic WHERE q_id = :currQnID AND qnnaire_id = :currQnnID")
+    List<LogicTable> getLogicObjects(int currQnID, int currQnnID);
 
     // get next Question(s) ID  -- may need to be changed later
     @Query("SELECT DISTINCT next_q_id FROM logic " +
@@ -27,4 +29,7 @@ public interface LogicDao {
 
     @Query("DELETE FROM logic")
     void deleteAll();
+
+    @Query("SELECT * FROM logic WHERE qnnaire_id = :currQnID AND sequence_num = 1")
+    LogicTable getFirstQn(int currQnID);
 }

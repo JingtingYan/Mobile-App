@@ -1,5 +1,7 @@
 package com.example.mobileApp.utilities;
 
+import com.example.mobileApp.datatype.Location;
+
 /**
  * The Constants class stores almost all of the static/final values that are required when
  * using the app. This class is created to follow a better development practice.
@@ -14,15 +16,17 @@ public class Constants {
 
     // API authentication
     private static String token;
+    private static String enumeratorID;
     // location-related data
-    private static String country;
-    private static String region;
-    private static String cluster;
+    private static Location country;
+    private static Location region;
+    private static Location cluster;
     // questionnaire-related data
     private static Integer currentQuestionnaireID;
-    private static String HouseholdRosterQuestionnaireStartDate;
+    private static String HouseholdRosterQuestionnaireDate;
     // patient-related data
     private static String currentPatientID;
+    private static String currentHouseholdID;
 
 
     public static String getToken() {
@@ -33,27 +37,35 @@ public class Constants {
         Constants.token = token;
     }
 
-    public static String getCountry() {
+    public static String getEnumeratorID() {
+        return enumeratorID;
+    }
+
+    public static void setEnumeratorID(String enumeratorID) {
+        Constants.enumeratorID = enumeratorID;
+    }
+
+    public static Location getCountry() {
         return country;
     }
 
-    public static void setCountry(String country) {
+    public static void setCountry(Location country) {
         Constants.country = country;
     }
 
-    public static String getRegion() {
+    public static Location getRegion() {
         return region;
     }
 
-    public static void setRegion(String region) {
+    public static void setRegion(Location region) {
         Constants.region = region;
     }
 
-    public static String getCluster() {
+    public static Location getCluster() {
         return cluster;
     }
 
-    public static void setCluster(String cluster) {
+    public static void setCluster(Location cluster) {
         Constants.cluster = cluster;
     }
 
@@ -73,12 +85,20 @@ public class Constants {
         Constants.currentPatientID = currentPatientID;
     }
 
-    public static String getHouseholdRosterQuestionnaireStartDate() {
-        return HouseholdRosterQuestionnaireStartDate;
+    public static String getHouseholdRosterQuestionnaireDate() {
+        return HouseholdRosterQuestionnaireDate;
     }
 
-    public static void setHouseholdRosterQuestionnaireStartDate(String householdRosterQuestionnaireStartDate) {
-        HouseholdRosterQuestionnaireStartDate = householdRosterQuestionnaireStartDate;
+    public static void setHouseholdRosterQuestionnaireDate(String householdRosterQuestionnaireStartDate) {
+        HouseholdRosterQuestionnaireDate = householdRosterQuestionnaireStartDate;
+    }
+
+    public static String getCurrentHouseholdID() {
+        return currentHouseholdID;
+    }
+
+    public static void setCurrentHouseholdID(String currentHouseholdID) {
+        Constants.currentHouseholdID = currentHouseholdID;
     }
 
 
@@ -97,7 +117,11 @@ public class Constants {
     public static final String GET_QUESTION_RELATION_URL = "http://10.0.2.2:8000/tables/QRel/";
 
     public static final String POST_RESPONSE_URL = "http://10.0.2.2:8000/tables/Response/";
+    // add other APIs route here in the future
 
     // Questionnaires
-    public static final Integer HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID = 2;
+    public static final int HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID = 1;
+    public static final int GENERAL_WASHINGTON_GROUP_QUESTIONNAIRE_ID = 2;
+    public static final int MOBILITY_QUESTIONNAIRE_ID = 3;
+    // add other questionnaires' ID here in the future
 }

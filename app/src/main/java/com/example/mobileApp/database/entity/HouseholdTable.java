@@ -10,17 +10,7 @@ import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "households",
         indices = {@Index("parent_loc_id"),
-                    @Index("enum_id")},
-        foreignKeys = {@ForeignKey(entity = LocationTable.class,
-                                   parentColumns = "location_id",
-                                   childColumns = "parent_loc_id",
-                                   onDelete = CASCADE,
-                                   onUpdate = CASCADE),
-                       @ForeignKey(entity = EnumeratorTable.class,
-                                   parentColumns = "enumerator_id",
-                                   childColumns = "enum_id",
-                                   onDelete = CASCADE,
-                                   onUpdate = CASCADE)})
+                    @Index("enum_id")})     // remove foreign keys
 public class HouseholdTable {
 
     @PrimaryKey
@@ -34,7 +24,7 @@ public class HouseholdTable {
 
     // this is a foreign key
     //    REQUIRED
-    private Integer enum_id;
+    private String enum_id;
 
     // date is in format "YYYY-MM-DD"
     //    REQUIRED
@@ -47,7 +37,7 @@ public class HouseholdTable {
     private String gps_coord;
 
     //    REQUIRED
-    private boolean available = true;
+    private String availability;
 
     private String reason_refusal;
 
@@ -106,8 +96,16 @@ public class HouseholdTable {
     private String a2_q13;
 
 
-    /* getter and setter */
+    // select several main attributes as the constructor for household
+    public HouseholdTable(@NonNull String household_id, Integer parent_loc_id, String enum_id, String date, String gps_coord) {
+        this.household_id = household_id;
+        this.parent_loc_id = parent_loc_id;
+        this.enum_id = enum_id;
+        this.date = date;
+        this.gps_coord = gps_coord;
+    }
 
+    /* getter and setter */
 
     @NonNull
     public String getHousehold_id() {
@@ -126,11 +124,11 @@ public class HouseholdTable {
         this.parent_loc_id = parent_loc_id;
     }
 
-    public Integer getEnum_id() {
+    public String getEnum_id() {
         return enum_id;
     }
 
-    public void setEnum_id(Integer enum_id) {
+    public void setEnum_id(String enum_id) {
         this.enum_id = enum_id;
     }
 
@@ -166,12 +164,12 @@ public class HouseholdTable {
         this.gps_coord = gps_coord;
     }
 
-    public boolean isAvailable() {
-        return available;
+    public String getAvailability() {
+        return availability;
     }
 
-    public void setAvailable(boolean available) {
-        this.available = available;
+    public void setAvailability(String availability) {
+        this.availability = availability;
     }
 
     public String getReason_refusal() {

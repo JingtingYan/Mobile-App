@@ -15,9 +15,12 @@ public interface HouseholdDao
     void insert(HouseholdTable household);
 
     @Query("SELECT * from households WHERE household_id = :hh_id")
-    HouseholdTable getHouseholdforPatient(int hh_id);
+    HouseholdTable getHouseholdForPatient(int hh_id);
 
     @Query("SELECT * from households WHERE parent_loc_id = :clusterId")
-    List<HouseholdTable> getHouseholdsforCluster(int clusterId);
+    List<HouseholdTable> getHouseholdsForCluster(int clusterId);
+
+    @Query("SELECT COUNT(*) FROM households")
+    int countAllHouseholds();
 
 }

@@ -16,15 +16,15 @@ public interface QuestionRelationDao
 //    Used in andLogic and orLogic -> questions cursor -> each element is checkQuestion element used in responseCount()
     @Query("SELECT DISTINCT rel_q_id FROM question_relations AS qrel " +
             "WHERE qrel.rel_id = :relID " +
-            "AND qrel.q_id = :currQ " +
-            "AND qrel.qnnaire_id = :currQnn")
-    List<Integer> getDistinctRelQID(int relID, int currQ, int currQnn);
+            "AND qrel.q_id = :currQnID " +
+            "AND qrel.qnnaire_id = :currQnnID")
+    List<Integer> getDistinctRelQID(int relID, int currQnID, int currQnnID);
 
     @Query("SELECT COUNT(*) FROM question_relations AS qrel " +
             "WHERE qrel.rel_id = :relID " +
-            "AND qrel.q_id = :currQ " +
-            "AND qrel.qnnaire_id = :currQnn")
-    int correctCount(int relID, int currQ, int currQnn);
+            "AND qrel.q_id = :currQnID " +
+            "AND qrel.qnnaire_id = :currQnnID")
+    int getCorrectCount(int relID, int currQnID, int currQnnID);
 
 //    Used in andLogic and orLogic
     @Query("SELECT COUNT(resp.q_id) FROM responses AS resp " +
@@ -33,8 +33,8 @@ public interface QuestionRelationDao
             "AND resp.ans_id = qrel.rel_ans_id " +
             "WHERE resp.patient_id = :patientID " +
             "AND resp.q_id = :checkQuestion " +
-            "AND resp.qnnaire_id = :currQnn")
-    int responseCount(int patientID, int checkQuestion, int currQnn);
+            "AND resp.qnnaire_id = :currQnnID")
+    int getResponseCount(String patientID, int checkQuestion, int currQnnID);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<QuestionRelationTable> questionRelations);

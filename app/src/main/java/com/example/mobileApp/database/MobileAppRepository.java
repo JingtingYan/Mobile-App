@@ -1,9 +1,12 @@
 package com.example.mobileApp.database;
 
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.util.Log;
 
 import com.example.mobileApp.database.entity.AnswerTable;
+import com.example.mobileApp.database.entity.HouseholdTable;
 import com.example.mobileApp.database.entity.LocationTable;
 import com.example.mobileApp.database.entity.LogicTable;
 import com.example.mobileApp.database.entity.QuestionAnswerTable;
@@ -37,6 +40,8 @@ public class MobileAppRepository {
     private MobileAppDatabase db;
     private ExecutorService executor = Executors.newFixedThreadPool(1);
 
+    // class-scope variables used to implement skip logic
+    private static int is_done;
 
     public static MobileAppRepository getInstance(Context context) {
         if (repoInstance == null) {
@@ -320,103 +325,191 @@ public class MobileAppRepository {
     }
 
 
+    /* check skip logic */
+    /* check NEXT type of logic */
+    private boolean satisfyNEXTLogic(int relAnsID, int currQnID, String patientID, int currQnnID) throws ExecutionException, InterruptedException {
+        List<Integer> responses = getResponsesForCurrQuestion(patientID, currQnID, currQnnID);
+        for (Integer response : responses) {
+            if (response == relAnsID) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /* helper function for checking NEXT type of logic */
+    private List<Integer> getResponsesForCurrQuestion(String patientID, int currQnID, int currQnnID) throws ExecutionException, InterruptedException {
+        Future<List<Integer>> task = executor.submit(() -> db.responseDao().getResponsesForCurrQuestion(patientID, currQnID, currQnnID));
+        return task.get();
+    }
+
+    /* check AND type of logic */
+    private boolean satisfyANDLogic(int relID, int currQnID, int currQnnID, String patientId) throws ExecutionException, InterruptedException {
+        int correctCount = getCorrectCount(relID, currQnID, currQnnID);
+        List<Integer> relQnsID = getDistinctRelQID(relID, currQnID, currQnnID);
+        int count = 0;
+
+        for (int relQnID : relQnsID) {
+            count += getResponseCount(patientId, relQnID, currQnnID);
+        }
+
+        return count == correctCount;
+    }
+
+    /* check OR type of logic */
+    private boolean satisfyORLogic(int relID, int currQnID, int currQnnID, String patientId) throws ExecutionException, InterruptedException {
+        int correctCount = getCorrectCount(relID, currQnID, currQnnID);
+        List<Integer> relQnsID = getDistinctRelQID(relID, currQnID, currQnnID);
+        int count = 0;
+
+        for (int relQnID : relQnsID) {
+            count += getResponseCount(patientId, relQnID, currQnnID);
+        }
+
+        return (count > 0) && (count < correctCount);
+    }
+
+    /* helper functions for checking AND and OR type of logic */
+    private List<Integer> getDistinctRelQID(int relID, int currQnID, int currQnnID) throws ExecutionException, InterruptedException {
+        Future<List<Integer>> task = executor.submit(() -> db.questionRelationDao().getDistinctRelQID(relID, currQnID, currQnnID));
+        return task.get();
+    }
+
+    private int getCorrectCount(int relID, int currQnID, int currQnnID) throws ExecutionException, InterruptedException {
+        Future<Integer> task = executor.submit(() -> db.questionRelationDao().getCorrectCount(relID, currQnID, currQnnID));
+        return task.get();
+    }
+
+    private int getResponseCount(String patientID, int checkQuestion, int currQnnID) throws ExecutionException, InterruptedException {
+        Future<Integer> task = executor.submit(() -> db.questionRelationDao().getResponseCount(patientID, checkQuestion, currQnnID));
+        return task.get();
+    }
+
+
     /* methods used to load data for HouseholdCreateFragment */
     public Question loadFirstQuestion(Integer qnnID) throws ExecutionException, InterruptedException {
-        Log.i("Repo", "call loadFirstQuestion");    // debug
 
         Integer firstQnID = getFirstQnID(qnnID);
         List<Answer> answers = getQnAns(firstQnID, qnnID);
 
         Future<Question> task = executor.submit(() -> {
             QuestionTable questionTable = db.questionDao().getQuestion(firstQnID, qnnID);
-            Log.i("Repo - get the first question: ", questionTable.getQuestion_string());   // debug
             return new Question(questionTable.getQuestion_id(), questionTable.getQuestion_string(),
                     questionTable.getQuestion_instruction(), questionTable.getQ_type_id(),
                     answers, questionTable.getQuestion_media());
         });
-
-        Log.i("Repo", "finish loadFirstQuestion");    // debug
         return task.get();
     }
 
     // helper function to get the first question in a questionnaire
     // getFirstQnID queries in the QuestionTable and returns the questionID for the first question
     private Integer getFirstQnID(Integer qnnID) throws ExecutionException, InterruptedException {
-        Log.i("Repo", "call getFirstQnID");    // debug
         Future<Integer> task =executor.submit(() -> {
-            List<Integer> qnIDs = db.questionDao().getAllQnsID(qnnID);
-            Log.i("Repo - the no. of qns in qnn is: ", String.valueOf(qnIDs.size()));   // debug
-            Log.i("Repo - FirstQnID is:", qnIDs.get(0).toString());    // debug
-            return qnIDs.get(0);
+            LogicTable firstQn = db.logicDao().getFirstQn(qnnID);
+            return firstQn.getQ_id();
         });
-
-        Log.i("Repo", "finish getFirstQnID");    // debug
         return task.get();
     }
 
-    // this method may need to be modified later
-    public Question loadNextQuestion(Integer currQnID, Integer qnnID) throws ExecutionException, InterruptedException {
-        Log.i("Repo", "call loadNextQuestion");    // debug
-        Integer nextQnID = getNextQnID(currQnID, qnnID);
-        List<Answer> answers = getQnAns(nextQnID, qnnID);
+
+    public Question loadNextQuestion(String patientID, int currQnID, int currQnnID) throws ExecutionException, InterruptedException {
+        Integer nextQnID = getNextQnID(patientID, currQnID, currQnnID);
+        List<Answer> answers = getQnAns(nextQnID, currQnnID);
 
         Future<Question> task = executor.submit(() -> {
-           QuestionTable questionTable = db.questionDao().getQuestion(nextQnID, qnnID);
+           QuestionTable questionTable = db.questionDao().getQuestion(nextQnID, currQnnID);
             return new Question(questionTable.getQuestion_id(), questionTable.getQuestion_string(),
                                 questionTable.getQuestion_instruction(), questionTable.getQ_type_id(),
                                 answers, questionTable.getQuestion_media());
         });
-
-        Log.i("Repo", "finish loadNextQuestion");    // debug
         return task.get();
     }
+//
+//    // this method needs to be modified later - include AND, OR type
+//    public Integer getNextQnID(Integer currQnID, Integer currQnnID) throws ExecutionException, InterruptedException {
+//        Future<Integer> task = executor.submit(() -> {
+//            List<Integer> qnsID = db.logicDao().getNextQnsID(currQnID, currQnnID);
+//            return qnsID.get(0);
+//        });
+//
+//        return task.get();
+//    }
 
-    // this method needs to be modified later - include AND, OR type
-    public Integer getNextQnID(Integer currQnID, Integer currQnnID) throws ExecutionException, InterruptedException {
-        Log.i("Repo", "call getNextQnID");    // debug
-        Future<Integer> task = executor.submit(() -> {
-            List<Integer> qnsID = db.logicDao().getNextQnsID(currQnID, currQnnID);
-            return qnsID.get(0);
-        });
+    public Integer getNextQnID(String patientID, int currQnID, int currQnnID) throws ExecutionException, InterruptedException {
+        List<LogicTable> logicObjects = getLogicObjects(currQnID, currQnnID);
+        int resultSeqNum = 0;
+        int nextQnID = 0;
 
-        Log.i("Repo", "finish getNextQnID");    // debug
+        for (LogicTable logic : logicObjects) {
+            switch (logic.getRel_type()) {
+                case ("NEXT"):
+                    if (satisfyNEXTLogic(logic.getRel_ans_id(), currQnID, patientID, currQnnID)) {
+                        if ((logic.getSequence_num() < resultSeqNum) || (resultSeqNum == 0)) {
+                            nextQnID = logic.getNext_q_id();
+                            resultSeqNum = logic.getSequence_num();
+                        }
+                    }
+                    break;
+
+                case ("AND"):
+                    if (satisfyANDLogic(logic.getRel_id(), currQnID, currQnnID, patientID)) {
+                        if ((logic.getSequence_num() < resultSeqNum) || (resultSeqNum == 0)) {
+                            nextQnID = logic.getNext_q_id();
+                            resultSeqNum = logic.getSequence_num();
+                        }
+                    }
+                    break;
+
+                case ("OR"):
+                    if (satisfyORLogic(logic.getRel_id(), currQnID, currQnnID, patientID)) {
+                        if ((logic.getSequence_num() < resultSeqNum) || (resultSeqNum == 0)) {
+                            nextQnID = logic.getNext_q_id();
+                            resultSeqNum = logic.getSequence_num();
+                        }
+                    }
+                    break;
+
+                default:    // no skip logic
+                    if ((logic.getSequence_num() < resultSeqNum) || (resultSeqNum == 0)) {
+                        nextQnID = logic.getNext_q_id();
+                        resultSeqNum = logic.getSequence_num();
+                    }
+                    break;
+            }
+        }
+        return nextQnID;
+    }
+
+    private List<LogicTable> getLogicObjects(int currQnID, int currQnnID) throws ExecutionException, InterruptedException {
+        Future<List<LogicTable>> task = executor.submit(() -> db.logicDao().getLogicObjects(currQnID, currQnnID));
         return task.get();
     }
 
     private List<Answer> getQnAns(Integer qnID, Integer currQnnID) throws ExecutionException, InterruptedException {
-        Log.i("Repo", "call getQnAns");    // debug
         List<Answer> result = new ArrayList<>();
         List<Integer> ansIDs = getAllAnsID(qnID, currQnnID);
-        Log.i("Repo - all ans IDs are", ansIDs.toString());     // debug
 
         for (Integer ansID : ansIDs) {
             result.add(getSingleAns(ansID, currQnnID));
         }
-
-        Log.i("Repo", "finish getQnAns");    // debug
         return result;
     }
 
     // helper function to get all answer choices for a question
     // getAllAnsID queries in the QuestionAnswerTable and returns the ID for all the answer choices for a question
     private List<Integer> getAllAnsID(Integer qnID, Integer qnnID) throws ExecutionException, InterruptedException {
-        Log.i("Repo", "call getAllAnsID");  // debug
         Future<List<Integer>> task = executor.submit(() -> db.questionAnswerDao().getAllAnsID(qnID, qnnID));
-        Log.i("Repo", "finish getAllAnsID");  // debug
         return task.get();
     }
 
     // helper function to get all answer choices for a question
     // getSingleAns queries in the AnswerTable and creates an Answer object of a given answer ID
     private Answer getSingleAns(Integer ansID, Integer qnnID) throws ExecutionException, InterruptedException {
-        Log.i("Repo", "call getSingleAns");    // debug
         Future<Answer> task = executor.submit(() -> {
             AnswerTable answerTable = db.answerDao().getAnswer(ansID, qnnID);
-            Log.i("Repo - get the single answer choice: ", answerTable.getAnswer_string());     // debug
             return new Answer(answerTable.getAnswer_id(), answerTable.getAnswer_string());
         });
 
-        Log.i("Repo", "finish getSingleAns");    // debug
         return task.get();
     }
 
@@ -425,10 +518,22 @@ public class MobileAppRepository {
         executor.execute(() -> db.responseDao().insertAll(responseTables));
     }
 
+    public void storeHouseholdToDb(HouseholdTable household) {
+        executor.execute(() -> db.householdDao().insert(household));
+    }
+
     private int getResponseTableLastIndex() throws ExecutionException, InterruptedException {
         Future<Integer> task = executor.submit(() -> {
             int responseCount = db.responseDao().countAllResponses();
             return (responseCount == 0) ? 0 : (responseCount - 1);
+        });
+        return task.get();
+    }
+
+    public int getHouseholdTableLastIndex() throws ExecutionException, InterruptedException {
+        Future<Integer> task = executor.submit(() -> {
+            int householdCount = db.householdDao().countAllHouseholds();
+            return (householdCount == 0) ? 0 : householdCount;
         });
         return task.get();
     }

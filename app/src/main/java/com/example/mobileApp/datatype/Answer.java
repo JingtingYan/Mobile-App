@@ -20,8 +20,7 @@ public class Answer {
         return answerString;
     }
 
-    // Override the toString() method because the ArrayAdapter will display
-    // the toString of the given Answer object.
+    // Override the toString() method to return the answer string of a given Answer object.
     @Nonnull
     @Override
     public String toString() {

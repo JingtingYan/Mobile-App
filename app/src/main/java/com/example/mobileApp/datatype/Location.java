@@ -20,8 +20,7 @@ public class Location {
         return locationName;
     }
 
-    // Override the toString() method because the ArrayAdapter will display
-    // the toString of the given Location object.
+    // Override the toString() method to return the location name of a given Location object.
     @Nonnull
     @Override
     public String toString() {

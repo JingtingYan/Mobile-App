@@ -48,7 +48,7 @@ public class OverflowMenuActivity extends AppCompatActivity {
                 return true;
 
             case (R.id.action_logout):
-                // check if has already login first
+                // reset token, enumeratorID
                 Toast.makeText(this, "clicked Logout", Toast.LENGTH_SHORT).show();  // debug
                 return true;
 

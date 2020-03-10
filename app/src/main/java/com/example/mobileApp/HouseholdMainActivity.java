@@ -71,8 +71,8 @@ public class HouseholdMainActivity extends NavigationDrawerActivity {
      * This method is called to load selected location information in the project header.
      */
     private void setProjectLocation() {
-        projectLocation.get(0).setText(Constants.getCountry());
-        projectLocation.get(1).setText(Constants.getRegion());
-        projectLocation.get(2).setText(Constants.getCluster());
+        projectLocation.get(0).setText(Constants.getCountry().getLocationName());
+        projectLocation.get(1).setText(Constants.getRegion().getLocationName());
+        projectLocation.get(2).setText(Constants.getCluster().getLocationName());
     }
 }

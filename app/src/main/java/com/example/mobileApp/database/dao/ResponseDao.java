@@ -36,4 +36,14 @@ public interface ResponseDao
 
     @Query("DELETE FROM responses")
     void deleteAll();
+
+    /**
+     *
+     * @param patientID
+     * @param currQnID
+     * @param currQnnID
+     * @return
+     */
+    @Query("SELECT ans_id FROM responses AS resp WHERE resp.patient_id = :patientID AND resp.q_id = :currQnID AND resp.qnnaire_id = :currQnnID")
+    List<Integer> getResponsesForCurrQuestion(String patientID, int currQnID, int currQnnID);
 }

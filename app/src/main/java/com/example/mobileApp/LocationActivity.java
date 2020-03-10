@@ -47,7 +47,7 @@ public class LocationActivity extends NavigationDrawerActivity {
     @BindView(R.id.bn_location_next) Button bnNext;
 
     private LocationViewModel locationViewModel;
-    private static String country, region, cluster;
+    private static Location country, region, cluster;
 
     /**
      * This method is called when the Location Activity is first created.
@@ -69,9 +69,9 @@ public class LocationActivity extends NavigationDrawerActivity {
         ButterKnife.bind(this);
 
         // initialise the selected location values to be empty
-        country = "";
-        region = "";
-        cluster = "";
+        country = null;
+        region = null;
+        cluster = null;
 
         initViewModel();
 
@@ -215,7 +215,7 @@ public class LocationActivity extends NavigationDrawerActivity {
         Location selectedCountry = (Location) spinner.getItemAtPosition(position);
         if (position > 0) {     // the selected item is not the hint
             Integer countryID = selectedCountry.getLocationID();
-            country = selectedCountry.getLocationName();
+            country = selectedCountry;
             locationViewModel.loadRegionSpinner(countryID);
         }
     }
@@ -232,7 +232,7 @@ public class LocationActivity extends NavigationDrawerActivity {
         Location selectedRegion = (Location) spinner.getItemAtPosition(position);
         if (position > 0) {     // the selected item is not the hint
             Integer regionID = selectedRegion.getLocationID();
-            region = selectedRegion.getLocationName();
+            region = selectedRegion;
             locationViewModel.loadClusterSpinner(regionID);
         }
     }
@@ -246,8 +246,7 @@ public class LocationActivity extends NavigationDrawerActivity {
         // call getItemAtPosition(position) to access the data associated with the selected item
         Location selectedCluster = (Location) spinner.getItemAtPosition(position);
         if (position > 0) {     // the selected item is not the hint
-            //Integer clusterID = selectedCluster.getLocationID();
-            cluster = selectedCluster.getLocationName();
+            cluster = selectedCluster;
         }
     }
 
