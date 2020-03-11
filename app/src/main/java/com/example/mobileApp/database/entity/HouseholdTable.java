@@ -2,11 +2,8 @@ package com.example.mobileApp.database.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
-
-import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "households",
         indices = {@Index("parent_loc_id"),
@@ -30,11 +27,11 @@ public class HouseholdTable {
     //    REQUIRED
     private String date;
 
-    private String village_name;
+    private String village_street_name;
 
-    private String street_name;
+    private String gps_latitude;
 
-    private String gps_coord;
+    private String gps_longitude;
 
     //    REQUIRED
     private String availability;
@@ -97,12 +94,14 @@ public class HouseholdTable {
 
 
     // select several main attributes as the constructor for household
-    public HouseholdTable(@NonNull String household_id, Integer parent_loc_id, String enum_id, String date, String gps_coord) {
+    public HouseholdTable(@NonNull String household_id, Integer parent_loc_id, String enum_id,
+                          String date, String gps_latitude, String gps_longitude) {
         this.household_id = household_id;
         this.parent_loc_id = parent_loc_id;
         this.enum_id = enum_id;
         this.date = date;
-        this.gps_coord = gps_coord;
+        this.gps_latitude = gps_latitude;
+        this.gps_longitude = gps_longitude;
     }
 
     /* getter and setter */
@@ -112,56 +111,40 @@ public class HouseholdTable {
         return household_id;
     }
 
-    public void setHousehold_id(@NonNull String household_id) {
-        this.household_id = household_id;
-    }
-
     public Integer getParent_loc_id() {
         return parent_loc_id;
-    }
-
-    public void setParent_loc_id(Integer parent_loc_id) {
-        this.parent_loc_id = parent_loc_id;
     }
 
     public String getEnum_id() {
         return enum_id;
     }
 
-    public void setEnum_id(String enum_id) {
-        this.enum_id = enum_id;
-    }
-
     public String getDate() {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public String getVillage_street_name() {
+        return village_street_name;
     }
 
-    public String getVillage_name() {
-        return village_name;
+    public void setVillage_street_name(String village_street_name) {
+        this.village_street_name = village_street_name;
     }
 
-    public void setVillage_name(String village_name) {
-        this.village_name = village_name;
+    public String getGps_latitude() {
+        return gps_latitude;
     }
 
-    public String getStreet_name() {
-        return street_name;
+    public void setGps_latitude(String gps_latitude) {
+        this.gps_latitude = gps_latitude;
     }
 
-    public void setStreet_name(String street_name) {
-        this.street_name = street_name;
+    public String getGps_longitude() {
+        return gps_longitude;
     }
 
-    public String getGps_coord() {
-        return gps_coord;
-    }
-
-    public void setGps_coord(String gps_coord) {
-        this.gps_coord = gps_coord;
+    public void setGps_longitude(String gps_longitude) {
+        this.gps_longitude = gps_longitude;
     }
 
     public String getAvailability() {

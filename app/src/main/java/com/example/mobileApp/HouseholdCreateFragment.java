@@ -157,6 +157,7 @@ public class HouseholdCreateFragment extends Fragment implements LocationListene
             case (3):
                 //Toast.makeText(requireContext(), "TextQn Response is: " + TextAnsFragment.getAnswer(), Toast.LENGTH_SHORT).show();
                 householdCreateViewModel.allResponses.add(TextAnsFragment.responseString);
+                TextAnsFragment.responseString = "";    // reset
                 break;
             default:
                 break;
@@ -177,9 +178,8 @@ public class HouseholdCreateFragment extends Fragment implements LocationListene
 
     @Override
     public void onLocationChanged(Location location) {
-        //Log.i("GPS latitude", String.valueOf(location.getLatitude()));    // debug
-        //Log.i("GPS longitude", String.valueOf(location.getLongitude()));  // debug
-        householdCreateViewModel.setGPSCoordinates("latitude: " + location.getLatitude() + ", longitude: " + location.getLongitude());
+        householdCreateViewModel.setGpsLatitude(String.valueOf(location.getLatitude()));
+        householdCreateViewModel.setGpsLongitude(String.valueOf(location.getLongitude()));
     }
 
     @Override

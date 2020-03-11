@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.android.volley.Request;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.example.mobileApp.utilities.Constants;
@@ -14,10 +15,13 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -34,6 +38,7 @@ import static com.example.mobileApp.utilities.Constants.GET_QA_URL;
 import static com.example.mobileApp.utilities.Constants.GET_QUESTIONNAIRE_URL;
 import static com.example.mobileApp.utilities.Constants.GET_QUESTION_RELATION_URL;
 import static com.example.mobileApp.utilities.Constants.GET_QUESTION_URL;
+import static com.example.mobileApp.utilities.Constants.POST_HOUSEHOLD_URL;
 import static com.example.mobileApp.utilities.Constants.POST_RESPONSE_URL;
 
 /**
@@ -132,7 +137,8 @@ public class DataSyncActivity extends OverflowMenuActivity {
      *  - Response Table
      */
     @OnClick(R.id.bn_data_sync_upload_data) void onClickUpload() {
-        uploadResponseData();
+        //uploadResponseData();
+        uploadHouseholdData();
     }
 
     /**
@@ -160,7 +166,8 @@ public class DataSyncActivity extends OverflowMenuActivity {
         deleteQAData();
         deleteLogicData();
         deleteQuestionRelationData();
-        deleteResponseData();
+        deleteResponseData();   // need to be modified later
+        //deleteHouseholdData();  // need to be removed later
     }
 
     /**
@@ -357,10 +364,10 @@ public class DataSyncActivity extends OverflowMenuActivity {
                 response -> {
                     Toast.makeText(getApplicationContext(),
                             "Successfully uploaded responses data. " + response, Toast.LENGTH_SHORT).show();
-                    txtDebug.setText(String.valueOf(response));     // debug
+                    //txtDebug.setText(String.valueOf(response));     // debug
                     // delete local Response table
                 }, error -> {
-                    //Toast.makeText(getApplicationContext(), String.valueOf(error), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), String.valueOf(error), Toast.LENGTH_SHORT).show();
                     txtDebug.setText(String.valueOf(error));    // debug
                 }) {
                     @Override
@@ -372,6 +379,40 @@ public class DataSyncActivity extends OverflowMenuActivity {
                 };
         responseUploadRequest.setTag("Upload Response Table Data to Server Db");
         MySingleton.getInstance(this.getApplicationContext()).addToRequestQueue(responseUploadRequest);
+    }
+
+    private void uploadHouseholdData() {
+        JSONArray householdJsonArray = dataSyncViewModel.getHouseholdJSONArray();
+
+        JsonArrayRequest householdUploadRequest = new JsonArrayRequest(Request.Method.POST, POST_HOUSEHOLD_URL, householdJsonArray,
+                response -> {
+                    Toast.makeText(getApplicationContext(), "Successfully uploaded households data.", Toast.LENGTH_SHORT).show();
+
+                    //Log.i("confirmed household response", response.toString());     // debug
+
+                    // delete local Household table
+                    try {
+                        deleteConfirmedHouseholdData(response);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }, error -> {
+                    Toast.makeText(getApplicationContext(), String.valueOf(error), Toast.LENGTH_SHORT).show();
+                    txtDebug.setText(String.valueOf(error));    // debug
+                }) {
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> headers = new HashMap<>();
+                        headers.put("Authorization", "Token " + Constants.getToken());
+                        return headers;
+                    }
+                };
+        householdUploadRequest.setTag("Upload Household Table Data to Server Db");
+        MySingleton.getInstance(this.getApplicationContext()).addToRequestQueue(householdUploadRequest);
+    }
+
+    private void deleteConfirmedHouseholdData(JSONArray response) throws JSONException {
+        dataSyncViewModel.deleteConfirmedHouseholdData(response);
     }
 
 
@@ -531,5 +572,9 @@ public class DataSyncActivity extends OverflowMenuActivity {
      */
     private void deleteResponseData() {
         dataSyncViewModel.deleteResponseData();
+    }
+
+    private void deleteHouseholdData() {
+        dataSyncViewModel.deleteHouseholdData();
     }
 }

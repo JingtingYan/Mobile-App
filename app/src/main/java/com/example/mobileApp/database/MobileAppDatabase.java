@@ -60,7 +60,7 @@ import com.example.mobileApp.database.entity.LogicTable;
                       CauseOfDiseaseTable.class,
                       AssistiveTechnologyTable.class},
           exportSchema = false,
-          version = 10)
+          version = 11)
 @TypeConverters({LocalDateTypeConverter.class})
 public abstract class MobileAppDatabase extends RoomDatabase {
 

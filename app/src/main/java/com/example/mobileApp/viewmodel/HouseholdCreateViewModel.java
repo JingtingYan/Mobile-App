@@ -11,12 +11,15 @@ import com.example.mobileApp.database.MobileAppRepository;
 import com.example.mobileApp.database.entity.HouseholdTable;
 import com.example.mobileApp.datatype.Answer;
 import com.example.mobileApp.datatype.Question;
-import com.example.mobileApp.datatype.Response;
 import com.example.mobileApp.utilities.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import static com.example.mobileApp.utilities.Constants.DEFAULT_QN_INSTRUCTION_MCQ;
+import static com.example.mobileApp.utilities.Constants.DEFAULT_QN_INSTRUCTION_SCQ;
+import static com.example.mobileApp.utilities.Constants.DEFAULT_QN_INSTRUCTION_TEXT_ENTRY;
 
 public class HouseholdCreateViewModel extends AndroidViewModel {
 
@@ -26,7 +29,8 @@ public class HouseholdCreateViewModel extends AndroidViewModel {
     private static Integer prevQnID;
     public MutableLiveData<String> qnInstruction = new MutableLiveData<>();
     public MutableLiveData<String> qnString = new MutableLiveData<>();
-    private String GPSCoordinates;
+    private String gpsLatitude;
+    private String gpsLongitude;
 
     public volatile List<String> allResponses = new ArrayList<>();
 
@@ -36,16 +40,15 @@ public class HouseholdCreateViewModel extends AndroidViewModel {
         repo = MobileAppRepository.getInstance(application.getApplicationContext());
     }
 
-    public String getGPSCoordinates() {
-        return GPSCoordinates;
+    public void setGpsLatitude(String gpsLatitude) {
+        this.gpsLatitude = gpsLatitude;
     }
 
-    public void setGPSCoordinates(String GPSCoordinates) {
-        this.GPSCoordinates = GPSCoordinates;
+    public void setGpsLongitude(String gpsLongitude) {
+        this.gpsLongitude = gpsLongitude;
     }
 
-
-    // new HouseholdID = CountryID ++ RegionID ++ ClusterID ++ EnumID ++ LatestIndexInHHTABLEServer
+    // new HouseholdID = CountryID ++ RegionID ++ ClusterID ++ ++ LatestIndexInHHTABLEServer
     public String generateNewHouseholdID() {
         int lastHHIndex = -1;
         try {
@@ -53,15 +56,29 @@ public class HouseholdCreateViewModel extends AndroidViewModel {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
+        return (Constants.getCountry().getLocationID().toString()) + (Constants.getRegion().getLocationID().toString()) +
+               (Constants.getCluster().getLocationID().toString()) + (lastHHIndex + 1);
+    }
 
-        Log.i("last hh ID", String.valueOf(lastHHIndex));   // debug
-
-        String newHHID = (Constants.getCountry().getLocationID().toString()) + (Constants.getRegion().getLocationID().toString()) +
-               (Constants.getCluster().getLocationID().toString()) + (Constants.getEnumeratorID()) + (lastHHIndex + 1);
-
-        Log.i("generate new hh ID", newHHID);   // debug
-
-        return newHHID;
+    /**
+     * This method is used to set question instruction for a certain question.
+     * If not specified, the app would set the pre-defined question instruction for each type of question.
+     * @return The question instruction that is going to be set.
+     */
+    private String setQnInstruction() {
+        if (!currQn.getQuestionInstruction().equals("")) {
+            return currQn.getQuestionInstruction();
+        }
+        switch (getQnType()) {
+            case (1):
+                return DEFAULT_QN_INSTRUCTION_SCQ;
+            case (2):
+                return DEFAULT_QN_INSTRUCTION_MCQ;
+            case (3):
+                return DEFAULT_QN_INSTRUCTION_TEXT_ENTRY;
+            default:
+                return "";
+        }
     }
 
     public void loadFirstQuestion() {
@@ -71,7 +88,7 @@ public class HouseholdCreateViewModel extends AndroidViewModel {
             e.printStackTrace();
         }
         prevQnID = currQn.getQuestionID();
-        qnInstruction.postValue(currQn.getQuestionInstruction());
+        qnInstruction.postValue(setQnInstruction());
         qnString.postValue(currQn.getQuestionString());
     }
 
@@ -105,16 +122,15 @@ public class HouseholdCreateViewModel extends AndroidViewModel {
             e.printStackTrace();
         }
         prevQnID = currQn.getQuestionID();
-        qnInstruction.postValue(currQn.getQuestionInstruction());
+        qnInstruction.postValue(setQnInstruction());
         qnString.postValue(currQn.getQuestionString());
     }
 
     public void storeResponsesToDb() {
         HouseholdTable householdTable = new HouseholdTable(generateNewHouseholdID(), Constants.getCluster().getLocationID(),
-                Constants.getEnumeratorID(), Constants.getHouseholdRosterQuestionnaireDate(), GPSCoordinates);
+                Constants.getEnumeratorID(), Constants.getHouseholdRosterQuestionnaireDate(), gpsLatitude, gpsLongitude);
 
-        householdTable.setVillage_name(allResponses.get(0));
-        householdTable.setStreet_name(allResponses.get(0));     // need to change this later
+        householdTable.setVillage_street_name(allResponses.get(0));
         householdTable.setAvailability(allResponses.get(1));
         householdTable.setReason_refusal(allResponses.get(2));
         householdTable.setVisit_num(Integer.parseInt(allResponses.get(3)));

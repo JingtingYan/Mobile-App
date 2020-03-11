@@ -134,6 +134,10 @@ public class MobileAppRepository {
         executor.execute(() -> db.responseDao().deleteAll());
     }
 
+    public void deleteHouseholdData() {
+        executor.execute(() -> db.householdDao().deleteAll());
+    }
+
     public void addLocationData(String jsonArray) throws JSONException {
         List<LocationTable> locationTables = parseLocationJSONArray(jsonArray);
         executor.execute(() -> db.locationDao().insertAll(locationTables));
@@ -322,6 +326,15 @@ public class MobileAppRepository {
     public List<ResponseTable> getResponses() throws ExecutionException, InterruptedException {
         Future<List<ResponseTable>> task = executor.submit(() -> db.responseDao().getAllResponses());
         return task.get();
+    }
+
+    public List<HouseholdTable> getAllHouseholds() throws ExecutionException, InterruptedException {
+        Future<List<HouseholdTable>> task = executor.submit(() -> db.householdDao().getAllHouseholds());
+        return task.get();
+    }
+
+    public void deleteSingleHousehold(String householdID) {
+        executor.execute(() -> db.householdDao().deleteSingleHousehold(householdID));
     }
 
 

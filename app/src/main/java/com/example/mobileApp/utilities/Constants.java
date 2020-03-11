@@ -117,11 +117,16 @@ public class Constants {
     public static final String GET_QUESTION_RELATION_URL = "http://10.0.2.2:8000/tables/QRel/";
 
     public static final String POST_RESPONSE_URL = "http://10.0.2.2:8000/tables/Response/";
+    public static final String POST_HOUSEHOLD_URL = "http://10.0.2.2:8000/tables/Household/";
     // add other APIs route here in the future
 
     // Questionnaires
     public static final int HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID = 1;
     public static final int GENERAL_WASHINGTON_GROUP_QUESTIONNAIRE_ID = 2;
     public static final int MOBILITY_QUESTIONNAIRE_ID = 3;
+
+    public static final String DEFAULT_QN_INSTRUCTION_TEXT_ENTRY = "This is a text entry question. Please enter the response in the text field then click NEXT.";
+    public static final String DEFAULT_QN_INSTRUCTION_SCQ = "This is a single choice question. Please select one answer choice from the dropdown list then click NEXT.";
+    public static final String DEFAULT_QN_INSTRUCTION_MCQ = "This is a multiple choice question. Please select appropriate answers by ticking the checkbox then click NEXT.";
     // add other questionnaires' ID here in the future
 }
