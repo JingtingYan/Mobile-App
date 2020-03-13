@@ -1,6 +1,5 @@
 package com.example.mobileApp;
 
-
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,48 +14,59 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.mobileApp.datatype.HouseholdRecyclerViewItem;
+import com.example.mobileApp.datatype.PatientRecyclerViewItem;
 import com.example.mobileApp.utilities.Constants;
-import com.example.mobileApp.viewmodel.HouseholdRecyclerAdapter;
-import com.example.mobileApp.viewmodel.HouseholdSearchViewModel;
+import com.example.mobileApp.viewmodel.PatientRecyclerAdapter;
+import com.example.mobileApp.viewmodel.SingleHouseholdViewModel;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HouseholdSearchFragment extends Fragment {
+public class SingleHouseholdFragment extends Fragment {
 
-    @BindView(R.id.recycler_view_hh) RecyclerView householdRecyclerView;
+    @BindView(R.id.txt_single_hh_loc) TextView txtHouseholdLocation;
+    @BindView(R.id.txt_single_hh_informant) TextView txtHouseholdInformant;
+    @BindView(R.id.recycler_view_patients) RecyclerView patientsRecyclerView;
+    @BindView(R.id.bn_hh_add_patient) Button bnAddPatient;
 
-    private HouseholdSearchViewModel householdSearchViewModel;
+    private SingleHouseholdViewModel singleHouseholdViewModel;
 
-    private HouseholdRecyclerAdapter adapter;
+    private PatientRecyclerAdapter adapter;
 
-    public HouseholdSearchFragment() {
+    public SingleHouseholdFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_household_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_single_household, container, false);
 
         ButterKnife.bind(this, view);
 
-        // refer to the current options menu - used to set the SearchView later
         setHasOptionsMenu(true);
 
-        requireActivity().setTitle(R.string.title_choose_hh);
+        requireActivity().setTitle("Household: " + Constants.getCurrentHouseholdID());
+
+        // reset TextViews to be blank
+        txtHouseholdLocation.setText("");
+        txtHouseholdInformant.setText("");
 
         initViewModel();
+
+        loadHouseholdInfo();
 
         initRecyclerView();
 
@@ -64,28 +74,29 @@ public class HouseholdSearchFragment extends Fragment {
     }
 
     private void initViewModel() {
-        householdSearchViewModel = new ViewModelProvider(requireActivity()).get(HouseholdSearchViewModel.class);
+        singleHouseholdViewModel = new ViewModelProvider(requireActivity()).get(SingleHouseholdViewModel.class);
+    }
+
+    private void loadHouseholdInfo() {
+        singleHouseholdViewModel.loadCurrentHousehold();
+        txtHouseholdLocation.setText(singleHouseholdViewModel.getHouseholdLocation());
+        txtHouseholdInformant.setText(singleHouseholdViewModel.getHouseholdInformant());
     }
 
     private void initRecyclerView() {
-        List<HouseholdRecyclerViewItem> hhItems = householdSearchViewModel.loadHouseholds();
+        List<PatientRecyclerViewItem> patientItems = singleHouseholdViewModel.loadPatients();
 
-        // setHasFixedSize = true means the RecyclerView won't change size no matter how many items it may contain.
-        householdRecyclerView.setHasFixedSize(true);
+        patientsRecyclerView.setHasFixedSize(true);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
-        adapter = new HouseholdRecyclerAdapter(hhItems);
+        adapter = new PatientRecyclerAdapter(patientItems);
 
-        householdRecyclerView.setLayoutManager(layoutManager);
-        householdRecyclerView.setAdapter(adapter);
+        patientsRecyclerView.setLayoutManager(layoutManager);
+        patientsRecyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(position -> {
-            Constants.setCurrentHouseholdID(hhItems.get(position).getHouseholdID());
-            //Toast.makeText(requireContext(), "clicked hh ID: " + hhItems.get(position).getHouseholdID(), Toast.LENGTH_SHORT).show();    // debug
-
-            // display patients information for the selected household
-            HouseholdMainActivity.fragmentManager.beginTransaction()
-                    .replace(R.id.household_fragment_container, new SingleHouseholdFragment()).commit();
+            Constants.setCurrentPatientID(patientItems.get(position).getPatientID());
+            Toast.makeText(requireContext(), "clicked patient id: " + patientItems.get(position).getPatientID(), Toast.LENGTH_SHORT).show();    // debug
         });
     }
 
@@ -96,7 +107,7 @@ public class HouseholdSearchFragment extends Fragment {
         final SearchView searchView = (SearchView) searchItem.getActionView();
         searchItem.setVisible(true);
         searchView.setVisibility(View.VISIBLE);
-        searchView.setQueryHint("Search hh location/informant...");
+        searchView.setQueryHint("Search patient id or name...");
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -114,5 +125,9 @@ public class HouseholdSearchFragment extends Fragment {
         });
 
         super.onPrepareOptionsMenu(menu);
+    }
+
+    @OnClick(R.id.bn_hh_add_patient) void onClickAddPatient() {
+
     }
 }

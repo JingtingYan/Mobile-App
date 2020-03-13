@@ -54,10 +54,10 @@ import static com.example.mobileApp.utilities.Constants.POST_RESPONSE_URL;
  *  @version 1.0
  *  @since March 2020
  */
-public class DataSyncActivity extends OverflowMenuActivity {
+public class DataSyncActivity extends NavigationDrawerActivity {
 
     /* class-scope variables */
-    @BindView(R.id.toolbar) Toolbar toolbar;
+//    @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.bn_data_sync_download_data) Button bnDownload;
     @BindView(R.id.bn_data_sync_upload_data) Button bnUpload;
     @BindView(R.id.bn_data_sync_delete_data) Button bnDelete;
@@ -79,21 +79,14 @@ public class DataSyncActivity extends OverflowMenuActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_data_sync);
+        // Inflate the LocationActivity layout into NavigationDrawerActivity's FrameLayout placeholder.
+        getLayoutInflater().inflate(R.layout.activity_data_sync, frameLayout);
 
         // Call ButterKnife to automatically cast and bind the view ID with variables.
         ButterKnife.bind(this);
 
-        // Set a Toolbar to act as the ActionBar for this Activity window.
-        setSupportActionBar(toolbar);
         // Customise this Activity's title in Toolbar.
-        DataSyncActivity.this.setTitle("Data Sync Activity");
-
-        // Add the parent activity (the MainActivity) to DataSyncActivity.
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        DataSyncActivity.this.setTitle(R.string.title_activity_data_sync);
 
         initViewModel();
     }
@@ -175,7 +168,7 @@ public class DataSyncActivity extends OverflowMenuActivity {
      * It proceeds to Location Selection Activity.
      */
     @OnClick(R.id.bn_data_sync_next) void onClickNext() {
-        Intent intent = new Intent(this, LocationActivity.class);
+        Intent intent = new Intent(this, HouseholdMainActivity.class);
         startActivity(intent);
     }
 

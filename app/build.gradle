@@ -47,6 +47,9 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     // required dependency for customised toolbar
     implementation 'androidx.appcompat:appcompat:1.1.0'
+    // required dependency for RecyclerView & CardView
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
 
     // JUnit 4 framework
     testImplementation 'junit:junit:4.12'

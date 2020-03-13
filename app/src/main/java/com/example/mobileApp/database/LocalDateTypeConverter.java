@@ -14,23 +14,27 @@ import java.time.format.DateTimeFormatter;
 public class LocalDateTypeConverter {
     @TypeConverter @TargetApi(26)
     public static LocalDate toLocalDate(String dateString) {
-        LocalDate date;
+        if (dateString == null) {
+            // default value is "0000-01-01"
+            return LocalDate.of(0, 1,1);
+        } else {
+            String[] dateComponents = dateString.split("-");
 
-        String[] dateComponents = dateString.split("-");
+            int year = Integer.parseInt(dateComponents[0]);
+            int month = Integer.parseInt(dateComponents[1]);
+            int day = Integer.parseInt(dateComponents[2]);
 
-        int year = Integer.valueOf(dateComponents[0]);
-        int month = Integer.valueOf(dateComponents[1]);
-        int day = Integer.valueOf(dateComponents[2]);
-
-        return date = LocalDate.of(year, month, day);
-
+            return LocalDate.of(year, month, day);
+        }
     }
 
     @TypeConverter @TargetApi(26)
     public static String toStringDate(LocalDate date) {
-        String dateString;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        return dateString = date.format(formatter);
+        if (date == null) {
+            return null;
+        } else {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            return date.format(formatter);
+        }
     }
 }

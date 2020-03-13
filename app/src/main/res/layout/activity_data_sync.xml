@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!-- This xml file defines the layout and contents for Data Sync Activity.
-     This page only contains a toolbar (with a back button that navigates back to User Login page). -->
+     It should contain both the toolbar and the navigation drawer, which are added in the
+     DataSyncActivity.java by extending NavigationDrawerActivity.java. -->
 
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,22 +13,13 @@
     android:background="#2C8E918A"
     tools:context=".DataSyncActivity">
 
-    <!-- The toolbar is displayed at the top -->
-    <include android:id="@+id/include2"
-        layout="@layout/layout_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
     <!-- Add the contents of Data Sync Activity -->
     <Button
         android:id="@+id/bn_data_sync_download_data"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="110dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="80dp"
         android:layout_marginEnd="110dp"
         android:background="#3C03A9F4"
         android:gravity="center"
@@ -36,8 +28,8 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include2"
-        tools:ignore="HardcodedText"/>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/bn_data_sync_upload_data"

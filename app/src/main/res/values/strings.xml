@@ -2,10 +2,12 @@
 
     <!-- Corresponding toolbar title for each Activity or Fragment -->
     <string name="app_name">Mobile App</string>
+    <string name="title_activity_main">User Login</string>
     <string name="title_activity_data_sync">Data Synchronisation</string>
     <string name="title_activity_location">Location Selection</string>
     <string name="title_activity_household_home">Household Home</string>
-    <string name="title_create_hh">HOUSEHOLD ROSTER QUESTIONNAIRE</string>
+    <string name="title_create_hh">HOUSEHOLD ROSTER</string>
+    <string name="title_choose_hh"> Choose A Household </string>
 
 
     <!-- activity_main.xml (login page) -->
@@ -44,43 +46,7 @@
     <string name="hh_finish_prompt">You have finished all the questions in Household Roaster Questionnaire. \n\n
             Click FINISH to create this new household.</string>
 
-    <!-- Household Questionnaire questions (will be removed later) -->
-    <string name="bn_hh_next">Next</string>
-    <string name="interviewer_id">Interviewer ID: </string>
-    <string name="region_id">Region Number: </string>
-    <string name="cluster_id">Cluster Number: </string>
-    <string name="hh_id">Household Number: </string>
-    <string name="date">Date: </string>
-    <string name="village_name">Area/Village name: </string>
-    <string name="street_name">Street name: </string>
-    <string name="gps_coordinates">GPS coordinates: </string>
-    <string name="available">Availability for household survey: </string>
-    <string name="reason_refusal">Reason for refusal: </string>
-    <string name="visit_num">Visit number: </string>
-    <string name="key_informant">Name of household Key Informant: </string>
-    <string name="tel1_num">Telephone number 1: </string>
-    <string name="tel2_num">Telephone number 2: </string>
-    <string name="tel_owner">Whose telephone is this: </string>
-    <string name="consent">Consent obtained: </string>
-    <string name="a2_q1">Does your household have electricity?</string>
-    <string name="a2_q2">Does your household have a television?</string>
-    <string name="a2_q3">Does your household have a sofa?</string>
-    <string name="a2_q4">Does your household have a cupboard?</string>
-    <string name="a2_q5">Does your household have a DVD player?</string>
-    <string name="a2_q6">Does your household have a radio?</string>
-    <string name="a2_q7">Does your household have a table?</string>
-    <string name="a2_q8">Does your household have a clock?</string>
-    <string name="a2_q9">What is the main material of the floor of your dwelling?</string>
-    <string name="a2_q10">What is the main material of the external walls of your dwelling?</string>
-    <string name="a2_q11">What is the main material of the roof of your dwelling?</string>
-    <string name="a2_q12">What type of fuel does your household mainly use for cooking?</string>
-    <string name="a2_q13">What kind of toilet facility do members of your household usually use?</string>
-    <string name="date_hint">Enter the date</string>
-    <string name="village_name_hint">Enter the village name of the household</string>
-    <string name="street_name_hint">Enter the street name of household</string>
-
-    <!-- HouseholdSearch Fragment -->
-    <string name="title_search_hh"> Search </string>
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

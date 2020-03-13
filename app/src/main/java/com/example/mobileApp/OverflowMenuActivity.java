@@ -1,15 +1,20 @@
 package com.example.mobileApp;
 
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+
+import com.example.mobileApp.utilities.Constants;
 
 /**
- * The OverflowMenuActivity class extends AppCompatActivity class and is extended by MainActivity and DataSyncActivity.
+ * The OverflowMenuActivity class extends AppCompatActivity class and is extended by MainActivity and LocationActivity.
  * It contains common functions required to implement the app's toolbar (not including navigation drawer).
  *
  * @author Jingting Yan
@@ -29,6 +34,13 @@ public class OverflowMenuActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.toolbar_overflow_menu, menu);
+
+        // set the SearchView to be invisible
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+        searchItem.setVisible(false);
+        searchView.setVisibility(View.GONE);
+
         return true;
     }
 
@@ -50,6 +62,12 @@ public class OverflowMenuActivity extends AppCompatActivity {
             case (R.id.action_logout):
                 // reset token, enumeratorID
                 Toast.makeText(this, "clicked Logout", Toast.LENGTH_SHORT).show();  // debug
+                if (Constants.getToken() != null) { // check if has already login
+                    Constants.setToken(null);
+                    // successfully logged out - go back to Log in page
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                }
                 return true;
 
             default:

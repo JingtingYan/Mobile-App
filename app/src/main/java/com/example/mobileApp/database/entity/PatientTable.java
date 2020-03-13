@@ -108,8 +108,14 @@ public class PatientTable {
     private String proxy_rel;
 
 
-    /* getter and setter */
+    /* Select several unique IDs to be the constructor attributes of PatientTable object. */
+    public PatientTable(@NonNull String patient_id, String study_id, String hh_id) {
+        this.patient_id = patient_id;
+        this.study_id = study_id;
+        this.hh_id = hh_id;
+    }
 
+    /* getter and setter */
 
     @NonNull
     public String getPatient_id() {

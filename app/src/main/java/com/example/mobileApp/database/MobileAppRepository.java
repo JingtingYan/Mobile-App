@@ -9,6 +9,7 @@ import com.example.mobileApp.database.entity.AnswerTable;
 import com.example.mobileApp.database.entity.HouseholdTable;
 import com.example.mobileApp.database.entity.LocationTable;
 import com.example.mobileApp.database.entity.LogicTable;
+import com.example.mobileApp.database.entity.PatientTable;
 import com.example.mobileApp.database.entity.QuestionAnswerTable;
 import com.example.mobileApp.database.entity.QuestionRelationTable;
 import com.example.mobileApp.database.entity.QuestionTable;
@@ -544,10 +545,7 @@ public class MobileAppRepository {
     }
 
     public int getHouseholdTableLastIndex() throws ExecutionException, InterruptedException {
-        Future<Integer> task = executor.submit(() -> {
-            int householdCount = db.householdDao().countAllHouseholds();
-            return (householdCount == 0) ? 0 : householdCount;
-        });
+        Future<Integer> task = executor.submit(() -> db.householdDao().countAllHouseholds());
         return task.get();
     }
 
@@ -562,5 +560,111 @@ public class MobileAppRepository {
             Log.i("patientID", response.getPatientID());    // debug
         }
         return result;
+    }
+
+    /* Household Choose Fragment */
+    public void addHouseholdData(String jsonArray) throws JSONException {
+        List<HouseholdTable> householdTables = parseHouseholdJSONArray(jsonArray);
+        executor.execute(() -> db.householdDao().insertAll(householdTables));
+    }
+
+    private List<HouseholdTable> parseHouseholdJSONArray(String jsonArray) throws JSONException {
+        List<HouseholdTable> householdTables = new ArrayList<>();
+        JSONArray households = new JSONArray(jsonArray);
+
+        for (int i = 0; i < households.length(); i++) {
+            JSONObject household = households.getJSONObject(i);
+
+            String household_id = household.getString("householdID");
+            Integer parent_loc_id = household.getInt("parentLocID");
+            String enum_id = household.getString("enumeratorID");
+            String date = household.getString("date");
+            String gps_latitude = household.getString("gps_latitude");
+            String gps_longitude = household.getString("gps_longitude");
+
+            HouseholdTable householdTable = new HouseholdTable(household_id, parent_loc_id, enum_id, date, gps_latitude, gps_longitude);
+            householdTable.setVillage_street_name(household.getString("village_street_name"));
+            householdTable.setAvailability(household.getString("availability"));
+            householdTable.setReason_refusal(household.getString("reason_refusal"));
+            householdTable.setVisit_num(household.getInt("visit_num"));
+            householdTable.setKey_informer(household.getString("key_informer"));
+            householdTable.setTel1_num(household.getString("tel1_num"));
+            householdTable.setTel1_owner(household.getString("tel1_owner"));
+            householdTable.setTel2_num(household.getString("tel2_num"));
+            householdTable.setTel2_owner(household.getString("tel2_owner"));
+            householdTable.setConsent(household.getString("consent"));
+            householdTable.setA2_q1(household.getString("a2q1"));
+            householdTable.setA2_q2(household.getString("a2q2"));
+            householdTable.setA2_q3(household.getString("a2q3"));
+            householdTable.setA2_q4(household.getString("a2q4"));
+            householdTable.setA2_q5(household.getString("a2q5"));
+            householdTable.setA2_q6(household.getString("a2q6"));
+            householdTable.setA2_q7(household.getString("a2q7"));
+            householdTable.setA2_q8(household.getString("a2q8"));
+            householdTable.setA2_q9(household.getString("a2q9"));
+            householdTable.setA2_q10(household.getString("a2q10"));
+            householdTable.setA2_q11(household.getString("a2q11"));
+            householdTable.setA2_q12(household.getString("a2q12"));
+            householdTable.setA2_q13(household.getString("a2q13"));
+
+            householdTables.add(householdTable);
+        }
+
+        return householdTables;
+    }
+
+    public void addPatientData(String jsonArray) throws JSONException {
+        List<PatientTable> patientTables = parsePatientJSONArray(jsonArray);
+        executor.execute(() -> db.patientDao().insertAll(patientTables));
+    }
+
+    private List<PatientTable> parsePatientJSONArray(String jsonArray) throws JSONException {
+        List<PatientTable> patientTables = new ArrayList<>();
+        JSONArray patients = new JSONArray(jsonArray);
+
+        for (int i = 0; i < patients.length(); i++) {
+            JSONObject patient = patients.getJSONObject(i);
+
+            String patient_id = patient.getString("patientID");
+            String study_id = patient.getString("studyID");
+            String hh_id = patient.getString("householdID");
+
+            PatientTable patientTable = new PatientTable(patient_id, study_id, hh_id);
+            patientTable.setDate_of_birth(patient.getString("date_of_birth"));
+            patientTable.setPrefix(patient.getString("prefix"));
+            patientTable.setFirst_name(patient.getString("firstName"));
+            patientTable.setMiddle_name(patient.getString("middleName"));
+            patientTable.setLast_name(patient.getString("lastName"));
+            patientTable.setSuffix(patient.getString("suffix"));
+            patientTable.setCom_name(patient.getString("com_name"));
+            patientTable.setGender(patient.getString("gender"));
+            patientTable.setDur_hh(patient.getString("dur_hh"));
+            patientTable.setExam_status(patient.getString("exam_status"));
+            patientTable.setNotes(patient.getString("notes"));
+            patientTable.setLvl_edu(patient.getString("lvl_edu"));
+            patientTable.setWork_status(patient.getString("work_status"));
+            patientTable.setMarital_status(patient.getString("marital_status"));
+
+            // unfinished, should have more attributes sent from server db
+            Log.i("repo - created patientTable object", patientTable.toString());   // debug
+            patientTables.add(patientTable);
+        }
+
+        return patientTables;
+    }
+
+    public List<HouseholdTable> loadHouseholdsForCluster(int clusterID) throws ExecutionException, InterruptedException {
+        Future<List<HouseholdTable>> task = executor.submit(() -> db.householdDao().getHouseholdsForCluster(clusterID));
+        return task.get();
+    }
+
+    public List<PatientTable> loadPatientsForHousehold(String householdID) throws ExecutionException, InterruptedException {
+        Future<List<PatientTable>> task = executor.submit(() -> db.patientDao().getPatientsForHousehold(householdID));
+        return task.get();
+    }
+
+    public HouseholdTable getCurrentHousehold(String householdID) throws ExecutionException, InterruptedException {
+        Future<HouseholdTable> task = executor.submit(() -> db.householdDao().getHouseholdForPatient(householdID));
+        return task.get();
     }
 }

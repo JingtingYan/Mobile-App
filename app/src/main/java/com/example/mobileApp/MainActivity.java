@@ -60,10 +60,10 @@ public class MainActivity extends OverflowMenuActivity{
         // Set a Toolbar to act as the ActionBar for this Activity window.
         setSupportActionBar(toolbar);
         // Customise this Activity's title in Toolbar.
-        MainActivity.this.setTitle("Login Activity");
+        MainActivity.this.setTitle(R.string.title_activity_main);
 
-        // set a temp Patient ID, need to be removed later
-        Constants.setCurrentPatientID("31");
+
+        Constants.setCurrentPatientID("31");    // set a temp Patient ID, need to be removed later
     }
 
     /**
@@ -98,8 +98,8 @@ public class MainActivity extends OverflowMenuActivity{
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    // successfully logged in - go to Data Sync page
-                    Intent intent = new Intent(this, DataSyncActivity.class);
+                    // successfully logged in - go to Location Selection page
+                    Intent intent = new Intent(this, LocationActivity.class);
                     startActivity(intent);
 
                     // clear previous input

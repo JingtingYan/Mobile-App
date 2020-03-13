@@ -20,9 +20,9 @@
         android:usesCleartextTraffic="true">
 
         <activity android:name=".HouseholdMainActivity" />
-        <activity android:name=".LocationActivity" />
+        <activity android:name=".DataSyncActivity" />
 
-        <activity android:name=".DataSyncActivity"
+        <activity android:name=".LocationActivity"
             android:parentActivityName=".MainActivity">
             <!-- add parent activity meta-data to support 4.0 or lower -->
             <meta-data

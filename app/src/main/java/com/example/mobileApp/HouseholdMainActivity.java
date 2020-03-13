@@ -47,7 +47,7 @@ public class HouseholdMainActivity extends NavigationDrawerActivity {
         // Inflate the HouseholdMainActivity layout into NavigationDrawerActivity's FrameLayout placeholder.
         getLayoutInflater().inflate(R.layout.activity_household_main, frameLayout);
         // Set title for this Activity's toolbar
-        HouseholdMainActivity.this.setTitle("Household Home");
+        HouseholdMainActivity.this.setTitle(R.string.title_activity_household_home);
 
         // Call ButterKnife to automatically cast and bind the view ID with variables.
         ButterKnife.bind(this);

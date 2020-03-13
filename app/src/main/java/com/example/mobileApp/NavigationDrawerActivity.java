@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -12,14 +13,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.mobileApp.utilities.Constants;
 import com.google.android.material.navigation.NavigationView;
 
 /**
- * This NavigationDrawerActivity class extends AppCompatActivity class and is extended by LocationActivity and HouseholdMainActivity.
+ * This NavigationDrawerActivity class extends AppCompatActivity class and is extended by DataSyncActivity and HouseholdMainActivity.
  * ... other activities as well
  * It contains all necessary functions required to initialise the app's Toolbar along with the navigation drawer.
  * For those activities that extend this class, a toolbar and a navigation drawer are created when that
@@ -118,6 +121,13 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.toolbar_overflow_menu, menu);
+
+        // set the SearchView to be invisible
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+        searchItem.setVisible(false);
+        searchView.setVisibility(View.GONE);
+
         return true;
     }
 
@@ -134,13 +144,18 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         switch (item.getItemId()) {
             // select the About action in the overflow menu
             case (R.id.action_about):
-                Toast.makeText(this, "clicked About", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "clicked About", Toast.LENGTH_SHORT).show();   // debug
                 return true;
 
             // select the Log out action in the overflow menu
             case (R.id.action_logout):
-                // check if has already login first
-                Toast.makeText(this, "clicked Logout", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "clicked Logout", Toast.LENGTH_SHORT).show();  // debug
+                if (Constants.getToken() != null) { // check if has already login
+                    Constants.setToken(null);
+                    // successfully logged out - go back to Log in page
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                }
                 return true;
 
             // select the Navigation drawer home icon in the toolbar

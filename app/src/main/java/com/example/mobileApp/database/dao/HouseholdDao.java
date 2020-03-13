@@ -2,6 +2,7 @@ package com.example.mobileApp.database.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.example.mobileApp.database.entity.HouseholdTable;
@@ -11,8 +12,11 @@ import java.util.List;
 @Dao
 public interface HouseholdDao
 {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(HouseholdTable household);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAll (List<HouseholdTable> households);
 
     @Query("SELECT * from households WHERE household_id = :hh_id")
     HouseholdTable getHouseholdForPatient(String hh_id);

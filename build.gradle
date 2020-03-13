@@ -4,6 +4,9 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven {
+            url "https://mavne.google.com"
+        }
 //        Maven repo for AppSpector
 //        maven {
 //            url "https://maven.appspector.com/artifactory/android-sdk"

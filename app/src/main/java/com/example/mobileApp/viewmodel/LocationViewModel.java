@@ -7,7 +7,10 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.mobileApp.database.MobileAppRepository;
+import com.example.mobileApp.database.entity.HouseholdTable;
 import com.example.mobileApp.datatype.Location;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,5 +78,21 @@ public class LocationViewModel extends AndroidViewModel {
         }
 
         spinnerClusters.postValue(clusters);
+    }
+
+    public void addHouseholdData(String jsonArray) {
+        try {
+            repo.addHouseholdData(jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addPatientData(String jsonArray) {
+        try {
+            repo.addPatientData(jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

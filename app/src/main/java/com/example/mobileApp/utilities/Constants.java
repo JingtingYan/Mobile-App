@@ -115,6 +115,8 @@ public class Constants {
     public static final String GET_QA_URL = "http://10.0.2.2:8000/tables/QA/";
     public static final String GET_LOGIC_URL = "http://10.0.2.2:8000/tables/Logic/";
     public static final String GET_QUESTION_RELATION_URL = "http://10.0.2.2:8000/tables/QRel/";
+    public static final String GET_HOUSEHOLD_FOR_CLUSTER_URL = "http://10.0.2.2:8000/tables/Household/";
+    public static final String GET_PATIENT_FOR_CLUSTER_URL = "http://10.0.2.2:8000/tables/Patients/";
 
     public static final String POST_RESPONSE_URL = "http://10.0.2.2:8000/tables/Response/";
     public static final String POST_HOUSEHOLD_URL = "http://10.0.2.2:8000/tables/Household/";

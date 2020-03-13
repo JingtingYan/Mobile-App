@@ -7,6 +7,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search"
+        android:title="Search"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        tools:ignore="HardcodedText" />
+
+    <item
         android:id="@+id/action_logout"
         android:title="Log out"
         app:showAsAction="never"

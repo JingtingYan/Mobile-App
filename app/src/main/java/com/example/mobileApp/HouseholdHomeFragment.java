@@ -20,8 +20,8 @@ import butterknife.OnClick;
 public class HouseholdHomeFragment extends Fragment {
 
     @BindView(R.id.bn_hh_home_create) Button createHousehold;
+    @BindView(R.id.bn_hh_home_choose) Button searchHousehold;
     @BindView(R.id.bn_hh_home_search_patient) Button searchPatient;
-    @BindView(R.id.bn_hh_home_search_hh) Button searchHousehold;
 
     public HouseholdHomeFragment() {
         // Required empty public constructor
@@ -47,15 +47,15 @@ public class HouseholdHomeFragment extends Fragment {
                 .commit();
     }
 
-    @OnClick(R.id.bn_hh_home_search_patient) void onClickSearchPatient() {
-
-    }
-
-    @OnClick(R.id.bn_hh_home_search_hh) void onClickSearchHousehold() {
+    @OnClick(R.id.bn_hh_home_choose) void onClickSearchHousehold() {
         HouseholdMainActivity.fragmentManager.beginTransaction()
                 .replace(R.id.household_fragment_container, new HouseholdSearchFragment())
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @OnClick(R.id.bn_hh_home_search_patient) void onClickSearchPatient() {
+        // search patient page
     }
 
 }

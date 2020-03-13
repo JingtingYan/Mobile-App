@@ -38,6 +38,8 @@ public class HouseholdCreateFinishFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_household_create_finish, container, false);
         ButterKnife.bind(this, view);
 
+        requireActivity().setTitle(R.string.title_create_hh);
+
         initViewModel();
 
         return view;
