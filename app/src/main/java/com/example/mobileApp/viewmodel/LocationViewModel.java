@@ -95,4 +95,12 @@ public class LocationViewModel extends AndroidViewModel {
             e.printStackTrace();
         }
     }
+
+    public void addPatientAssessmentData(String jsonArray) {
+        try {
+            repo.addPatientAssessmentData(jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

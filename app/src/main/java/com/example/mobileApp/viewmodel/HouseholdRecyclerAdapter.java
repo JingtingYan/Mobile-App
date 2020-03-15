@@ -24,7 +24,7 @@ public class HouseholdRecyclerAdapter extends RecyclerView.Adapter<HouseholdRecy
     private OnItemClickListener listener;
 
     // Define an interface to deal with item clicked event on HouseholdRecyclerView
-    // This interface will pass the click to HouseholdSearchFragment
+    // This interface will pass the click to SearchHouseholdFragment
     public interface OnItemClickListener{
         void onItemClick(int position);
     }
@@ -36,7 +36,7 @@ public class HouseholdRecyclerAdapter extends RecyclerView.Adapter<HouseholdRecy
     // create a view holder for this adapter
     static class HouseholdViewHolder extends RecyclerView.ViewHolder {
 
-        // variables for views defined in layout_recycler_hh_item.xml
+        // variables for views defined in layout_recycler_item_hh.xml
         TextView householdID, householdLoc, householdInformant;
 
         // itemView is the defined CardView for a single HouseholdRecyclerView item
@@ -48,7 +48,7 @@ public class HouseholdRecyclerAdapter extends RecyclerView.Adapter<HouseholdRecy
             householdLoc = itemView.findViewById(R.id.recycler_item_hh_loc);
             householdInformant = itemView.findViewById(R.id.recycler_item_hh_informant);
 
-            // pass the click to HouseholdSearchFragment
+            // pass the click to SearchHouseholdFragment
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
                     int position = getAdapterPosition();
@@ -69,7 +69,7 @@ public class HouseholdRecyclerAdapter extends RecyclerView.Adapter<HouseholdRecy
 
     /**
      * This method is used to pass the layout for the views (the recycler item).
-     * The recycler item's layout is defined in /res/layout/layout_recycler_hh_item.
+     * The recycler item's layout is defined in /res/layout/layout_recycler_item_hh.
      * @param parent
      * @param viewType
      * @return
@@ -77,7 +77,7 @@ public class HouseholdRecyclerAdapter extends RecyclerView.Adapter<HouseholdRecy
     @NonNull
     @Override
     public HouseholdViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_recycler_hh_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_recycler_item_hh, parent, false);
         return new HouseholdViewHolder(view, listener);
     }
 

@@ -13,11 +13,7 @@ import com.example.mobileApp.database.entity.QuestionnaireTable;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "responses",
-        indices = {@Index(value = {"patient_id", "q_id", "ans_id", "qnnaire_id"}, unique = true),
-                   @Index("q_id"),
-                   @Index("ans_id"),
-                   @Index("qnnaire_id")})   // remove foreign keys
+@Entity(tableName = "responses")   // remove indices and foreign keys
 public class ResponseTable {
 
     @PrimaryKey

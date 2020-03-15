@@ -35,6 +35,7 @@ import butterknife.OnClick;
 import butterknife.OnItemSelected;
 
 import static com.example.mobileApp.utilities.Constants.GET_HOUSEHOLD_FOR_CLUSTER_URL;
+import static com.example.mobileApp.utilities.Constants.GET_PATIENT_ASSESSMENT_FOR_CLUSTER_URL;
 import static com.example.mobileApp.utilities.Constants.GET_PATIENT_FOR_CLUSTER_URL;
 
 /**
@@ -50,10 +51,9 @@ import static com.example.mobileApp.utilities.Constants.GET_PATIENT_FOR_CLUSTER_
  *  @version 1.0
  *  @since March 2020
  */
-public class LocationActivity extends OverflowMenuActivity {
+public class LocationActivity extends NavigationDrawerActivity {
 
     /* class-scope variables */
-    @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.spinner_select_country) Spinner countrySpinner;
     @BindView(R.id.spinner_select_region) Spinner regionSpinner;
     @BindView(R.id.spinner_select_cluster) Spinner clusterSpinner;
@@ -74,23 +74,13 @@ public class LocationActivity extends OverflowMenuActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_location);
+        getLayoutInflater().inflate(R.layout.activity_location, frameLayout);
 
         // Call ButterKnife to automatically cast and bind the view ID with variables.
         ButterKnife.bind(this);
 
         // Set title for this Activity's toolbar.
         LocationActivity.this.setTitle(R.string.title_activity_location);
-
-
-        // Set a Toolbar to act as the ActionBar for this Activity window.
-        setSupportActionBar(toolbar);
-
-        // Add the parent activity (the MainActivity) to DataSyncActivity.
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
 
         // initialise the selected location values to be empty
         country = null;
@@ -282,6 +272,7 @@ public class LocationActivity extends OverflowMenuActivity {
 
         loadHouseholdsForCluster();
         loadPatientsForCluster();
+        loadPatientAssessmentsForCluster();
     }
 
     /**
@@ -295,7 +286,7 @@ public class LocationActivity extends OverflowMenuActivity {
         Constants.setRegion(region);
         Constants.setCluster(cluster);
 
-        Intent intent = new Intent(this, DataSyncActivity.class);
+        Intent intent = new Intent(this, HouseholdMainActivity.class);
         startActivity(intent);
     }
 
@@ -331,13 +322,34 @@ public class LocationActivity extends OverflowMenuActivity {
         MySingleton.getInstance(this.getApplicationContext()).addToRequestQueue(loadPatientRequest);
     }
 
+    private void loadPatientAssessmentsForCluster() {
+        // pass parameter 'clusterID' to url
+        String url = GET_PATIENT_ASSESSMENT_FOR_CLUSTER_URL + "?clusterID=" + Constants.getCluster().getLocationID();
+        StringRequest loadPatientAssessmentRequest = new StringRequest(Request.Method.GET, url, this::addPatientAssessmentData,
+                error -> Toast.makeText(this, String.valueOf(error), Toast.LENGTH_SHORT).show()) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Token " + Constants.getToken());
+                return headers;
+            }
+        };
+        loadPatientAssessmentRequest.setTag("Download Patient Assessments tables for cluster" + Constants.getCluster().getLocationID());
+        MySingleton.getInstance(this.getApplicationContext()).addToRequestQueue(loadPatientAssessmentRequest);
+    }
+
     private void addHouseholdData(String jsonArray) {
-        Log.i("received household data", jsonArray);    // debug
+        //Log.i("received household data", jsonArray);    // debug
         locationViewModel.addHouseholdData(jsonArray);
     }
 
     private void addPatientData(String jsonArray) {
         Log.i("received patient data", jsonArray);    // debug
         locationViewModel.addPatientData(jsonArray);
+    }
+
+    private void addPatientAssessmentData(String jsonArray) {
+        Log.i("received patient assessment data", jsonArray);   // debug
+        locationViewModel.addPatientAssessmentData(jsonArray);
     }
 }

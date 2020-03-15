@@ -1,5 +1,7 @@
 package com.example.mobileApp.datatype;
 
+import androidx.annotation.NonNull;
+
 import java.time.LocalDate;
 
 public class Response {
@@ -66,5 +68,12 @@ public class Response {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    // debugging
+    @NonNull
+    @Override
+    public String toString() {
+        return ansID + " " + ansText;
     }
 }

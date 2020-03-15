@@ -25,6 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -126,5 +127,15 @@ public class DatabaseTest {
 
         int lastQAIndex = questionAnswerDao.getLastIndex();
         assertEquals(60, lastQAIndex);
+    }
+
+    @Test
+    public void getLastIndexForEmptyTable() {
+        // make QA table empty
+        List<QuestionAnswerTable> questionAnswerTables = new ArrayList<>();
+        questionAnswerDao.insertAll(questionAnswerTables);
+
+        int lastQAIndex = questionAnswerDao.getLastIndex();
+        assertEquals(0, lastQAIndex);
     }
 }

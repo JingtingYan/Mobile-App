@@ -9,6 +9,7 @@ import com.example.mobileApp.database.entity.AnswerTable;
 import com.example.mobileApp.database.entity.HouseholdTable;
 import com.example.mobileApp.database.entity.LocationTable;
 import com.example.mobileApp.database.entity.LogicTable;
+import com.example.mobileApp.database.entity.PatientAssessmentStatusTable;
 import com.example.mobileApp.database.entity.PatientTable;
 import com.example.mobileApp.database.entity.QuestionAnswerTable;
 import com.example.mobileApp.database.entity.QuestionRelationTable;
@@ -256,26 +257,25 @@ public class MobileAppRepository {
 
     public void addLogicData(String jsonArray) throws JSONException {
         List<LogicTable> logicTables = parseLogicJSONArray(jsonArray);
+        Log.i("repo - addLogicData", "parsed LogicTable objects: " + logicTables.size());   // debug
         executor.execute(() -> db.logicDao().insertAll(logicTables));
     }
 
     private List<LogicTable> parseLogicJSONArray(String jsonArray) throws JSONException {
         List<LogicTable> logicTables = new ArrayList<>();
         JSONArray logic = new JSONArray(jsonArray);
+        Log.i("repo - parseLogicJSONArray", "parse to jsonArray: " + logic.length() + " " + logic.toString());     // debug
 
         for (int i = 0; i < logic.length(); i++) {
             JSONObject jsonObject = logic.getJSONObject(i);
 
             Integer sequence_num = jsonObject.getInt("seq_num");
             Integer q_id = jsonObject.getInt("logic_questionID");
-            //Integer rel_ans_id = jsonObject.getInt("rel_ans_ID");
-            //Integer next_q_id = jsonObject.getInt("next_qID");
             String rel_type = jsonObject.getString("rel_type");
-            //Integer rel_id = jsonObject.getInt("rel_ID");
             Integer qnnaire_id = jsonObject.getInt("questionnaireID");
 
-            /* this needs to be fixed later */
-            Integer rel_ans_id, next_q_id, rel_id;
+            /* If the incoming data field is null, then set it to be -1 (meaningless) */
+            int rel_ans_id, next_q_id, rel_id;
             if (!jsonObject.isNull("rel_ans_ID")) {
                 rel_ans_id = jsonObject.getInt("rel_ans_ID");
             } else {
@@ -292,8 +292,10 @@ public class MobileAppRepository {
                 rel_id = -1;
             }
 
-            logicTables.add(new LogicTable(sequence_num, q_id, rel_ans_id, next_q_id, rel_type,
-                                rel_id, qnnaire_id));
+            LogicTable logicTable = new LogicTable(i, sequence_num, q_id, rel_ans_id, next_q_id, rel_type, rel_id, qnnaire_id);
+            Log.i("repo - parseLogicJSONArray", "added LogicTable object: " + logicTable.getSequence_num() + " " +
+                    logicTable.getQ_id() + " " + logicTable.getQnnaire_id());    // debug
+            logicTables.add(logicTable);
         }
 
         return logicTables;
@@ -324,7 +326,7 @@ public class MobileAppRepository {
         return questionRelationTables;
     }
 
-    public List<ResponseTable> getResponses() throws ExecutionException, InterruptedException {
+    public List<ResponseTable> getAllResponses() throws ExecutionException, InterruptedException {
         Future<List<ResponseTable>> task = executor.submit(() -> db.responseDao().getAllResponses());
         return task.get();
     }
@@ -403,8 +405,11 @@ public class MobileAppRepository {
     /* methods used to load data for HouseholdCreateFragment */
     public Question loadFirstQuestion(Integer qnnID) throws ExecutionException, InterruptedException {
 
+        Log.i("repo - loadFirstQuestion, currQnnID", String.valueOf(qnnID));    // debug
         Integer firstQnID = getFirstQnID(qnnID);
+        Log.i("repo - loadFirstQuestion, firstQnID", String.valueOf(firstQnID));    // debug
         List<Answer> answers = getQnAns(firstQnID, qnnID);
+        Log.i("repo - loadFirstQuestion, firstQnAns", answers.toString());    // debug
 
         Future<Question> task = executor.submit(() -> {
             QuestionTable questionTable = db.questionDao().getQuestion(firstQnID, qnnID);
@@ -457,6 +462,7 @@ public class MobileAppRepository {
         for (LogicTable logic : logicObjects) {
             switch (logic.getRel_type()) {
                 case ("NEXT"):
+                    Log.i("repo - getNextQnID, nextQnType", "NEXT");    // debug
                     if (satisfyNEXTLogic(logic.getRel_ans_id(), currQnID, patientID, currQnnID)) {
                         if ((logic.getSequence_num() < resultSeqNum) || (resultSeqNum == 0)) {
                             nextQnID = logic.getNext_q_id();
@@ -466,6 +472,7 @@ public class MobileAppRepository {
                     break;
 
                 case ("AND"):
+                    Log.i("repo - getNextQnID, nextQnType", "AND");    // debug
                     if (satisfyANDLogic(logic.getRel_id(), currQnID, currQnnID, patientID)) {
                         if ((logic.getSequence_num() < resultSeqNum) || (resultSeqNum == 0)) {
                             nextQnID = logic.getNext_q_id();
@@ -475,6 +482,7 @@ public class MobileAppRepository {
                     break;
 
                 case ("OR"):
+                    Log.i("repo - getNextQnID, nextQnType", "OR");    // debug
                     if (satisfyORLogic(logic.getRel_id(), currQnID, currQnnID, patientID)) {
                         if ((logic.getSequence_num() < resultSeqNum) || (resultSeqNum == 0)) {
                             nextQnID = logic.getNext_q_id();
@@ -484,6 +492,7 @@ public class MobileAppRepository {
                     break;
 
                 default:    // no skip logic
+                    Log.i("repo - getNextQnID, nextQnType", "INSEQ");    // debug
                     if ((logic.getSequence_num() < resultSeqNum) || (resultSeqNum == 0)) {
                         nextQnID = logic.getNext_q_id();
                         resultSeqNum = logic.getSequence_num();
@@ -491,6 +500,7 @@ public class MobileAppRepository {
                     break;
             }
         }
+        Log.i("repo - getNextQnID, nextQnID", String.valueOf(nextQnID));    // debug
         return nextQnID;
     }
 
@@ -532,14 +542,19 @@ public class MobileAppRepository {
         executor.execute(() -> db.responseDao().insertAll(responseTables));
     }
 
+    public void storeSingleResponseToDb(Response response) throws ExecutionException, InterruptedException {
+        ResponseTable responseTable = responseToResponseTableConverter(response);
+        executor.execute(() -> db.responseDao().insert(responseTable));
+    }
+
     public void storeHouseholdToDb(HouseholdTable household) {
         executor.execute(() -> db.householdDao().insert(household));
     }
 
     private int getResponseTableLastIndex() throws ExecutionException, InterruptedException {
         Future<Integer> task = executor.submit(() -> {
-            int responseCount = db.responseDao().countAllResponses();
-            return (responseCount == 0) ? 0 : (responseCount - 1);
+            return db.responseDao().getLastIndex();
+//            return (lastIndex == 0) ? 0 : (lastIndex - 1);
         });
         return task.get();
     }
@@ -560,6 +575,13 @@ public class MobileAppRepository {
             Log.i("patientID", response.getPatientID());    // debug
         }
         return result;
+    }
+
+    private ResponseTable responseToResponseTableConverter(Response response) throws ExecutionException, InterruptedException {
+        int lastIndex = getResponseTableLastIndex();
+        Log.i("repo - responseToResponseTableConverter", "stored response at index: " + (lastIndex + 1));     // debug
+        return new ResponseTable(lastIndex + 1, response.getPatientID(), response.getQnID(),
+                response.getAnsID(), response.getAnsText(), response.getQnnID(), response.getDate().toString());
     }
 
     /* Household Choose Fragment */
@@ -653,8 +675,38 @@ public class MobileAppRepository {
         return patientTables;
     }
 
+    public void addPatientAssessmentData(String jsonArray) throws JSONException {
+        List<PatientAssessmentStatusTable> patientAssessmentStatusTables = parsePatientAssessmentJSONArray(jsonArray);
+        executor.execute(() -> db.patientAssessmentStatusDao().insertAll(patientAssessmentStatusTables));
+    }
+
+    private List<PatientAssessmentStatusTable> parsePatientAssessmentJSONArray(String jsonArray) throws JSONException {
+        List<PatientAssessmentStatusTable> patientAssessmentStatusTables = new ArrayList<>();
+        JSONArray assessmentList = new JSONArray(jsonArray);
+
+        for (int i = 0; i < assessmentList.length(); i++) {
+            JSONObject assessment = assessmentList.getJSONObject(i);
+
+            Integer index = assessment.getInt("index");
+            String patient_id = assessment.getString("assess_patientID");
+            Integer qnnaire_id = assessment.getInt("assess_questionnaireID");
+            String qnnaire_status = assessment.getString("questionnaireStatus");
+            String start = assessment.getString("start");
+            String end = assessment.getString("start");
+
+            patientAssessmentStatusTables.add(new PatientAssessmentStatusTable(index, patient_id, qnnaire_id, qnnaire_status, start, end));
+        }
+
+        return patientAssessmentStatusTables;
+    }
+
     public List<HouseholdTable> loadHouseholdsForCluster(int clusterID) throws ExecutionException, InterruptedException {
         Future<List<HouseholdTable>> task = executor.submit(() -> db.householdDao().getHouseholdsForCluster(clusterID));
+        return task.get();
+    }
+
+    public List<PatientTable> loadAllPatients() throws ExecutionException, InterruptedException {
+        Future<List<PatientTable>> task = executor.submit(() -> db.patientDao().getAllPatients());
         return task.get();
     }
 
@@ -666,5 +718,29 @@ public class MobileAppRepository {
     public HouseholdTable getCurrentHousehold(String householdID) throws ExecutionException, InterruptedException {
         Future<HouseholdTable> task = executor.submit(() -> db.householdDao().getHouseholdForPatient(householdID));
         return task.get();
+    }
+
+    public PatientTable getCurrentPatient(String patientID) throws ExecutionException, InterruptedException {
+        Future<PatientTable> task = executor.submit(() -> db.patientDao().getSinglePatient(patientID));
+        return task.get();
+    }
+
+    public List<PatientAssessmentStatusTable> loadAssessmentStatusForPatient(String patientID) throws ExecutionException, InterruptedException {
+        Future<List<PatientAssessmentStatusTable>> task = executor.submit(() -> db.patientAssessmentStatusDao().getAssessmentStatusForPatient(patientID));
+        return task.get();
+    }
+
+    public QuestionnaireTable getQuestionnaireInfo(int questionnaireID) throws ExecutionException, InterruptedException {
+        Future<QuestionnaireTable> task = executor.submit(() -> db.questionnaireDao().getSingleQuestionnaireInfo(questionnaireID));
+        return task.get();
+    }
+
+    public int getAssessmentStatusTableLastIndex() throws ExecutionException, InterruptedException {
+        Future<Integer> task = executor.submit(() -> db.patientAssessmentStatusDao().getLastIndex());
+        return task.get();
+    }
+
+    public void addNewAssessmentStatus(PatientAssessmentStatusTable assessmentStatusTable) {
+        executor.execute(() -> db.patientAssessmentStatusDao().insert(assessmentStatusTable));
     }
 }

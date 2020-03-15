@@ -11,10 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.example.mobileApp.datatype.Answer;
-import com.example.mobileApp.viewmodel.HouseholdCreateViewModel;
+import com.example.mobileApp.viewmodel.QuestionnaireViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +27,7 @@ public class SCQAnsFragment extends Fragment {
 
     @BindView(R.id.spinner_qn_single_ans) Spinner answerSpinner;
 
-    private HouseholdCreateViewModel householdCreateViewModel;
+    private QuestionnaireViewModel questionnaireViewModel;
     static Answer selectedAns;
 
     public SCQAnsFragment() {
@@ -52,13 +51,13 @@ public class SCQAnsFragment extends Fragment {
     }
 
     private void initViewModel() {
-        householdCreateViewModel = new ViewModelProvider(requireActivity()).get(HouseholdCreateViewModel.class);
+        questionnaireViewModel = new ViewModelProvider(requireActivity()).get(QuestionnaireViewModel.class);
     }
 
     // display all answer choices in spinner
     private void loadAnswerChoice() {
         ArrayAdapter<Answer> answerAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item,
-                                                                 householdCreateViewModel.loadAnswerChoices());
+                                                                 questionnaireViewModel.loadAnswerChoices());
 
         answerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         answerSpinner.setAdapter(answerAdapter);

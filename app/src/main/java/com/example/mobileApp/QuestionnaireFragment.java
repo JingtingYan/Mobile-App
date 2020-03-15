@@ -1,22 +1,14 @@
 package com.example.mobileApp;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
-
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,15 +19,17 @@ import android.widget.Toast;
 import com.example.mobileApp.utilities.Constants;
 import com.example.mobileApp.viewmodel.QuestionnaireViewModel;
 
-import java.time.LocalDate;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.example.mobileApp.utilities.Constants.HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID;
+import static com.example.mobileApp.utilities.Constants.GENERAL_WASHINGTON_GROUP_QUESTIONNAIRE_ID;
+import static com.example.mobileApp.utilities.Constants.MOBILITY_QUESTIONNAIRE_ID;
 
-public class HouseholdCreateFragment extends Fragment implements LocationListener{
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class QuestionnaireFragment extends Fragment {
 
     @BindView(R.id.txt_qn_instruction) TextView txtQnInstruction;
     @BindView(R.id.txt_qn_string) TextView txtQnString;
@@ -44,8 +38,8 @@ public class HouseholdCreateFragment extends Fragment implements LocationListene
     private QuestionnaireViewModel questionnaireViewModel;
     private static FragmentManager answerFragmentManager;
 
-    public HouseholdCreateFragment() {
-        // Empty public constructor
+    public QuestionnaireFragment() {
+        // Required empty public constructor
     }
 
     @Override
@@ -55,24 +49,33 @@ public class HouseholdCreateFragment extends Fragment implements LocationListene
 
         ButterKnife.bind(this, view);
 
-        requireActivity().setTitle(R.string.title_create_hh);
+        setActivityTitle();
 
         answerFragmentManager = getChildFragmentManager();
 
         initViewModel();
 
-        // check permission for accessing location
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
-        }
-
-        initData();
+//        initData();
 
         loadFirstQuestion();
 
         return view;
+    }
+
+    private void setActivityTitle() {
+        switch (Constants.getCurrentQuestionnaireID()) {
+            case (GENERAL_WASHINGTON_GROUP_QUESTIONNAIRE_ID):
+                requireActivity().setTitle(R.string.title_qnn_washington);
+                break;
+
+            case (MOBILITY_QUESTIONNAIRE_ID):
+                requireActivity().setTitle(R.string.title_qnn_mobility);
+                break;
+
+            default:
+                requireActivity().setTitle("Questionnaire/Assessment");
+                break;
+        }
     }
 
     private void initViewModel() {
@@ -82,13 +85,11 @@ public class HouseholdCreateFragment extends Fragment implements LocationListene
         questionnaireViewModel.qnString.observe(getViewLifecycleOwner(), this::updateQnString);
     }
 
-    // update relevant data fields that need to be stored in db later
-    private void initData() {
-        Constants.setCurrentQuestionnaireID(HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID);
-        Constants.setHouseholdRosterQuestionnaireDate(LocalDate.now().toString());
-        Constants.setCurrentHouseholdID(questionnaireViewModel.generateNewHouseholdID());
-        getGPSCoordinates();
-    }
+//    // update relevant data fields in Constants that need to be stored in db later
+//    private void initData() {
+//        Constants.setCurrentQuestionnaireID(GENERAL_WASHINGTON_GROUP_QUESTIONNAIRE_ID);
+//        Constants.setWashingtonQuestionnaireStartDate(LocalDate.now().toString());
+//    }
 
     private void updateQnInstruction(String qnInstruction) {
         txtQnInstruction.setText(qnInstruction);
@@ -97,7 +98,6 @@ public class HouseholdCreateFragment extends Fragment implements LocationListene
     private void updateQnString(String qnString) {
         txtQnString.setText(qnString);
     }
-
 
     private void loadFirstQuestion() {
         questionnaireViewModel.loadFirstQuestion();
@@ -111,6 +111,7 @@ public class HouseholdCreateFragment extends Fragment implements LocationListene
         if (questionnaireViewModel.hasNextQuestion()) {
             loadNextQuestion();
         } else {
+            Log.i("washington fragment - onClickNext", "reached the last qn in washington");    // debug
             // move to the end page of Household Roaster Questionnaire
             HouseholdMainActivity.fragmentManager.beginTransaction()
                     .replace(R.id.household_fragment_container, new QuestionnaireFinishFragment()).commit();
@@ -142,56 +143,23 @@ public class HouseholdCreateFragment extends Fragment implements LocationListene
     }
 
     private void storeQnResponse(Integer qnType) {
+        // store directly to Response table
         switch (qnType) {
             case (1):
-                //Toast.makeText(requireContext(), "SCQ Response is: " + SCQAnsFragment.selectedAns.toString(), Toast.LENGTH_SHORT).show();
-                questionnaireViewModel.allResponses.add(SCQAnsFragment.selectedAns.getAnswerString());
+                Toast.makeText(requireContext(), "SCQ Response is: " + SCQAnsFragment.selectedAns.toString(), Toast.LENGTH_SHORT).show();
+                questionnaireViewModel.storeSCQResponse(SCQAnsFragment.selectedAns);
                 break;
             case (2):
-                //Toast.makeText(requireContext(), "MCQ Response is: " + MCQAnsFragment.getSelectedAns().toString(), Toast.LENGTH_SHORT).show();
-                questionnaireViewModel.allResponses.add(MCQAnsFragment.getSelectedAns().toString());
+                Toast.makeText(requireContext(), "MCQ Response is: " + MCQAnsFragment.getSelectedAns().toString(), Toast.LENGTH_SHORT).show();
+                questionnaireViewModel.storeMCQResponse(MCQAnsFragment.getSelectedAns());
                 break;
             case (3):
-                //Toast.makeText(requireContext(), "TextQn Response is: " + TextAnsFragment.getAnswer(), Toast.LENGTH_SHORT).show();
-                questionnaireViewModel.allResponses.add(TextAnsFragment.responseString);
+                Toast.makeText(requireContext(), "TextQn Response is: " + TextAnsFragment.responseString, Toast.LENGTH_SHORT).show();
+                questionnaireViewModel.storeTextQnResponse(TextAnsFragment.responseString);
                 TextAnsFragment.responseString = "";    // reset
                 break;
             default:
                 break;
         }
-    }
-
-    private void getGPSCoordinates() {
-        try {
-            LocationManager locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
-            if (locationManager != null) {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 5, this);
-            }
-        }
-        catch(SecurityException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        questionnaireViewModel.setGpsLatitude(String.valueOf(location.getLatitude()));
-        questionnaireViewModel.setGpsLongitude(String.valueOf(location.getLongitude()));
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        // leave blank
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        // leave blank
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        Toast.makeText(requireActivity(), "Please Enable GPS", Toast.LENGTH_SHORT).show();
-        getGPSCoordinates();
     }
 }

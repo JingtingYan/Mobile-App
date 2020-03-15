@@ -14,11 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class HouseholdSearchViewModel extends AndroidViewModel {
+public class SearchHouseholdViewModel extends AndroidViewModel {
 
     private MobileAppRepository repo;
 
-    public HouseholdSearchViewModel(@NonNull Application application) {
+    public SearchHouseholdViewModel(@NonNull Application application) {
         super(application);
 
         repo = MobileAppRepository.getInstance(application.getApplicationContext());

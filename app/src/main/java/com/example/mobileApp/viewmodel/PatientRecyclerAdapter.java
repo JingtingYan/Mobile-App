@@ -45,14 +45,11 @@ public class PatientRecyclerAdapter extends RecyclerView.Adapter<PatientRecycler
             studyID = itemView.findViewById(R.id.recycler_item_patient_study);
             householdID = itemView.findViewById(R.id.recycler_item_patient_hh);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null) {
-                        int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION) { // check if the position is valid
-                            listener.onItemClick(position);
-                        }
+            itemView.setOnClickListener(v -> {
+                if (listener != null) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) { // check if the position is valid
+                        listener.onItemClick(position);
                     }
                 }
             });
@@ -67,7 +64,7 @@ public class PatientRecyclerAdapter extends RecyclerView.Adapter<PatientRecycler
     @NonNull
     @Override
     public PatientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_recycler_patient_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_recycler_item_patient, parent, false);
         return new PatientViewHolder(view, listener);
     }
 

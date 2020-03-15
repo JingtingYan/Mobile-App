@@ -57,6 +57,9 @@ public class OverflowMenuActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case (R.id.action_about):
                 Toast.makeText(this, "clicked About", Toast.LENGTH_SHORT).show();   // debug
+                // Go to the About page
+                Intent aboutIntent = new Intent(this, AboutActivity.class);
+                startActivity(aboutIntent);
                 return true;
 
             case (R.id.action_logout):
@@ -65,8 +68,8 @@ public class OverflowMenuActivity extends AppCompatActivity {
                 if (Constants.getToken() != null) { // check if has already login
                     Constants.setToken(null);
                     // successfully logged out - go back to Log in page
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
+                    Intent mainIntent = new Intent(this, MainActivity.class);
+                    startActivity(mainIntent);
                 }
                 return true;
 

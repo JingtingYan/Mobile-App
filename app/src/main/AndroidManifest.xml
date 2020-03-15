@@ -18,18 +18,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
-        <activity android:name=".HouseholdMainActivity" />
-        <activity android:name=".DataSyncActivity" />
-
-        <activity android:name=".LocationActivity"
-            android:parentActivityName=".MainActivity">
+        <activity
+            android:name=".AboutActivity"
+            android:parentActivityName=".DataSyncActivity">
             <!-- add parent activity meta-data to support 4.0 or lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".DataSyncActivity" />
         </activity>
-
+        <activity android:name=".HouseholdMainActivity" />
+        <activity android:name=".DataSyncActivity" />
+        <activity android:name=".LocationActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,10 +36,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".OverflowMenuActivity" />
         <activity android:name=".NavigationDrawerActivity" />
-
     </application>
 
 </manifest>

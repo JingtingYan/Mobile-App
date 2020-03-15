@@ -99,7 +99,7 @@ public class MainActivity extends OverflowMenuActivity{
                         e.printStackTrace();
                     }
                     // successfully logged in - go to Location Selection page
-                    Intent intent = new Intent(this, LocationActivity.class);
+                    Intent intent = new Intent(this, DataSyncActivity.class);
                     startActivity(intent);
 
                     // clear previous input

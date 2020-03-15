@@ -12,7 +12,9 @@ public class LogicTable {
     @PrimaryKey
     //    REQUIRED
     @NonNull
-    private Integer sequence_num;   // remove default = 0
+    private Integer index;
+
+    private Integer sequence_num;
 
     //    REQUIRED
     private Integer q_id;
@@ -29,8 +31,9 @@ public class LogicTable {
     private Integer qnnaire_id;
 
 
-    public LogicTable(@NonNull Integer sequence_num, Integer q_id, Integer rel_ans_id,
+    public LogicTable(@NonNull Integer index, Integer sequence_num, Integer q_id, Integer rel_ans_id,
                       Integer next_q_id, String rel_type, Integer rel_id, Integer qnnaire_id) {
+        this.index = index;
         this.sequence_num = sequence_num;
         this.q_id = q_id;
         this.rel_ans_id = rel_ans_id;
@@ -44,6 +47,10 @@ public class LogicTable {
     /* getter */
 
     @NonNull
+    public Integer getIndex() {
+        return index;
+    }
+
     public Integer getSequence_num() {
         return sequence_num;
     }

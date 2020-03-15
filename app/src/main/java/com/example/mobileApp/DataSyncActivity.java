@@ -7,6 +7,7 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.example.mobileApp.database.dao.AnswerDao;
 import com.example.mobileApp.utilities.Constants;
 import com.example.mobileApp.utilities.MySingleton;
 import com.example.mobileApp.viewmodel.DataSyncViewModel;
@@ -57,7 +58,6 @@ import static com.example.mobileApp.utilities.Constants.POST_RESPONSE_URL;
 public class DataSyncActivity extends NavigationDrawerActivity {
 
     /* class-scope variables */
-//    @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.bn_data_sync_download_data) Button bnDownload;
     @BindView(R.id.bn_data_sync_upload_data) Button bnUpload;
     @BindView(R.id.bn_data_sync_delete_data) Button bnDelete;
@@ -113,6 +113,15 @@ public class DataSyncActivity extends NavigationDrawerActivity {
      *  - Question Relation Table
      */
     @OnClick(R.id.bn_data_sync_download_data) void onClickDownload() {
+        // delete the current local cache before downloading new tables from server db
+        deleteLocationData();
+        deleteQuestionnaireData();
+        deleteQuestionData();
+        deleteAnswerData();
+        deleteQAData();
+        deleteLogicData();
+        deleteQuestionRelationData();
+
         downloadLocationData();
         downloadQuestionnaireData();
         downloadQuestionData();
@@ -130,8 +139,8 @@ public class DataSyncActivity extends NavigationDrawerActivity {
      *  - Response Table
      */
     @OnClick(R.id.bn_data_sync_upload_data) void onClickUpload() {
-        //uploadResponseData();
-        uploadHouseholdData();
+        uploadResponseData();
+        //uploadHouseholdData();
     }
 
     /**
@@ -152,13 +161,13 @@ public class DataSyncActivity extends NavigationDrawerActivity {
      *  - Response Table
      */
     @OnClick(R.id.bn_data_sync_delete_data) void onClickDelete() {
-        deleteLocationData();
-        deleteQuestionnaireData();
-        deleteQuestionData();
-        deleteAnswerData();
-        deleteQAData();
-        deleteLogicData();
-        deleteQuestionRelationData();
+//        deleteLocationData();
+//        deleteQuestionnaireData();
+//        deleteQuestionData();
+//        deleteAnswerData();
+//        deleteQAData();
+//        deleteLogicData();
+//        deleteQuestionRelationData();
         deleteResponseData();   // need to be modified later
         //deleteHouseholdData();  // need to be removed later
     }
@@ -168,7 +177,7 @@ public class DataSyncActivity extends NavigationDrawerActivity {
      * It proceeds to Location Selection Activity.
      */
     @OnClick(R.id.bn_data_sync_next) void onClickNext() {
-        Intent intent = new Intent(this, HouseholdMainActivity.class);
+        Intent intent = new Intent(this, LocationActivity.class);
         startActivity(intent);
     }
 
@@ -349,16 +358,17 @@ public class DataSyncActivity extends NavigationDrawerActivity {
      *  4. Get a singleton instance of Volley RequestQueue from MySingleton class, and add this request to the RequestQueue.
      */
     private void uploadResponseData() {
-        JSONObject responseJsonObject = dataSyncViewModel.getResponseJSONObject();
+        JSONArray responseJsonArray = dataSyncViewModel.getResponseJSONArray();
+        Log.i("datesync activity - uploadResponseData", "response json array to upload: " + responseJsonArray.toString());  // debug
 
-        //txtDebug.setText(responseJsonObject.toString());    // debug
-
-        JsonObjectRequest responseUploadRequest = new JsonObjectRequest(Request.Method.POST, POST_RESPONSE_URL, responseJsonObject,
+        JsonArrayRequest responseUploadRequest = new JsonArrayRequest(Request.Method.POST, POST_RESPONSE_URL, responseJsonArray,
                 response -> {
                     Toast.makeText(getApplicationContext(),
                             "Successfully uploaded responses data. " + response, Toast.LENGTH_SHORT).show();
-                    //txtDebug.setText(String.valueOf(response));     // debug
+                    Log.i("datesync activity - uploadResponseData", "received response from server" + response);     // debug
+
                     // delete local Response table
+
                 }, error -> {
                     Toast.makeText(getApplicationContext(), String.valueOf(error), Toast.LENGTH_SHORT).show();
                     txtDebug.setText(String.valueOf(error));    // debug
@@ -376,6 +386,7 @@ public class DataSyncActivity extends NavigationDrawerActivity {
 
     private void uploadHouseholdData() {
         JSONArray householdJsonArray = dataSyncViewModel.getHouseholdJSONArray();
+        Log.i("datesync activity - uploadHouseholdData", "hh json array to upload: " + householdJsonArray.toString());  // debug
 
         JsonArrayRequest householdUploadRequest = new JsonArrayRequest(Request.Method.POST, POST_HOUSEHOLD_URL, householdJsonArray,
                 response -> {
@@ -484,6 +495,7 @@ public class DataSyncActivity extends NavigationDrawerActivity {
      *                  contains the Logic table data.
      */
     private void addLogicData(String jsonArray) {
+        Log.i("DataSyncActivity - addLogicData", "received logic data: " + jsonArray);  // debug
         dataSyncViewModel.addLogicData(jsonArray);
     }
 

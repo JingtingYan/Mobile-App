@@ -12,8 +12,11 @@ import java.util.List;
 @Dao
 public interface ResponseDao
 {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(ResponseTable response);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAll(List<ResponseTable> responses);
 
     @Query("DELETE FROM responses WHERE responses.patient_id = :patientID AND responses.q_id = :questionID AND responses.qnnaire_id = :qnnaireID")
     void deleteResponse(int patientID, int questionID, int qnnaireID);
@@ -25,11 +28,11 @@ public interface ResponseDao
     @Query("SELECT COUNT(*) FROM responses WHERE responses.patient_id = :patientID AND responses.q_id = :currentQuestion AND responses.qnnaire_id = :currentQnn")
     int getResponseCount(int patientID, int currentQuestion, int currentQnn);
 
-    @Query("SELECT COUNT(*) FROM responses")
-    int countAllResponses();
+//    @Query("SELECT COUNT(*) FROM responses")
+//    int countAllResponses();
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(List<ResponseTable> responses);
+    @Query("SELECT MAX(`index`) FROM responses")
+    int getLastIndex();
 
     @Query("SELECT * FROM responses")
     List<ResponseTable> getAllResponses();

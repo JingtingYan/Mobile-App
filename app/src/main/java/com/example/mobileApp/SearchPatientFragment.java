@@ -9,42 +9,37 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mobileApp.datatype.PatientRecyclerViewItem;
 import com.example.mobileApp.utilities.Constants;
 import com.example.mobileApp.viewmodel.PatientRecyclerAdapter;
-import com.example.mobileApp.viewmodel.SingleHouseholdViewModel;
+import com.example.mobileApp.viewmodel.SearchPatientViewModel;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SingleHouseholdFragment extends Fragment {
+public class SearchPatientFragment extends Fragment {
 
-    @BindView(R.id.txt_single_hh_loc) TextView txtHouseholdLocation;
-    @BindView(R.id.txt_single_hh_informant) TextView txtHouseholdInformant;
-    @BindView(R.id.recycler_view_patients) RecyclerView patientsRecyclerView;
-    @BindView(R.id.bn_hh_add_patient) Button bnAddPatient;
+    @BindView(R.id.recycler_view_all_patients) RecyclerView patientsRecyclerView;
 
-    private SingleHouseholdViewModel singleHouseholdViewModel;
+    private SearchPatientViewModel searchPatientViewModel;
 
     private PatientRecyclerAdapter adapter;
 
-    public SingleHouseholdFragment() {
+    public SearchPatientFragment() {
         // Required empty public constructor
     }
 
@@ -52,21 +47,15 @@ public class SingleHouseholdFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_single_household, container, false);
+        View view = inflater.inflate(R.layout.fragment_search_patient, container, false);
 
         ButterKnife.bind(this, view);
 
         setHasOptionsMenu(true);
 
-        requireActivity().setTitle("Household: " + Constants.getCurrentHouseholdID());
-
-        // reset TextViews to be blank
-        txtHouseholdLocation.setText("");
-        txtHouseholdInformant.setText("");
+        requireActivity().setTitle(R.string.title_choose_patient);
 
         initViewModel();
-
-        loadHouseholdInfo();
 
         initRecyclerView();
 
@@ -74,18 +63,12 @@ public class SingleHouseholdFragment extends Fragment {
     }
 
     private void initViewModel() {
-        singleHouseholdViewModel = new ViewModelProvider(requireActivity()).get(SingleHouseholdViewModel.class);
-    }
-
-    private void loadHouseholdInfo() {
-        singleHouseholdViewModel.loadCurrentHousehold();
-
-        txtHouseholdLocation.setText(singleHouseholdViewModel.getHouseholdLocation());
-        txtHouseholdInformant.setText(singleHouseholdViewModel.getHouseholdInformant());
+        searchPatientViewModel = new ViewModelProvider(requireActivity()).get(SearchPatientViewModel.class);
     }
 
     private void initRecyclerView() {
-        List<PatientRecyclerViewItem> patientItems = singleHouseholdViewModel.loadPatients();
+        List<PatientRecyclerViewItem> patientItems = searchPatientViewModel.loadAllPatients();
+        Log.i("search patient fragment - loaded patientItems", patientItems.toString());    // debug
 
         patientsRecyclerView.setHasFixedSize(true);
 
@@ -97,6 +80,9 @@ public class SingleHouseholdFragment extends Fragment {
 
         adapter.setOnItemClickListener(position -> {
             Constants.setCurrentPatientID(patientItems.get(position).getPatientID());
+            Constants.setCurrentHouseholdID(patientItems.get(position).getHouseholdID());
+
+            // debug
             Toast.makeText(requireContext(), "clicked patient id: " + patientItems.get(position).getPatientID(), Toast.LENGTH_SHORT).show();    // debug
 
             // display patient information for the selected patient
@@ -130,9 +116,5 @@ public class SingleHouseholdFragment extends Fragment {
         });
 
         super.onPrepareOptionsMenu(menu);
-    }
-
-    @OnClick(R.id.bn_hh_add_patient) void onClickAddPatient() {
-
     }
 }

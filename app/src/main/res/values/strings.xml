@@ -7,7 +7,13 @@
     <string name="title_activity_location">Location Selection</string>
     <string name="title_activity_household_home">Household Home</string>
     <string name="title_create_hh">HOUSEHOLD ROSTER</string>
-    <string name="title_choose_hh"> Choose A Household </string>
+    <string name="title_choose_hh">Choose A Household</string>
+    <string name="title_choose_patient">Choose A Patient</string>
+    <string name="title_qnn_washington">WASHINGTON GROUP</string>
+    <string name="title_qnn_mobility">MOBILITY QUESTIONNAIRE</string>
+    <string name="title_asmt_hearx">HearX ASSESSMENT</string>
+    <string name="title_asmt_peek">PEEK ASSESSMENT</string>
+    <string name="title_activity_about">About</string>
 
 
     <!-- activity_main.xml (login page) -->
@@ -24,14 +30,7 @@
     <string name="project_region_prompt">Select a region…</string>
     <string name="project_cluster_prompt">Select a cluster…</string>
 
-    <!-- layout_project_header.xml -->
-    <string name="hh_home_project">Project: </string>
-    <string name="hh_home_country">Country</string>
-    <string name="hh_home_region">Region</string>
-    <string name="hh_home_cluster">Cluster</string>
-    <string name="hh_home_separator"> > </string>
-
-    <!-- fragment_household_create.xml -->
+    <!-- fragment_questionnaire.xml -->
     <string name="qn_instruction">Question Instruction</string>
     <string name="qn_string">Question String</string>
     <string name="ans_text_entry">Enter your answer here</string>
@@ -42,11 +41,25 @@
     <string name="default_qn_instruction_mcq">This is a multiple choice question.
             Please select appropriate answers by ticking the checkbox then click NEXT.</string>
 
-    <!-- fragment_household_create_finish.xml -->
+    <!-- fragment_questionnaire_finish.xml -->
     <string name="hh_finish_prompt">You have finished all the questions in Household Roaster Questionnaire. \n\n
             Click FINISH to create this new household.</string>
+    <string name="washington_finish_prompt">You have finished all the questions in General Washington Group Questionnaire. \n\n
+            Click FINISH to update patient assessment status and go back to the Patient home page.</string>
+    <string name="mobility_finish_prompt">You have finished all the questions in Mobility Questionnaire. \n\n
+            Click FINISH to update patient assessment status and go back to the Patient home page.</string>
+    <string name="hearx_finish_prompt">You have finished all the measurements taken from the external assessment tool HearX. \n\n
+            Click FINISH to update patient assessment status and go back to the Patient home page.</string>
+    <string name="peek_finish_prompt">You have finished all the measurements taken from the external assessment tool PEEK. \n\n
+            Click FINISH to update patient assessment status and go back to the Patient home page.</string>
+    <string name="default_finish_prompt">You have finished all the questions in this Questionnaire/Assessment. \n\n
+            Click FINISH to update patient assessment status and go back to the Patient home page.</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- activity_about.xml -->
+    <string name="app_version">1.0.0</string>
+    <string name="about_organisation">Created by University College London, Dept of Computer Science.
+            \n\nCollaborated with London School of Hygiene &amp; Tropical Medicine.</string>
+    <string name="about_developer">Jingting Yan, Nadhirah Rafidz</string>
+    <string name="contact_info">jingting.yan.17@ucl.ac.uk</string>
 
 </resources>

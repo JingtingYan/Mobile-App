@@ -24,7 +24,9 @@ public class Constants {
     // questionnaire-related data
     private static Integer currentQuestionnaireID;
     private static String HouseholdRosterQuestionnaireDate;
-    // patient-related data
+    private static String WashingtonQuestionnaireStartDate;
+    private static String MobilityQuestionnaireStartDate;
+    // assessment-related data
     private static String currentPatientID;
     private static String currentHouseholdID;
 
@@ -93,6 +95,22 @@ public class Constants {
         HouseholdRosterQuestionnaireDate = householdRosterQuestionnaireStartDate;
     }
 
+    public static String getWashingtonQuestionnaireStartDate() {
+        return WashingtonQuestionnaireStartDate;
+    }
+
+    public static void setWashingtonQuestionnaireStartDate(String washingtonQuestionnaireStartDate) {
+        WashingtonQuestionnaireStartDate = washingtonQuestionnaireStartDate;
+    }
+
+    public static String getMobilityQuestionnaireStartDate() {
+        return MobilityQuestionnaireStartDate;
+    }
+
+    public static void setMobilityQuestionnaireStartDate(String mobilityQuestionnaireStartDate) {
+        MobilityQuestionnaireStartDate = mobilityQuestionnaireStartDate;
+    }
+
     public static String getCurrentHouseholdID() {
         return currentHouseholdID;
     }
@@ -117,6 +135,7 @@ public class Constants {
     public static final String GET_QUESTION_RELATION_URL = "http://10.0.2.2:8000/tables/QRel/";
     public static final String GET_HOUSEHOLD_FOR_CLUSTER_URL = "http://10.0.2.2:8000/tables/Household/";
     public static final String GET_PATIENT_FOR_CLUSTER_URL = "http://10.0.2.2:8000/tables/Patients/";
+    public static final String GET_PATIENT_ASSESSMENT_FOR_CLUSTER_URL = "http://10.0.2.2:8000/tables/PatientAssessment/";
 
     public static final String POST_RESPONSE_URL = "http://10.0.2.2:8000/tables/Response/";
     public static final String POST_HOUSEHOLD_URL = "http://10.0.2.2:8000/tables/Household/";

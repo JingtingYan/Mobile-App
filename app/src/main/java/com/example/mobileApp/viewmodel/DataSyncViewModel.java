@@ -9,6 +9,7 @@ import androidx.lifecycle.AndroidViewModel;
 import com.example.mobileApp.database.MobileAppRepository;
 import com.example.mobileApp.database.entity.HouseholdTable;
 import com.example.mobileApp.database.entity.ResponseTable;
+import com.example.mobileApp.utilities.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,29 +29,22 @@ public class DataSyncViewModel extends AndroidViewModel {
         repo = MobileAppRepository.getInstance(application.getApplicationContext());
     }
 
-    public JSONObject getResponseJSONObject() {
-        JSONObject result = new JSONObject();
-        List<JSONObject> jsonArray = new ArrayList<>();
+    public JSONArray getResponseJSONArray() {
+        JSONArray result = new JSONArray();
         List<ResponseTable> responseTables = new ArrayList<>();
 
         try {
-            responseTables.addAll(repo.getResponses());
+            responseTables.addAll(repo.getAllResponses());
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
 
         for (ResponseTable responseTable : responseTables) {
             try {
-                jsonArray.add(responseTableConverter(responseTable));
+                result.put(responseTableConverter(responseTable));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
-
-        try {
-            result.put("data", jsonArray);
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
 
         return result;
@@ -67,6 +61,8 @@ public class DataSyncViewModel extends AndroidViewModel {
         result.put("text", responseTable.getText());
         result.put("questionnaireID", responseTable.getQnnaire_id());
         result.put("date", responseTable.getDate());
+
+        Log.i("datasync vm - responseTableConverter", "response json to post" + result.toString());  // debug
 
         return result;
     }
@@ -96,7 +92,7 @@ public class DataSyncViewModel extends AndroidViewModel {
 
         result.put("householdID", householdTable.getHousehold_id());
         result.put("parentLocID", householdTable.getParent_loc_id());
-        result.put("enumeratorID", "1");    // hard-code enumeratorID to be 1 - need to be changed later
+        result.put("enumeratorID", Constants.getEnumeratorID());
         result.put("date", householdTable.getDate());
         result.put("village_street_name", householdTable.getVillage_street_name());
         result.put("gps_latitude", householdTable.getGps_latitude());
@@ -124,8 +120,7 @@ public class DataSyncViewModel extends AndroidViewModel {
         result.put("a2q12", householdTable.getA2_q12());
         result.put("a2q13", householdTable.getA2_q13());
 
-        Log.i("parentLocID is", result.get("parentLocID").toString());
-        Log.i("parentLocID type is", result.get("parentLocID").getClass().toString());
+        Log.i("datasync vm - householdTableConverter", "hh json to post" + result.toString());  // debug
 
         return result;
     }

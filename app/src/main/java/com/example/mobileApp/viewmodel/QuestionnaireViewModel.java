@@ -9,10 +9,13 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.mobileApp.database.MobileAppRepository;
 import com.example.mobileApp.database.entity.HouseholdTable;
+import com.example.mobileApp.database.entity.PatientAssessmentStatusTable;
 import com.example.mobileApp.datatype.Answer;
 import com.example.mobileApp.datatype.Question;
+import com.example.mobileApp.datatype.Response;
 import com.example.mobileApp.utilities.Constants;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -21,7 +24,7 @@ import static com.example.mobileApp.utilities.Constants.DEFAULT_QN_INSTRUCTION_M
 import static com.example.mobileApp.utilities.Constants.DEFAULT_QN_INSTRUCTION_SCQ;
 import static com.example.mobileApp.utilities.Constants.DEFAULT_QN_INSTRUCTION_TEXT_ENTRY;
 
-public class HouseholdCreateViewModel extends AndroidViewModel {
+public class QuestionnaireViewModel extends AndroidViewModel {
 
     private MobileAppRepository repo;
 
@@ -34,7 +37,7 @@ public class HouseholdCreateViewModel extends AndroidViewModel {
 
     public volatile List<String> allResponses = new ArrayList<>();
 
-    public HouseholdCreateViewModel(@NonNull Application application) {
+    public QuestionnaireViewModel(@NonNull Application application) {
         super(application);
 
         repo = MobileAppRepository.getInstance(application.getApplicationContext());
@@ -48,11 +51,12 @@ public class HouseholdCreateViewModel extends AndroidViewModel {
         this.gpsLongitude = gpsLongitude;
     }
 
-    // new HouseholdID = CountryID ++ RegionID ++ ClusterID ++ ++ LatestIndexInHHTABLEServer
+    // new HouseholdID = CountryID ++ RegionID ++ ClusterID ++ LatestIndexInHHTABLEServer
     public String generateNewHouseholdID() {
         int lastHHIndex = -1;
         try {
             lastHHIndex = repo.getHouseholdTableLastIndex();
+            Log.i("qnn vm - generateNewHouseholdID", "lastHHIndex is: " + lastHHIndex);     // debug
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -84,6 +88,7 @@ public class HouseholdCreateViewModel extends AndroidViewModel {
     public void loadFirstQuestion() {
         try {
             currQn = repo.loadFirstQuestion(Constants.getCurrentQuestionnaireID());
+            Log.i("hh create vm - loadFirstQuestion", "currQn is: " + currQn.toString());   // debug
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -112,7 +117,8 @@ public class HouseholdCreateViewModel extends AndroidViewModel {
         }
         // if nextQnID is -1 then the current question is the last question in this questionnaire
         // otherwise there is a next question
-        return nextQnID != -1;
+        Log.i("hh create vm - hasNextQuestion", "next qn id is: " + nextQnID);  // debug
+        return (nextQnID != -1) && (nextQnID != -2);
     }
 
     public void loadNextQuestion() {
@@ -126,8 +132,11 @@ public class HouseholdCreateViewModel extends AndroidViewModel {
         qnString.postValue(currQn.getQuestionString());
     }
 
-    public void storeResponsesToDb() {
-        HouseholdTable householdTable = new HouseholdTable(generateNewHouseholdID(), Constants.getCluster().getLocationID(),
+    public void storeHouseholdResponsesToDb() {
+        String newHHID = generateNewHouseholdID();
+        Log.i("qnn vm - storeHouseholdResponsesToDb", "generated new hh id is: " + newHHID);    // debug
+
+        HouseholdTable householdTable = new HouseholdTable(newHHID, Constants.getCluster().getLocationID(),
                 Constants.getEnumeratorID(), Constants.getHouseholdRosterQuestionnaireDate(), gpsLatitude, gpsLongitude);
 
         householdTable.setVillage_street_name(allResponses.get(0));
@@ -157,33 +166,53 @@ public class HouseholdCreateViewModel extends AndroidViewModel {
         repo.storeHouseholdToDb(householdTable);
     }
 
-    /*
     public void storeSCQResponse(Answer selectedAns) {
-        Response response = new Response(Constants.getCurrentPatientID(), currQn.getQuestionID(),
-                selectedAns.getAnswerID(), Constants.getCurrentQuestionnaireID(), "", LocalDate.now());
-        allResponses.add(response);
+        storeSingleResponseToDb(new Response(Constants.getCurrentPatientID(), currQn.getQuestionID(),
+                selectedAns.getAnswerID(), Constants.getCurrentQuestionnaireID(), "", LocalDate.now()));
+//        allResponses.add(response);
     }
 
     public void storeMCQResponse(List<Answer> selectedAns) {
         for (Answer answer : selectedAns) {
-            Response response = new Response(Constants.getCurrentPatientID(), currQn.getQuestionID(),
-                    answer.getAnswerID(), Constants.getCurrentQuestionnaireID(), "", LocalDate.now());
-            allResponses.add(response);
+            storeSingleResponseToDb(new Response(Constants.getCurrentPatientID(), currQn.getQuestionID(),
+                    answer.getAnswerID(), Constants.getCurrentQuestionnaireID(), "", LocalDate.now()));
+//            allResponses.add(response);
         }
     }
 
     public void storeTextQnResponse(String responseString) {
-        Response response = new Response(Constants.getCurrentPatientID(), currQn.getQuestionID(),
-                -1, Constants.getCurrentQuestionnaireID(), responseString, LocalDate.now());
-        allResponses.add(response);
+        storeSingleResponseToDb(new Response(Constants.getCurrentPatientID(), currQn.getQuestionID(),
+                -1, Constants.getCurrentQuestionnaireID(), responseString, LocalDate.now()));
+//        allResponses.add(response);
     }
 
-    public void storeResponsesToDb() {
+    private void storeSingleResponseToDb (Response response) {
         try {
-            repo.storeResponsesToDb(allResponses);
+            repo.storeSingleResponseToDb(response);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }
-     */
+
+    public void updateAssessmentStatus() {
+        int lastIndex = 0;
+        try {
+            lastIndex = repo.getAssessmentStatusTableLastIndex();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        PatientAssessmentStatusTable assessmentStatusTable =
+                new PatientAssessmentStatusTable(lastIndex + 1, Constants.getCurrentPatientID(),
+                        Constants.getCurrentQuestionnaireID(), "COMPLETE",
+                        Constants.getWashingtonQuestionnaireStartDate(), LocalDate.now().toString());
+        repo.addNewAssessmentStatus(assessmentStatusTable);
+    }
+
+//    public void storeResponsesToDb() {
+//        try {
+//            repo.storeResponsesToDb(allResponses);
+//        } catch (ExecutionException | InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

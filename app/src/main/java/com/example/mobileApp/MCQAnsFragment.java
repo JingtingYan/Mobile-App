@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.mobileApp.datatype.Answer;
-import com.example.mobileApp.viewmodel.HouseholdCreateViewModel;
+import com.example.mobileApp.viewmodel.QuestionnaireViewModel;
 import com.example.mobileApp.viewmodel.MCQAnsAdapter;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class MCQAnsFragment extends Fragment {
 
     @BindView(R.id.mcq_button_list) ListView ansListView;
 
-    private HouseholdCreateViewModel householdCreateViewModel;
+    private QuestionnaireViewModel questionnaireViewModel;
     private static MCQAnsAdapter ansAdapter;
 
     public MCQAnsFragment() {
@@ -53,11 +53,11 @@ public class MCQAnsFragment extends Fragment {
     }
 
     private void initViewModel() {
-        householdCreateViewModel = new ViewModelProvider(requireActivity()).get(HouseholdCreateViewModel.class);
+        questionnaireViewModel = new ViewModelProvider(requireActivity()).get(QuestionnaireViewModel.class);
     }
 
     private void loadAnswerChoice() {
-        ansAdapter = new MCQAnsAdapter(requireContext(), householdCreateViewModel.loadAnswerChoices());
+        ansAdapter = new MCQAnsAdapter(requireContext(), questionnaireViewModel.loadAnswerChoices());
         ansListView.setAdapter(ansAdapter);
     }
 

@@ -79,35 +79,33 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (item.isChecked()){      // if the item is currently selected
             // directly close the drawer and stay on the same page
-            drawerLayout.closeDrawer(GravityCompat.START);
-            return false;
+            drawerLayout.closeDrawers();
+            return true;
         }
-        switch (item.getItemId()) {
+        selectDrawerItem(item);
+        return true;
+    }
+
+    private void selectDrawerItem(@NonNull MenuItem menuItem) {
+        Class activityClass;
+
+        switch (menuItem.getItemId()) {
             case (R.id.nav_dataSync):
-                // highlight the selected item as being selected in the drawer
-                item.setChecked(true);
-                Toast.makeText(getApplicationContext(), "clicked DataSync", Toast.LENGTH_SHORT).show();     // debug
-                drawerLayout.closeDrawers();
-                // go to the data sync page
-                startActivity(new Intent(getApplicationContext(), DataSyncActivity.class));
-                return true;
+                activityClass = DataSyncActivity.class;
+                break;
             case (R.id.nav_location):
-                item.setChecked(true);
-                Toast.makeText(getApplicationContext(), "clicked Location", Toast.LENGTH_SHORT).show();     // debug
-                drawerLayout.closeDrawers();
-                // go to the location selection page
-                startActivity(new Intent(getApplicationContext(), LocationActivity.class));
-                return true;
+                activityClass = LocationActivity.class;
+                break;
             case (R.id.nav_hh_home):
-                item.setChecked(true);
-                Toast.makeText(getApplicationContext(), "clicked Household Home", Toast.LENGTH_SHORT).show();   // debug
-                drawerLayout.closeDrawers();
-                // go to the household home page
-                startActivity(new Intent(getApplicationContext(), HouseholdMainActivity.class));
-                return true;
+                activityClass = HouseholdMainActivity.class;
+                break;
             default:
-                return false;
+                activityClass = DataSyncActivity.class;
+                break;
         }
+
+        startActivity(new Intent(getApplicationContext(), activityClass));
+        menuItem.setChecked(true);drawerLayout.closeDrawers();
     }
 
     /**
@@ -145,6 +143,9 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             // select the About action in the overflow menu
             case (R.id.action_about):
                 Toast.makeText(this, "clicked About", Toast.LENGTH_SHORT).show();   // debug
+                // Go to the About page
+                Intent aboutIntent = new Intent(this, AboutActivity.class);
+                startActivity(aboutIntent);
                 return true;
 
             // select the Log out action in the overflow menu
@@ -153,8 +154,8 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                 if (Constants.getToken() != null) { // check if has already login
                     Constants.setToken(null);
                     // successfully logged out - go back to Log in page
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
+                    Intent mainIntent = new Intent(this, MainActivity.class);
+                    startActivity(mainIntent);
                 }
                 return true;
 

@@ -65,7 +65,7 @@
     </FrameLayout>
 
     <Button
-        android:id="@+id/bn_hh_create_next"
+        android:id="@+id/bn_qnn_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

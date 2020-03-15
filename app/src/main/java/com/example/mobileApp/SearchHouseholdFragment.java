@@ -19,7 +19,7 @@ import android.view.ViewGroup;
 import com.example.mobileApp.datatype.HouseholdRecyclerViewItem;
 import com.example.mobileApp.utilities.Constants;
 import com.example.mobileApp.viewmodel.HouseholdRecyclerAdapter;
-import com.example.mobileApp.viewmodel.HouseholdSearchViewModel;
+import com.example.mobileApp.viewmodel.SearchHouseholdViewModel;
 
 import java.util.List;
 
@@ -30,24 +30,23 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HouseholdSearchFragment extends Fragment {
+public class SearchHouseholdFragment extends Fragment {
 
     @BindView(R.id.recycler_view_hh) RecyclerView householdRecyclerView;
 
-    private HouseholdSearchViewModel householdSearchViewModel;
+    private SearchHouseholdViewModel searchHouseholdViewModel;
 
     private HouseholdRecyclerAdapter adapter;
 
-    public HouseholdSearchFragment() {
+    public SearchHouseholdFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_household_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_search_household, container, false);
 
         ButterKnife.bind(this, view);
 
@@ -64,11 +63,11 @@ public class HouseholdSearchFragment extends Fragment {
     }
 
     private void initViewModel() {
-        householdSearchViewModel = new ViewModelProvider(requireActivity()).get(HouseholdSearchViewModel.class);
+        searchHouseholdViewModel = new ViewModelProvider(requireActivity()).get(SearchHouseholdViewModel.class);
     }
 
     private void initRecyclerView() {
-        List<HouseholdRecyclerViewItem> hhItems = householdSearchViewModel.loadHouseholds();
+        List<HouseholdRecyclerViewItem> hhItems = searchHouseholdViewModel.loadHouseholds();
 
         // setHasFixedSize = true means the RecyclerView won't change size no matter how many items it may contain.
         householdRecyclerView.setHasFixedSize(true);

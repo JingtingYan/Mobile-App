@@ -27,7 +27,6 @@ public class HouseholdHomeFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,13 +48,16 @@ public class HouseholdHomeFragment extends Fragment {
 
     @OnClick(R.id.bn_hh_home_choose) void onClickSearchHousehold() {
         HouseholdMainActivity.fragmentManager.beginTransaction()
-                .replace(R.id.household_fragment_container, new HouseholdSearchFragment())
+                .replace(R.id.household_fragment_container, new SearchHouseholdFragment())
                 .addToBackStack(null)
                 .commit();
     }
 
     @OnClick(R.id.bn_hh_home_search_patient) void onClickSearchPatient() {
-        // search patient page
+        HouseholdMainActivity.fragmentManager.beginTransaction()
+                .replace(R.id.household_fragment_container, new SearchPatientFragment())
+                .addToBackStack(null)
+                .commit();
     }
 
 }

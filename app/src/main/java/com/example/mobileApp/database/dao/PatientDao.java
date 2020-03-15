@@ -10,8 +10,8 @@ import com.example.mobileApp.database.entity.PatientTable;
 import java.util.List;
 
 @Dao
-public interface PatientDao
-{
+public interface PatientDao {
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(PatientTable patient);
 
@@ -21,4 +21,9 @@ public interface PatientDao
     @Query("SELECT * FROM patients WHERE hh_id = :hh_id")
     List<PatientTable> getPatientsForHousehold(String hh_id);
 
+    @Query("SELECT * FROM patients WHERE patient_id = :patientID")
+    PatientTable getSinglePatient(String patientID);
+
+    @Query("SELECT * FROM patients")
+    List<PatientTable> getAllPatients();
 }
