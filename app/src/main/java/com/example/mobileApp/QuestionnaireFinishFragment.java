@@ -21,6 +21,7 @@ import butterknife.OnClick;
 import static com.example.mobileApp.utilities.Constants.GENERAL_WASHINGTON_GROUP_QUESTIONNAIRE_ID;
 import static com.example.mobileApp.utilities.Constants.HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID;
 import static com.example.mobileApp.utilities.Constants.MOBILITY_QUESTIONNAIRE_ID;
+import static com.example.mobileApp.utilities.Constants.PATIENT_BASIC_INFORMATION_QUESTIONNAIRE;
 
 
 /**
@@ -69,6 +70,10 @@ public class QuestionnaireFinishFragment extends Fragment {
                 requireActivity().setTitle(R.string.title_qnn_mobility);
                 break;
 
+            case (PATIENT_BASIC_INFORMATION_QUESTIONNAIRE):
+                requireActivity().setTitle(R.string.title_create_patient);
+                break;
+
             default:
                 requireActivity().setTitle("Questionnaire/Assessment");
                 break;
@@ -94,6 +99,10 @@ public class QuestionnaireFinishFragment extends Fragment {
                 txtPrompt.setText(R.string.mobility_finish_prompt);
                 break;
 
+            case (PATIENT_BASIC_INFORMATION_QUESTIONNAIRE):
+                txtPrompt.setText(R.string.patient_finish_prompt);
+                break;
+
             default:
                 txtPrompt.setText(R.string.default_finish_prompt);
                 break;
@@ -109,10 +118,21 @@ public class QuestionnaireFinishFragment extends Fragment {
             // go back to Household Home page
             HouseholdMainActivity.fragmentManager.beginTransaction()
                     .replace(R.id.household_fragment_container, new HouseholdHomeFragment()).commit();
+
+        } else if (Constants.getCurrentQuestionnaireID() == PATIENT_BASIC_INFORMATION_QUESTIONNAIRE) {
+            questionnaireViewModel.storePatientInfoToDb();
+
+            // go to single Household home page
+            HouseholdMainActivity.fragmentManager.beginTransaction()
+                    .replace(R.id.household_fragment_container, new SingleHouseholdFragment()).commit();
+
         } else {// otherwise, store the responses into Response table and update Assessment status
             // mark this patient's Assessment Status on the undertaking questionnaire/assessment to be COMPLETE
-            questionnaireViewModel.updateAssessmentStatus();
-
+            if (Constants.isQnnExists()) {
+                questionnaireViewModel.updateExistingAssessmentToComplete(Constants.getSelectedAssessment().getStartDate());
+            } else {
+                questionnaireViewModel.updateNewAssessmentToComplete();
+            }
             // go to Patient home page
             HouseholdMainActivity.fragmentManager.beginTransaction()
                     .replace(R.id.household_fragment_container, new SinglePatientFragment()).commit();

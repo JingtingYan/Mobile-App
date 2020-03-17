@@ -7,6 +7,7 @@
     <string name="title_activity_location">Location Selection</string>
     <string name="title_activity_household_home">Household Home</string>
     <string name="title_create_hh">HOUSEHOLD ROSTER</string>
+    <string name="title_create_patient">PATIENT BASIC INFORMATION</string>
     <string name="title_choose_hh">Choose A Household</string>
     <string name="title_choose_patient">Choose A Patient</string>
     <string name="title_qnn_washington">WASHINGTON GROUP</string>
@@ -43,7 +44,9 @@
 
     <!-- fragment_questionnaire_finish.xml -->
     <string name="hh_finish_prompt">You have finished all the questions in Household Roaster Questionnaire. \n\n
-            Click FINISH to create this new household.</string>
+            Click FINISH to create this new household and go back to the Household home page.</string>
+    <string name="patient_finish_prompt">You have finished all the questions in Patient Basic Information Questionnaire. \n\n
+            Click FINISH to update patient assessment status and go back to the Household home page.</string>
     <string name="washington_finish_prompt">You have finished all the questions in General Washington Group Questionnaire. \n\n
             Click FINISH to update patient assessment status and go back to the Patient home page.</string>
     <string name="mobility_finish_prompt">You have finished all the questions in Mobility Questionnaire. \n\n
@@ -61,5 +64,8 @@
             \n\nCollaborated with London School of Hygiene &amp; Tropical Medicine.</string>
     <string name="about_developer">Jingting Yan, Nadhirah Rafidz</string>
     <string name="contact_info">jingting.yan.17@ucl.ac.uk</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

@@ -10,16 +10,20 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import com.example.mobileApp.database.MobileAppDatabase;
 import com.example.mobileApp.database.dao.AnswerDao;
 import com.example.mobileApp.database.dao.LocationDao;
+import com.example.mobileApp.database.dao.PatientAssessmentStatusDao;
 import com.example.mobileApp.database.dao.QuestionAnswerDao;
 import com.example.mobileApp.database.dao.QuestionDao;
 import com.example.mobileApp.database.dao.ResponseDao;
 import com.example.mobileApp.database.entity.AnswerTable;
 import com.example.mobileApp.database.entity.LocationTable;
+import com.example.mobileApp.database.entity.PatientAssessmentStatusTable;
 import com.example.mobileApp.database.entity.QuestionAnswerTable;
 import com.example.mobileApp.database.entity.QuestionTable;
 import com.example.mobileApp.datatype.Answer;
 import com.example.mobileApp.utilities.SampleData;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class DatabaseTest {
@@ -40,6 +46,7 @@ public class DatabaseTest {
     private QuestionDao questionDao;
     private QuestionAnswerDao questionAnswerDao;
     private ResponseDao responseDao;
+    private PatientAssessmentStatusDao patientAssessmentStatusDao;
 
     @Before
     public void createDb() {
@@ -51,6 +58,7 @@ public class DatabaseTest {
         questionDao = database.questionDao();
         questionAnswerDao = database.questionAnswerDao();
         responseDao = database.responseDao();
+        patientAssessmentStatusDao = database.patientAssessmentStatusDao();
 
         Log.i(TAG, "database created");
     }
@@ -137,5 +145,39 @@ public class DatabaseTest {
 
         int lastQAIndex = questionAnswerDao.getLastIndex();
         assertEquals(0, lastQAIndex);
+    }
+
+    @Test
+    public void jsonOptINTParseNullToTheFallbackValue() {
+        JSONObject jsonObject = new JSONObject();
+        Integer value1 = null;
+        Integer value2 = 10;
+
+        try {
+            jsonObject.put("value1", value1);
+            jsonObject.put("value2", value2);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        int parsedValue1 = jsonObject.optInt("value1", -1);
+        int parsedValue2 = jsonObject.optInt("value2", 10);
+        assertEquals(-1, parsedValue1);
+        assertEquals(10, parsedValue2);
+    }
+
+    @Test
+    public void findExistingAssessmentInPatientAssessmentStatusTable() {
+        List<PatientAssessmentStatusTable> tables = new ArrayList<>();
+        tables.add(new PatientAssessmentStatusTable(1, "001", 1, "INCOMPLETE", "2020-03-12", "", 21));
+        patientAssessmentStatusDao.insertAll(tables);
+
+        PatientAssessmentStatusTable result1 = patientAssessmentStatusDao.findExistingAssessment("001", 1, "2020-03-12");
+        boolean boolean1 = (result1 == null);
+        PatientAssessmentStatusTable result2 = patientAssessmentStatusDao.findExistingAssessment("002", 1, "2020-03-12");
+        boolean boolean2 = (result2 == null);
+
+        assertFalse(boolean1);
+        assertTrue(boolean2);
     }
 }

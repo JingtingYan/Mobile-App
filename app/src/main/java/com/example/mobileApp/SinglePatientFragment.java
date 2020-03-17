@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -110,8 +111,24 @@ public class SinglePatientFragment extends Fragment {
         assessmentRecyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(position -> {
-            Constants.setCurrentQuestionnaireID(assessmentItems.get(position).getId());
-            Toast.makeText(requireContext(), "clicked questionnaire: " + assessmentItems.get(position).getQuestionnaireName(), Toast.LENGTH_SHORT).show();    // debug
+            AssessmentRecyclerViewItem selectedItem = assessmentItems.get(position);
+            Toast.makeText(requireContext(), "clicked questionnaire: " + selectedItem.getQuestionnaireName(), Toast.LENGTH_SHORT).show();    // debug
+
+            if (selectedItem.getStatus().equals("COMPLETE")) {
+                Toast.makeText(requireContext(), "This assessment has been completed.", Toast.LENGTH_SHORT).show();
+            }
+
+            if (selectedItem.getStatus().equals("INCOMPLETE")) {
+                Constants.setCurrentQuestionnaireID(selectedItem.getQuestionnaireID());
+                Constants.setSelectedAssessment(selectedItem);
+                Constants.setQnnExists(true);
+
+                Log.i("single patient fragment - onclick", "continue with existing qnn: " + selectedItem.getQuestionnaireID() +
+                        " & prev_answered_qn_id: " + selectedItem.getLastAnsweredQnID());   // debug
+
+                HouseholdMainActivity.fragmentManager.beginTransaction()
+                        .replace(R.id.household_fragment_container, new QuestionnaireFragment()).commit();
+            }
         });
     }
 
@@ -144,7 +161,9 @@ public class SinglePatientFragment extends Fragment {
 
     @OnClick(R.id.bn_washington) void onClickWashington() {
         Constants.setCurrentQuestionnaireID(GENERAL_WASHINGTON_GROUP_QUESTIONNAIRE_ID);
-        Constants.setWashingtonQuestionnaireStartDate(LocalDate.now().toString());
+        Constants.setCurrentQuestionnaireStartDate(LocalDate.now().toString());
+        Constants.setQnnExists(false);
+
         // Go to take the Washington Group Questionnaire for this patient
         HouseholdMainActivity.fragmentManager.beginTransaction()
                 .replace(R.id.household_fragment_container, new QuestionnaireFragment()).commit();
@@ -160,7 +179,9 @@ public class SinglePatientFragment extends Fragment {
 
     @OnClick(R.id.bn_mobility) void onClickMobility() {
         Constants.setCurrentQuestionnaireID(MOBILITY_QUESTIONNAIRE_ID);
-        Constants.setMobilityQuestionnaireStartDate(LocalDate.now().toString());
+        Constants.setCurrentQuestionnaireStartDate(LocalDate.now().toString());
+        Constants.setQnnExists(false);
+
         // Go to take the Mobility Questionnaire for this patient
         HouseholdMainActivity.fragmentManager.beginTransaction()
                 .replace(R.id.household_fragment_container, new QuestionnaireFragment()).commit();

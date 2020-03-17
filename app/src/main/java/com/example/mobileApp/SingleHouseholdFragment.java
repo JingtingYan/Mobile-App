@@ -23,11 +23,14 @@ import com.example.mobileApp.utilities.Constants;
 import com.example.mobileApp.viewmodel.PatientRecyclerAdapter;
 import com.example.mobileApp.viewmodel.SingleHouseholdViewModel;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.example.mobileApp.utilities.Constants.PATIENT_BASIC_INFORMATION_QUESTIONNAIRE;
 
 
 /**
@@ -133,6 +136,10 @@ public class SingleHouseholdFragment extends Fragment {
     }
 
     @OnClick(R.id.bn_hh_add_patient) void onClickAddPatient() {
-
+        Constants.setCurrentQuestionnaireID(PATIENT_BASIC_INFORMATION_QUESTIONNAIRE);
+        Constants.setQnnExists(false);
+        // Go to take the Patient Basic Information Questionnaire for this patient
+        HouseholdMainActivity.fragmentManager.beginTransaction()
+                .replace(R.id.household_fragment_container, new QuestionnaireFragment()).commit();
     }
 }

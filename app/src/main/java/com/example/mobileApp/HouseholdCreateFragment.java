@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,12 +35,17 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.example.mobileApp.utilities.Constants.HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID;
+import static com.example.mobileApp.utilities.Constants.PATIENT_BASIC_INFORMATION_QUESTIONNAIRE;
+
+// This class is used to create new Household or new Patient;
+// these two processes share a similar logic, therefore, merge them together to reduce code redundancy.
 
 public class HouseholdCreateFragment extends Fragment implements LocationListener{
 
     @BindView(R.id.txt_qn_instruction) TextView txtQnInstruction;
     @BindView(R.id.txt_qn_string) TextView txtQnString;
     @BindView(R.id.bn_qnn_next) Button bnNext;
+    @BindView(R.id.bn_qnn_exit) Button bnExit;
 
     private QuestionnaireViewModel questionnaireViewModel;
     private static FragmentManager answerFragmentManager;
@@ -55,24 +61,38 @@ public class HouseholdCreateFragment extends Fragment implements LocationListene
 
         ButterKnife.bind(this, view);
 
-        requireActivity().setTitle(R.string.title_create_hh);
+        setActivityTitle();
+
+        // Hide the "Exit and Continue later" button to ensure user finishes the Questionnaire at one time
+        bnExit.setVisibility(View.GONE);
 
         answerFragmentManager = getChildFragmentManager();
 
         initViewModel();
 
-        // check permission for accessing location
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
-        }
-
         initData();
+
+        // Household Roster Questionnaire requires to check permission for accessing location
+        if (Constants.getCurrentQuestionnaireID() == HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID) {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
+            }
+        }
 
         loadFirstQuestion();
 
         return view;
+    }
+
+    private void setActivityTitle() {
+        if (Constants.getCurrentQuestionnaireID() == HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID) {
+            requireActivity().setTitle(R.string.title_create_hh);
+        }
+        if (Constants.getCurrentQuestionnaireID() == PATIENT_BASIC_INFORMATION_QUESTIONNAIRE) {
+            requireActivity().setTitle(R.string.title_create_patient);
+        }
     }
 
     private void initViewModel() {
@@ -84,10 +104,18 @@ public class HouseholdCreateFragment extends Fragment implements LocationListene
 
     // update relevant data fields that need to be stored in db later
     private void initData() {
-        Constants.setCurrentQuestionnaireID(HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID);
-        Constants.setHouseholdRosterQuestionnaireDate(LocalDate.now().toString());
-        Constants.setCurrentHouseholdID(questionnaireViewModel.generateNewHouseholdID());
-        getGPSCoordinates();
+        Constants.setCurrentQuestionnaireStartDate(LocalDate.now().toString());
+        if (Constants.getCurrentQuestionnaireID() == PATIENT_BASIC_INFORMATION_QUESTIONNAIRE) {
+            Constants.setCurrentPatientID(questionnaireViewModel.generateNewPatientID());
+            Log.i("hh create fragment - initData", "generated new patient id is: " + Constants.getCurrentPatientID());    // debug
+        }
+
+        if (Constants.getCurrentQuestionnaireID() == HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID) {
+            Constants.setCurrentHouseholdID(questionnaireViewModel.generateNewHouseholdID());
+            Log.i("hh create fragment - initData", "generated new hh id is: " + Constants.getCurrentHouseholdID());    // debug
+
+            getGPSCoordinates();
+        }
     }
 
     private void updateQnInstruction(String qnInstruction) {
@@ -97,7 +125,6 @@ public class HouseholdCreateFragment extends Fragment implements LocationListene
     private void updateQnString(String qnString) {
         txtQnString.setText(qnString);
     }
-
 
     private void loadFirstQuestion() {
         questionnaireViewModel.loadFirstQuestion();
@@ -111,7 +138,7 @@ public class HouseholdCreateFragment extends Fragment implements LocationListene
         if (questionnaireViewModel.hasNextQuestion()) {
             loadNextQuestion();
         } else {
-            // move to the end page of Household Roaster Questionnaire
+            // move to the end page of the Questionnaire
             HouseholdMainActivity.fragmentManager.beginTransaction()
                     .replace(R.id.household_fragment_container, new QuestionnaireFinishFragment()).commit();
         }
@@ -144,15 +171,12 @@ public class HouseholdCreateFragment extends Fragment implements LocationListene
     private void storeQnResponse(Integer qnType) {
         switch (qnType) {
             case (1):
-                //Toast.makeText(requireContext(), "SCQ Response is: " + SCQAnsFragment.selectedAns.toString(), Toast.LENGTH_SHORT).show();
                 questionnaireViewModel.allResponses.add(SCQAnsFragment.selectedAns.getAnswerString());
                 break;
             case (2):
-                //Toast.makeText(requireContext(), "MCQ Response is: " + MCQAnsFragment.getSelectedAns().toString(), Toast.LENGTH_SHORT).show();
                 questionnaireViewModel.allResponses.add(MCQAnsFragment.getSelectedAns().toString());
                 break;
             case (3):
-                //Toast.makeText(requireContext(), "TextQn Response is: " + TextAnsFragment.getAnswer(), Toast.LENGTH_SHORT).show();
                 questionnaireViewModel.allResponses.add(TextAnsFragment.responseString);
                 TextAnsFragment.responseString = "";    // reset
                 break;

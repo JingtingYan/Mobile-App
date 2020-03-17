@@ -75,7 +75,7 @@ public class AssessmentRecyclerAdapter extends RecyclerView.Adapter<AssessmentRe
 
         holder.assessmentName.setText(item.getQuestionnaireName());
         holder.assessmentStatus.setText(item.getStatus());
-        holder.assessmentID.setText(String.valueOf(item.getId()));
+        holder.assessmentID.setText(String.valueOf(item.getQuestionnaireID()));
         holder.startDate.setText(item.getStartDate());
         holder.endDate.setText(item.getEndDate());
     }

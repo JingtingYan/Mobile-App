@@ -23,4 +23,7 @@ public interface PatientAssessmentStatusDao {
 
     @Query("SELECT MAX(`index`) FROM patient_assessment_status")
     int getLastIndex();
+
+    @Query("SELECT * FROM patient_assessment_status WHERE patient_id = :patientID AND qnnaire_id = :qnnID AND start = :startDate")
+    PatientAssessmentStatusTable findExistingAssessment(String patientID, int qnnID, String startDate);
 }

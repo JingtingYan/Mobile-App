@@ -37,6 +37,7 @@ import butterknife.OnItemSelected;
 import static com.example.mobileApp.utilities.Constants.GET_HOUSEHOLD_FOR_CLUSTER_URL;
 import static com.example.mobileApp.utilities.Constants.GET_PATIENT_ASSESSMENT_FOR_CLUSTER_URL;
 import static com.example.mobileApp.utilities.Constants.GET_PATIENT_FOR_CLUSTER_URL;
+import static com.example.mobileApp.utilities.Constants.GET_RESPONSE_FOR_CLUSTER_URL;
 
 /**
  * The LocationActivity class initialises layout components and adds functions for views in activity_location.xml.
@@ -265,6 +266,8 @@ public class LocationActivity extends NavigationDrawerActivity {
     }
 
     @OnClick(R.id.bn_location_download) void onClickDownload() {
+        Toast.makeText(getApplicationContext(), "Location data download is in progress...", Toast.LENGTH_SHORT).show();
+
         // store the current selected location for data downloading
         Constants.setCountry(country);
         Constants.setRegion(region);
@@ -273,6 +276,9 @@ public class LocationActivity extends NavigationDrawerActivity {
         loadHouseholdsForCluster();
         loadPatientsForCluster();
         loadPatientAssessmentsForCluster();
+        loadResponsesForCluster();
+
+        Toast.makeText(getApplicationContext(), "Location data download is done!", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -285,6 +291,8 @@ public class LocationActivity extends NavigationDrawerActivity {
         Constants.setCountry(country);
         Constants.setRegion(region);
         Constants.setCluster(cluster);
+        // StudyID = CountryID ++ RegionID ++ ClusterID
+        Constants.setCurrentStudyID(country.getLocationID() + String.valueOf(region.getLocationID()) + cluster.getLocationID());
 
         Intent intent = new Intent(this, HouseholdMainActivity.class);
         startActivity(intent);
@@ -338,6 +346,21 @@ public class LocationActivity extends NavigationDrawerActivity {
         MySingleton.getInstance(this.getApplicationContext()).addToRequestQueue(loadPatientAssessmentRequest);
     }
 
+    private void loadResponsesForCluster() {
+        String url = GET_RESPONSE_FOR_CLUSTER_URL + "?clusterID=" + Constants.getCluster().getLocationID();
+        StringRequest loadResponseRequest = new StringRequest(Request.Method.GET, url, this::addResponseData,
+                error -> Toast.makeText(this, String.valueOf(error), Toast.LENGTH_SHORT).show()) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Token " + Constants.getToken());
+                return headers;
+            }
+        };
+        loadResponseRequest.setTag("Download Response tables for cluster" + Constants.getCluster().getLocationID());
+        MySingleton.getInstance(this.getApplicationContext()).addToRequestQueue(loadResponseRequest);
+    }
+
     private void addHouseholdData(String jsonArray) {
         //Log.i("received household data", jsonArray);    // debug
         locationViewModel.addHouseholdData(jsonArray);
@@ -351,5 +374,10 @@ public class LocationActivity extends NavigationDrawerActivity {
     private void addPatientAssessmentData(String jsonArray) {
         Log.i("received patient assessment data", jsonArray);   // debug
         locationViewModel.addPatientAssessmentData(jsonArray);
+    }
+
+    private void addResponseData(String jsonArray) {
+        Log.i("received response data", jsonArray);     // debug
+        locationViewModel.addResponseData(jsonArray);
     }
 }

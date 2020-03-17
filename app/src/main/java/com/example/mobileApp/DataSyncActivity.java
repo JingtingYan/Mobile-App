@@ -40,6 +40,7 @@ import static com.example.mobileApp.utilities.Constants.GET_QUESTIONNAIRE_URL;
 import static com.example.mobileApp.utilities.Constants.GET_QUESTION_RELATION_URL;
 import static com.example.mobileApp.utilities.Constants.GET_QUESTION_URL;
 import static com.example.mobileApp.utilities.Constants.POST_HOUSEHOLD_URL;
+import static com.example.mobileApp.utilities.Constants.POST_PATIENT_URL;
 import static com.example.mobileApp.utilities.Constants.POST_RESPONSE_URL;
 
 /**
@@ -113,6 +114,8 @@ public class DataSyncActivity extends NavigationDrawerActivity {
      *  - Question Relation Table
      */
     @OnClick(R.id.bn_data_sync_download_data) void onClickDownload() {
+        Toast.makeText(getApplicationContext(), "Download is in progress...", Toast.LENGTH_SHORT).show();
+
         // delete the current local cache before downloading new tables from server db
         deleteLocationData();
         deleteQuestionnaireData();
@@ -129,6 +132,8 @@ public class DataSyncActivity extends NavigationDrawerActivity {
         downloadQAData();
         downloadLogicData();
         downloadQuestionRelationData();
+
+        Toast.makeText(getApplicationContext(), "Download is done!", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -139,8 +144,13 @@ public class DataSyncActivity extends NavigationDrawerActivity {
      *  - Response Table
      */
     @OnClick(R.id.bn_data_sync_upload_data) void onClickUpload() {
+        Toast.makeText(getApplicationContext(), "Data upload is in progress...", Toast.LENGTH_SHORT).show();
+
         uploadResponseData();
         //uploadHouseholdData();
+        //uploadPatientData();
+
+        Toast.makeText(getApplicationContext(), "Data upload is done!", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -161,6 +171,8 @@ public class DataSyncActivity extends NavigationDrawerActivity {
      *  - Response Table
      */
     @OnClick(R.id.bn_data_sync_delete_data) void onClickDelete() {
+        Toast.makeText(getApplicationContext(), "Data deletion is in progress...", Toast.LENGTH_SHORT).show();
+
 //        deleteLocationData();
 //        deleteQuestionnaireData();
 //        deleteQuestionData();
@@ -170,6 +182,8 @@ public class DataSyncActivity extends NavigationDrawerActivity {
 //        deleteQuestionRelationData();
         deleteResponseData();   // need to be modified later
         //deleteHouseholdData();  // need to be removed later
+
+        Toast.makeText(getApplicationContext(), "Data deletion is done!", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -358,30 +372,57 @@ public class DataSyncActivity extends NavigationDrawerActivity {
      *  4. Get a singleton instance of Volley RequestQueue from MySingleton class, and add this request to the RequestQueue.
      */
     private void uploadResponseData() {
-        JSONArray responseJsonArray = dataSyncViewModel.getResponseJSONArray();
-        Log.i("datesync activity - uploadResponseData", "response json array to upload: " + responseJsonArray.toString());  // debug
+        dataSyncViewModel.getAllResponses();
+        int size = dataSyncViewModel.allResponses.size();
+        Log.i("datasync activity - uploadResponseData", "size of all responses is: " + size);   // debug
+
+        int counter = 0;
+        while (counter + 30 < size) {
+            JSONArray responseJsonArray = dataSyncViewModel.getResponseJSONArray(counter, counter + 30);
+            uploadBatchOfResponseData(responseJsonArray);
+            Log.i("datasync activity - uploadResponseData", "successfully upload batch of responses from " + counter + " to " + (counter+29));  // debug
+            counter += 30;
+        }
+        // upload the rest responses (will be less than 30)
+        JSONArray responseJsonArray = dataSyncViewModel.getResponseJSONArray(counter, size - counter);
+        uploadBatchOfResponseData(responseJsonArray);
+        Log.i("datasync activity - uploadResponseData", "successfully upload batch of responses from " + counter + " to " + size);  // debug
+    }
+
+    // upload a batch of Response data with max size of 30
+    private void uploadBatchOfResponseData(JSONArray responseJsonArray) {
+        Log.i("datesync activity - uploadBatchOfResponseData", "response json array to upload: " + responseJsonArray.toString());  // debug
 
         JsonArrayRequest responseUploadRequest = new JsonArrayRequest(Request.Method.POST, POST_RESPONSE_URL, responseJsonArray,
                 response -> {
                     Toast.makeText(getApplicationContext(),
-                            "Successfully uploaded responses data. " + response, Toast.LENGTH_SHORT).show();
-                    Log.i("datesync activity - uploadResponseData", "received response from server" + response);     // debug
+                            "Successfully uploaded a batch of responsess.", Toast.LENGTH_SHORT).show();
+                    Log.i("datesync activity - uploadBatchOfResponseData", "received response from server" + response);     // debug
 
                     // delete local Response table
-
-                }, error -> {
-                    Toast.makeText(getApplicationContext(), String.valueOf(error), Toast.LENGTH_SHORT).show();
-                    txtDebug.setText(String.valueOf(error));    // debug
-                }) {
-                    @Override
-                    public Map<String, String> getHeaders() {
-                        Map<String, String> headers = new HashMap<>();
-                        headers.put("Authorization", "Token " + Constants.getToken());
-                        return headers;
+                    try {
+                        deleteConfirmedResponseData(response);
+                        Log.i("datesync activity - uploadBatchOfResponseData", "Successfully deleted a batch of responses");    // debug
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                };
+                }, error -> {
+            Toast.makeText(getApplicationContext(), String.valueOf(error), Toast.LENGTH_SHORT).show();
+            txtDebug.setText(String.valueOf(error));    // debug
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Token " + Constants.getToken());
+                return headers;
+            }
+        };
         responseUploadRequest.setTag("Upload Response Table Data to Server Db");
         MySingleton.getInstance(this.getApplicationContext()).addToRequestQueue(responseUploadRequest);
+    }
+
+    private void deleteConfirmedResponseData(JSONArray response) throws JSONException {
+        dataSyncViewModel.deleteConfirmedResponseData(response);
     }
 
     private void uploadHouseholdData() {
@@ -417,6 +458,39 @@ public class DataSyncActivity extends NavigationDrawerActivity {
 
     private void deleteConfirmedHouseholdData(JSONArray response) throws JSONException {
         dataSyncViewModel.deleteConfirmedHouseholdData(response);
+    }
+
+    private void uploadPatientData() {
+        JSONArray patientJSONArray = dataSyncViewModel.getPatientJSONArray();
+        Log.i("datesync activity - uploadPatientData", "patient json array to upload: " + patientJSONArray.toString());  // debug
+
+        JsonArrayRequest patientUploadRequest = new JsonArrayRequest(Request.Method.POST, POST_PATIENT_URL, patientJSONArray,
+                response -> {
+                    Toast.makeText(getApplicationContext(), "Successfully uploaded patients data.", Toast.LENGTH_SHORT).show();
+
+                    // delete Local Patient table
+                    try {
+                        deleteConfirmedPatientData(response);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }, error -> {
+                    Toast.makeText(getApplicationContext(), String.valueOf(error), Toast.LENGTH_SHORT).show();
+                    txtDebug.setText(String.valueOf(error));    // debug
+                }) {
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> headers = new HashMap<>();
+                        headers.put("Authorization", "Token " + Constants.getToken());
+                        return headers;
+                    }
+                };
+        patientUploadRequest.setTag("Upload Patient Table Data to Server Db");
+        MySingleton.getInstance(this.getApplicationContext()).addToRequestQueue(patientUploadRequest);
+    }
+
+    private void deleteConfirmedPatientData(JSONArray response) throws JSONException {
+        dataSyncViewModel.deleteConfirmedPatientData(response);
     }
 
 

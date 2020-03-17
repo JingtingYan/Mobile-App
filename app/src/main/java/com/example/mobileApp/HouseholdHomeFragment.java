@@ -9,9 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.mobileApp.utilities.Constants;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.example.mobileApp.utilities.Constants.HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID;
 
 
 /**
@@ -40,6 +44,8 @@ public class HouseholdHomeFragment extends Fragment {
     }
 
     @OnClick(R.id.bn_hh_home_create) void onClickCreate() {
+        Constants.setCurrentQuestionnaireID(HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID);
+        Constants.setQnnExists(false);
         HouseholdMainActivity.fragmentManager.beginTransaction()
                 .replace(R.id.household_fragment_container, new HouseholdCreateFragment())
                 .addToBackStack(null)

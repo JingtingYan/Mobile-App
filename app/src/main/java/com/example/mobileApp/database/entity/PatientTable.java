@@ -16,23 +16,13 @@ import static androidx.room.ForeignKey.CASCADE;
 @Entity(tableName = "patients",
         indices = { @Index(value={"patient_id", "hh_id"}),
                     @Index("hh_id"),
-                    @Index("enum_id")},
-        foreignKeys = {@ForeignKey(entity = HouseholdTable.class,
-                                   parentColumns = "household_id",
-                                   childColumns = "hh_id",
-                                   onDelete = CASCADE,
-                                   onUpdate = CASCADE),
-                       @ForeignKey(entity = EnumeratorTable.class,
-                                   parentColumns = "enumerator_id",
-                                   childColumns = "enum_id",
-                                   onDelete = CASCADE,
-                                   onUpdate = CASCADE)})
+                    @Index("enum_id")})     // remove foreign keys
 public class PatientTable {
 
     @PrimaryKey
     //    REQUIRED
     @NonNull
-    private String patient_id = "";
+    private String patient_id;
 
     //    REQUIRED
     private String study_id;
@@ -66,8 +56,6 @@ public class PatientTable {
 
     private String exam_status;
 
-    private String notes;
-
     private String lvl_edu;
 
     private String work_status;
@@ -96,16 +84,19 @@ public class PatientTable {
 
     private String national_id;
 
-    private Integer deceased = 0;
-
-    private LocalDate deceased_date = null;
-
     //    REQUIRED
     private String responder;
 
     private String proxy_name;
 
     private String proxy_rel;
+
+    private String notes;
+
+    // This two fields are created in case future usage
+    private Integer deceased = 0;
+
+    private LocalDate deceased_date = null;
 
 
     /* Select several unique IDs to be the constructor attributes of PatientTable object. */
@@ -222,14 +213,6 @@ public class PatientTable {
         this.exam_status = exam_status;
     }
 
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
     public String getLvl_edu() {
         return lvl_edu;
     }
@@ -334,22 +317,6 @@ public class PatientTable {
         this.national_id = national_id;
     }
 
-    public Integer getDeceased() {
-        return deceased;
-    }
-
-    public void setDeceased(Integer deceased) {
-        this.deceased = deceased;
-    }
-
-    public LocalDate getDeceased_date() {
-        return deceased_date;
-    }
-
-    public void setDeceased_date(LocalDate deceased_date) {
-        this.deceased_date = deceased_date;
-    }
-
     public String getResponder() {
         return responder;
     }
@@ -372,5 +339,29 @@ public class PatientTable {
 
     public void setProxy_rel(String proxy_rel) {
         this.proxy_rel = proxy_rel;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public Integer getDeceased() {
+        return deceased;
+    }
+
+    public void setDeceased(Integer deceased) {
+        this.deceased = deceased;
+    }
+
+    public LocalDate getDeceased_date() {
+        return deceased_date;
+    }
+
+    public void setDeceased_date(LocalDate deceased_date) {
+        this.deceased_date = deceased_date;
     }
 }

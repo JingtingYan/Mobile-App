@@ -4,16 +4,19 @@ public class AssessmentRecyclerViewItem {
 
     private String questionnaireName;
     private String status;
-    private Integer id;
+    private Integer questionnaireID;
     private String startDate;
     private String endDate;
+    private Integer lastAnsweredQnID;
 
-    public AssessmentRecyclerViewItem(String questionnaireName, String status, Integer id, String startDate, String endDate) {
+    public AssessmentRecyclerViewItem(String questionnaireName, String status, Integer questionnaireID,
+                                      String startDate, String endDate, Integer lastAnsweredQnID) {
         this.questionnaireName = questionnaireName;
         this.status = status;
-        this.id = id;
+        this.questionnaireID = questionnaireID;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.lastAnsweredQnID = lastAnsweredQnID;
     }
 
     public String getQuestionnaireName() {
@@ -24,8 +27,8 @@ public class AssessmentRecyclerViewItem {
         return status;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getQuestionnaireID() {
+        return questionnaireID;
     }
 
     public String getStartDate() {
@@ -34,6 +37,10 @@ public class AssessmentRecyclerViewItem {
 
     public String getEndDate() {
         return endDate;
+    }
+
+    public Integer getLastAnsweredQnID() {
+        return lastAnsweredQnID;
     }
 
     // information to search for

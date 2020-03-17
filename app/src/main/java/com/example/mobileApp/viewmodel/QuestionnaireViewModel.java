@@ -10,7 +10,9 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.mobileApp.database.MobileAppRepository;
 import com.example.mobileApp.database.entity.HouseholdTable;
 import com.example.mobileApp.database.entity.PatientAssessmentStatusTable;
+import com.example.mobileApp.database.entity.PatientTable;
 import com.example.mobileApp.datatype.Answer;
+import com.example.mobileApp.datatype.AssessmentRecyclerViewItem;
 import com.example.mobileApp.datatype.Question;
 import com.example.mobileApp.datatype.Response;
 import com.example.mobileApp.utilities.Constants;
@@ -32,6 +34,7 @@ public class QuestionnaireViewModel extends AndroidViewModel {
     private static Integer prevQnID;
     public MutableLiveData<String> qnInstruction = new MutableLiveData<>();
     public MutableLiveData<String> qnString = new MutableLiveData<>();
+
     private String gpsLatitude;
     private String gpsLongitude;
 
@@ -51,7 +54,8 @@ public class QuestionnaireViewModel extends AndroidViewModel {
         this.gpsLongitude = gpsLongitude;
     }
 
-    // new HouseholdID = CountryID ++ RegionID ++ ClusterID ++ LatestIndexInHHTABLEServer
+
+    // new HouseholdID = CountryID ++ RegionID ++ ClusterID ++ first 4 chars of EnumeratorID ++ LatestIndexInLocalHHTable
     public String generateNewHouseholdID() {
         int lastHHIndex = -1;
         try {
@@ -60,8 +64,20 @@ public class QuestionnaireViewModel extends AndroidViewModel {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-        return (Constants.getCountry().getLocationID().toString()) + (Constants.getRegion().getLocationID().toString()) +
-               (Constants.getCluster().getLocationID().toString()) + (lastHHIndex + 1);
+        return Constants.getCountry().getLocationID() + String.valueOf(Constants.getRegion().getLocationID()) +
+                Constants.getCluster().getLocationID() + Constants.getEnumeratorID().substring(0,3) + (lastHHIndex + 1);
+    }
+
+    // new PatientID = HouseholdID ++ first 4 chars of EnumeratorID ++ LatestIndexInLocalPatientTable
+    public String generateNewPatientID() {
+        int lastPatientIndex = -1;
+        try {
+            lastPatientIndex = repo.getPatientTableLastIndex();
+            Log.i("qnn vm - generateNewPatientID", "lastPatientIndex is: " + lastPatientIndex);     // debug
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return Constants.getCurrentHouseholdID() + Constants.getEnumeratorID().substring(0,3) + (lastPatientIndex + 1);
     }
 
     /**
@@ -88,7 +104,19 @@ public class QuestionnaireViewModel extends AndroidViewModel {
     public void loadFirstQuestion() {
         try {
             currQn = repo.loadFirstQuestion(Constants.getCurrentQuestionnaireID());
-            Log.i("hh create vm - loadFirstQuestion", "currQn is: " + currQn.toString());   // debug
+            Log.i("qnn vm - loadFirstQuestion", "currQn is: " + currQn.toString());   // debug
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        prevQnID = currQn.getQuestionID();
+        qnInstruction.postValue(setQnInstruction());
+        qnString.postValue(currQn.getQuestionString());
+    }
+
+    public void loadLastAnsweredQuestion() {
+        try {
+            currQn = repo.loadThisQuestion(Constants.getSelectedAssessment().getLastAnsweredQnID(), Constants.getCurrentQuestionnaireID());
+            Log.i("qnn vm - loadLastAnsweredQuestion", "this qn continues with: " + currQn.getQuestionID());    // debug
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -133,11 +161,8 @@ public class QuestionnaireViewModel extends AndroidViewModel {
     }
 
     public void storeHouseholdResponsesToDb() {
-        String newHHID = generateNewHouseholdID();
-        Log.i("qnn vm - storeHouseholdResponsesToDb", "generated new hh id is: " + newHHID);    // debug
-
-        HouseholdTable householdTable = new HouseholdTable(newHHID, Constants.getCluster().getLocationID(),
-                Constants.getEnumeratorID(), Constants.getHouseholdRosterQuestionnaireDate(), gpsLatitude, gpsLongitude);
+        HouseholdTable householdTable = new HouseholdTable(Constants.getCurrentHouseholdID(), Constants.getCluster().getLocationID(),
+                Constants.getEnumeratorID(), Constants.getCurrentQuestionnaireStartDate(), gpsLatitude, gpsLongitude);
 
         householdTable.setVillage_street_name(allResponses.get(0));
         householdTable.setAvailability(allResponses.get(1));
@@ -164,6 +189,41 @@ public class QuestionnaireViewModel extends AndroidViewModel {
         householdTable.setA2_q13(allResponses.get(22));
 
         repo.storeHouseholdToDb(householdTable);
+    }
+
+    public void storePatientInfoToDb() {
+        PatientTable patientTable = new PatientTable(Constants.getCurrentPatientID(), Constants.getCurrentStudyID(),
+                Constants.getCurrentHouseholdID());
+
+        patientTable.setExam_status("INCOMPLETE");
+        patientTable.setEnum_id(Constants.getEnumeratorID());
+        patientTable.setDate_of_birth(allResponses.get(0));
+        patientTable.setPrefix(allResponses.get(1));
+        patientTable.setFirst_name(allResponses.get(2));
+        patientTable.setMiddle_name(allResponses.get(3));
+        patientTable.setLast_name(allResponses.get(4));
+        patientTable.setSuffix(allResponses.get(5));
+        patientTable.setCom_name(allResponses.get(6));
+        patientTable.setGender(allResponses.get(7));
+        patientTable.setDur_hh(allResponses.get(8));
+        patientTable.setLvl_edu(allResponses.get(9));
+        patientTable.setWork_status(allResponses.get(10));
+        patientTable.setMarital_status(allResponses.get(11));
+        patientTable.setMother_first(allResponses.get(12));
+        patientTable.setMother_last(allResponses.get(13));
+        patientTable.setTel1_num(allResponses.get(14));
+        patientTable.setTel1_owner(allResponses.get(15));
+        patientTable.setTel1_owner_rel(allResponses.get(16));
+        patientTable.setTel2_num(allResponses.get(17));
+        patientTable.setTel2_owner(allResponses.get(18));
+        patientTable.setTel2_owner_rel(allResponses.get(19));
+        patientTable.setNational_id(allResponses.get(20));
+        patientTable.setResponder(allResponses.get(21));
+        patientTable.setProxy_name(allResponses.get(22));
+        patientTable.setProxy_rel(allResponses.get(23));
+        patientTable.setNotes(allResponses.get(24));
+
+        repo.storePatientToDb(patientTable);
     }
 
     public void storeSCQResponse(Answer selectedAns) {
@@ -194,7 +254,8 @@ public class QuestionnaireViewModel extends AndroidViewModel {
         }
     }
 
-    public void updateAssessmentStatus() {
+    // this method is used to create a NEW AssessmentStatus table entry and mark the status as complete
+    public void updateNewAssessmentToComplete() {
         int lastIndex = 0;
         try {
             lastIndex = repo.getAssessmentStatusTableLastIndex();
@@ -204,15 +265,46 @@ public class QuestionnaireViewModel extends AndroidViewModel {
         PatientAssessmentStatusTable assessmentStatusTable =
                 new PatientAssessmentStatusTable(lastIndex + 1, Constants.getCurrentPatientID(),
                         Constants.getCurrentQuestionnaireID(), "COMPLETE",
-                        Constants.getWashingtonQuestionnaireStartDate(), LocalDate.now().toString());
+                        Constants.getCurrentQuestionnaireStartDate(), LocalDate.now().toString(),
+                        -1);   // set last_answered_qn_id = -1 to indicate this qnn is COMPLETED
         repo.addNewAssessmentStatus(assessmentStatusTable);
     }
 
-//    public void storeResponsesToDb() {
-//        try {
-//            repo.storeResponsesToDb(allResponses);
-//        } catch (ExecutionException | InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public void updateNewAssessmentToIncomplete() {
+        int lastIndex = 0;
+        try {
+            lastIndex = repo.getAssessmentStatusTableLastIndex();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        PatientAssessmentStatusTable assessmentStatusTable =
+                new PatientAssessmentStatusTable(lastIndex + 1, Constants.getCurrentPatientID(),
+                        Constants.getCurrentQuestionnaireID(), "INCOMPLETE",
+                        Constants.getCurrentQuestionnaireStartDate(), "", prevQnID);
+        // set the last_answered_qn_id = prevQnID, the current question's response won't be stored
+        // next time will continue with the current question
+        repo.addNewAssessmentStatus(assessmentStatusTable);
+    }
+
+    public void updateExistingAssessmentToComplete(String startDate) {
+        try {
+            PatientAssessmentStatusTable assessmentStatusTable = repo.findExistingAssessment(Constants.getCurrentPatientID(), Constants.getCurrentQuestionnaireID(), startDate);
+            repo.updateExistingAssessmentStatusTable(new PatientAssessmentStatusTable(assessmentStatusTable.getIndex(),
+                    Constants.getCurrentPatientID(), Constants.getCurrentQuestionnaireID(), "COMPLETE", startDate,
+                    LocalDate.now().toString(), -1));
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateExistingAssessmentToIncomplete(String startDate) {
+        try {
+            PatientAssessmentStatusTable assessmentStatusTable = repo.findExistingAssessment(Constants.getCurrentPatientID(), Constants.getCurrentQuestionnaireID(), startDate);
+            repo.updateExistingAssessmentStatusTable(new PatientAssessmentStatusTable(assessmentStatusTable.getIndex(),
+                    Constants.getCurrentPatientID(), Constants.getCurrentQuestionnaireID(), "INCOMPLETE", startDate, "",
+                    prevQnID));
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }

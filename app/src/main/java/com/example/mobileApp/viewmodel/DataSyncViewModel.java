@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import com.example.mobileApp.database.MobileAppRepository;
 import com.example.mobileApp.database.entity.HouseholdTable;
+import com.example.mobileApp.database.entity.PatientTable;
 import com.example.mobileApp.database.entity.ResponseTable;
 import com.example.mobileApp.utilities.Constants;
 
@@ -22,6 +23,7 @@ import java.util.concurrent.ExecutionException;
 public class DataSyncViewModel extends AndroidViewModel {
 
     private MobileAppRepository repo;
+    public volatile List<ResponseTable> allResponses = new ArrayList<>();
 
     public DataSyncViewModel(@NonNull Application application) {
         super(application);
@@ -29,25 +31,26 @@ public class DataSyncViewModel extends AndroidViewModel {
         repo = MobileAppRepository.getInstance(application.getApplicationContext());
     }
 
-    public JSONArray getResponseJSONArray() {
+    public JSONArray getResponseJSONArray(int startIndex, int endIndex) {
         JSONArray result = new JSONArray();
-        List<ResponseTable> responseTables = new ArrayList<>();
 
-        try {
-            responseTables.addAll(repo.getAllResponses());
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        for (ResponseTable responseTable : responseTables) {
+        for (int i = startIndex; i < endIndex; i++) {
             try {
-                result.put(responseTableConverter(responseTable));
+                result.put(responseTableConverter(allResponses.get(i)));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
         return result;
+    }
+
+    public void getAllResponses() {
+        try {
+            allResponses.addAll(repo.getAllResponses());
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     // helper function to parse a ResponseTable object to JSON object format
@@ -125,11 +128,78 @@ public class DataSyncViewModel extends AndroidViewModel {
         return result;
     }
 
+    public JSONArray getPatientJSONArray() {
+        JSONArray result = new JSONArray();
+        List<PatientTable> patientTables = new ArrayList<>();
+
+        try {
+            patientTables.addAll(repo.getAllPatients());
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        for (PatientTable patientTable : patientTables) {
+            try {
+                result.put(patientTableConverter(patientTable));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
+    }
+
+    private JSONObject patientTableConverter(PatientTable patientTable) throws JSONException {
+        JSONObject result = new JSONObject();
+
+        result.put("patientID", patientTable.getPatient_id());
+        result.put("studyID", patientTable.getStudy_id());
+        result.put("date_of_birth", patientTable.getDate_of_birth());
+        result.put("prefix", patientTable.getPrefix());
+        result.put("firstName", patientTable.getFirst_name());
+        result.put("middleName", patientTable.getMiddle_name());
+        result.put("lastName", patientTable.getLast_name());
+        result.put("suffix", patientTable.getSuffix());
+        result.put("com_name", patientTable.getCom_name());
+        result.put("gender", patientTable.getGender());
+        result.put("householdID", patientTable.getHh_id());
+        result.put("dur_hh", patientTable.getDur_hh());
+        result.put("exam_status", patientTable.getExam_status());
+        result.put("notes", patientTable.getNotes());
+        result.put("lvl_edu", patientTable.getLvl_edu());
+        result.put("work_status", patientTable.getWork_status());
+        result.put("marital_status", patientTable.getMarital_status());
+        // ...
+
+        return result;
+    }
+
     public void deleteConfirmedHouseholdData(JSONArray response) throws JSONException {
         for (int i = 0; i < response.length(); i++) {
             JSONObject household = response.getJSONObject(i);
             String householdID = household.getString("householdID");
             repo.deleteSingleHousehold(householdID);
+        }
+    }
+
+    public void deleteConfirmedResponseData(JSONArray response) throws JSONException {
+        for (int i = 0; i < response.length(); i++) {
+            JSONObject responseTable = response.getJSONObject(i);
+            String patientID = responseTable.getString("patientID");
+            Integer questionID = responseTable.getInt("questionID");
+            Integer answerID = responseTable.getInt("answerID");
+            String answerText = responseTable.getString("text");
+            Integer qnnaireID = responseTable.getInt("questionnaireID");
+            String date = responseTable.getString("date");
+            repo.deleteSingleResponse(patientID, questionID, answerID, answerText, qnnaireID, date);
+        }
+    }
+
+    public void deleteConfirmedPatientData(JSONArray response) throws JSONException {
+        for (int i = 0; i < response.length(); i++) {
+            JSONObject patientTable = response.getJSONObject(i);
+            String patientID = patientTable.getString("patientID");
+            repo.deleteSinglePatient(patientID);
         }
     }
 

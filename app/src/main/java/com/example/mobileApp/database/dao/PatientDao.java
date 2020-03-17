@@ -26,4 +26,10 @@ public interface PatientDao {
 
     @Query("SELECT * FROM patients")
     List<PatientTable> getAllPatients();
+
+    @Query("SELECT COUNT(*) FROM patients")
+    Integer countAllPatients();
+
+    @Query("DELETE FROM patients WHERE patient_id = :patientID")
+    void deleteSinglePatient(String patientID);
 }

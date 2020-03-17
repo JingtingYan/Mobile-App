@@ -1,5 +1,6 @@
 package com.example.mobileApp.utilities;
 
+import com.example.mobileApp.datatype.AssessmentRecyclerViewItem;
 import com.example.mobileApp.datatype.Location;
 
 /**
@@ -23,12 +24,14 @@ public class Constants {
     private static Location cluster;
     // questionnaire-related data
     private static Integer currentQuestionnaireID;
-    private static String HouseholdRosterQuestionnaireDate;
-    private static String WashingtonQuestionnaireStartDate;
-    private static String MobilityQuestionnaireStartDate;
+    private static String currentQuestionnaireStartDate;
     // assessment-related data
+    private static String currentStudyID;
     private static String currentPatientID;
     private static String currentHouseholdID;
+    // two shared variables used to update AssessmentStatus table
+    private static boolean qnnExists = false;
+    private static AssessmentRecyclerViewItem selectedAssessment;
 
 
     public static String getToken() {
@@ -79,6 +82,14 @@ public class Constants {
         Constants.currentQuestionnaireID = currentQuestionnaireID;
     }
 
+    public static String getCurrentStudyID() {
+        return currentStudyID;
+    }
+
+    public static void setCurrentStudyID(String currentStudyID) {
+        Constants.currentStudyID = currentStudyID;
+    }
+
     public static String getCurrentPatientID() {
         return currentPatientID;
     }
@@ -87,29 +98,45 @@ public class Constants {
         Constants.currentPatientID = currentPatientID;
     }
 
-    public static String getHouseholdRosterQuestionnaireDate() {
-        return HouseholdRosterQuestionnaireDate;
+    public static String getCurrentQuestionnaireStartDate() {
+        return currentQuestionnaireStartDate;
     }
 
-    public static void setHouseholdRosterQuestionnaireDate(String householdRosterQuestionnaireStartDate) {
-        HouseholdRosterQuestionnaireDate = householdRosterQuestionnaireStartDate;
+    public static void setCurrentQuestionnaireStartDate(String currentQuestionnaireStartDate) {
+        Constants.currentQuestionnaireStartDate = currentQuestionnaireStartDate;
     }
 
-    public static String getWashingtonQuestionnaireStartDate() {
-        return WashingtonQuestionnaireStartDate;
-    }
-
-    public static void setWashingtonQuestionnaireStartDate(String washingtonQuestionnaireStartDate) {
-        WashingtonQuestionnaireStartDate = washingtonQuestionnaireStartDate;
-    }
-
-    public static String getMobilityQuestionnaireStartDate() {
-        return MobilityQuestionnaireStartDate;
-    }
-
-    public static void setMobilityQuestionnaireStartDate(String mobilityQuestionnaireStartDate) {
-        MobilityQuestionnaireStartDate = mobilityQuestionnaireStartDate;
-    }
+    //    public static String getHouseholdRosterQuestionnaireDate() {
+//        return HouseholdRosterQuestionnaireDate;
+//    }
+//
+//    public static void setHouseholdRosterQuestionnaireDate(String householdRosterQuestionnaireStartDate) {
+//        HouseholdRosterQuestionnaireDate = householdRosterQuestionnaireStartDate;
+//    }
+//
+//    public static String getWashingtonQuestionnaireStartDate() {
+//        return WashingtonQuestionnaireStartDate;
+//    }
+//
+//    public static void setWashingtonQuestionnaireStartDate(String washingtonQuestionnaireStartDate) {
+//        WashingtonQuestionnaireStartDate = washingtonQuestionnaireStartDate;
+//    }
+//
+//    public static String getMobilityQuestionnaireStartDate() {
+//        return MobilityQuestionnaireStartDate;
+//    }
+//
+//    public static void setMobilityQuestionnaireStartDate(String mobilityQuestionnaireStartDate) {
+//        MobilityQuestionnaireStartDate = mobilityQuestionnaireStartDate;
+//    }
+//
+//    public static String getPatientBasicInformationQuestionnaireStartDate() {
+//        return PatientBasicInformationQuestionnaireStartDate;
+//    }
+//
+//    public static void setPatientBasicInformationQuestionnaireStartDate(String patientBasicInformationQuestionnaireStartDate) {
+//        PatientBasicInformationQuestionnaireStartDate = patientBasicInformationQuestionnaireStartDate;
+//    }
 
     public static String getCurrentHouseholdID() {
         return currentHouseholdID;
@@ -117,6 +144,22 @@ public class Constants {
 
     public static void setCurrentHouseholdID(String currentHouseholdID) {
         Constants.currentHouseholdID = currentHouseholdID;
+    }
+
+    public static boolean isQnnExists() {
+        return qnnExists;
+    }
+
+    public static void setQnnExists(boolean qnnExists) {
+        Constants.qnnExists = qnnExists;
+    }
+
+    public static AssessmentRecyclerViewItem getSelectedAssessment() {
+        return selectedAssessment;
+    }
+
+    public static void setSelectedAssessment(AssessmentRecyclerViewItem selectedAssessment) {
+        Constants.selectedAssessment = selectedAssessment;
     }
 
 
@@ -136,15 +179,18 @@ public class Constants {
     public static final String GET_HOUSEHOLD_FOR_CLUSTER_URL = "http://10.0.2.2:8000/tables/Household/";
     public static final String GET_PATIENT_FOR_CLUSTER_URL = "http://10.0.2.2:8000/tables/Patients/";
     public static final String GET_PATIENT_ASSESSMENT_FOR_CLUSTER_URL = "http://10.0.2.2:8000/tables/PatientAssessment/";
+    public static final String GET_RESPONSE_FOR_CLUSTER_URL = "http://10.0.2.2:8000/tables/Response/";
 
     public static final String POST_RESPONSE_URL = "http://10.0.2.2:8000/tables/Response/";
     public static final String POST_HOUSEHOLD_URL = "http://10.0.2.2:8000/tables/Household/";
+    public static final String POST_PATIENT_URL = "http://localhost:8000/tables/Patients/";
     // add other APIs route here in the future
 
     // Questionnaires
     public static final int HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID = 1;
     public static final int GENERAL_WASHINGTON_GROUP_QUESTIONNAIRE_ID = 2;
     public static final int MOBILITY_QUESTIONNAIRE_ID = 3;
+    public static final int PATIENT_BASIC_INFORMATION_QUESTIONNAIRE = 4;
 
     public static final String DEFAULT_QN_INSTRUCTION_TEXT_ENTRY = "This is a text entry question. Please enter the response in the text field then click NEXT.";
     public static final String DEFAULT_QN_INSTRUCTION_SCQ = "This is a single choice question. Please select one answer choice from the dropdown list then click NEXT.";

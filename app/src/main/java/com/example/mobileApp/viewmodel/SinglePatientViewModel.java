@@ -61,7 +61,8 @@ public class SinglePatientViewModel extends AndroidViewModel {
 
         for (PatientAssessmentStatusTable table : tables) {
             String qnnName = getQuestionnaireName(table.getQnnaire_id());
-            items.add(new AssessmentRecyclerViewItem(qnnName, table.getQnnaire_status(), table.getQnnaire_id(), table.getStart(), table.getEnd()));
+            items.add(new AssessmentRecyclerViewItem(qnnName, table.getQnnaire_status(), table.getQnnaire_id(),
+                    table.getStart(), table.getEnd(), table.getLast_answered_qn_id()));
         }
 
         return items;

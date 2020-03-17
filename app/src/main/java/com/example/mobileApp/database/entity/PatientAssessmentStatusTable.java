@@ -2,11 +2,9 @@ package com.example.mobileApp.database.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "patient_assessment_status",
-        indices = {@Index(value = {"patient_id", "qnnaire_id"}, unique = true)})
+@Entity(tableName = "patient_assessment_status")    // remove indices
 
 public class PatientAssessmentStatusTable {
 
@@ -27,14 +25,17 @@ public class PatientAssessmentStatusTable {
     // end is in format "YYYY-MM-DD"
     private String end;
 
+    private Integer last_answered_qn_id;
+
     public PatientAssessmentStatusTable(@NonNull Integer index, String patient_id, Integer qnnaire_id,
-                                        String qnnaire_status, String start, String end) {
+                                        String qnnaire_status, String start, String end, Integer last_answered_qn_id) {
         this.index = index;
         this.patient_id = patient_id;
         this.qnnaire_id = qnnaire_id;
         this.qnnaire_status = qnnaire_status;
         this.start = start;
         this.end = end;
+        this.last_answered_qn_id = last_answered_qn_id;
     }
 
 
@@ -87,5 +88,13 @@ public class PatientAssessmentStatusTable {
 
     public void setEnd(String end) {
         this.end = end;
+    }
+
+    public Integer getLast_answered_qn_id() {
+        return last_answered_qn_id;
+    }
+
+    public void setLast_answered_qn_id(Integer last_answered_qn_id) {
+        this.last_answered_qn_id = last_answered_qn_id;
     }
 }

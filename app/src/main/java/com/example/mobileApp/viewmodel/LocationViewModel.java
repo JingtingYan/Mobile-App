@@ -103,4 +103,12 @@ public class LocationViewModel extends AndroidViewModel {
             e.printStackTrace();
         }
     }
+
+    public void addResponseData(String jsonArray) {
+        try {
+            repo.addResponseData(jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }
