@@ -19,9 +19,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.example.mobileApp.utilities.Constants.GENERAL_WASHINGTON_GROUP_QUESTIONNAIRE_ID;
+import static com.example.mobileApp.utilities.Constants.HEARING_QUESTIONNAIRE_ID;
 import static com.example.mobileApp.utilities.Constants.HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID;
 import static com.example.mobileApp.utilities.Constants.MOBILITY_QUESTIONNAIRE_ID;
 import static com.example.mobileApp.utilities.Constants.PATIENT_BASIC_INFORMATION_QUESTIONNAIRE;
+import static com.example.mobileApp.utilities.Constants.VISION_QUESTIONNAIRE_ID;
 
 
 /**
@@ -56,27 +58,20 @@ public class QuestionnaireFinishFragment extends Fragment {
     }
 
     private void setActivityTitle() {
-        switch (Constants.getCurrentQuestionnaireID()) {
-
-            case (HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID):
-                requireActivity().setTitle(R.string.title_create_hh);
-                break;
-
-            case (GENERAL_WASHINGTON_GROUP_QUESTIONNAIRE_ID):
-                requireActivity().setTitle(R.string.title_qnn_washington);
-                break;
-
-            case (MOBILITY_QUESTIONNAIRE_ID):
-                requireActivity().setTitle(R.string.title_qnn_mobility);
-                break;
-
-            case (PATIENT_BASIC_INFORMATION_QUESTIONNAIRE):
-                requireActivity().setTitle(R.string.title_create_patient);
-                break;
-
-            default:
-                requireActivity().setTitle("Questionnaire/Assessment");
-                break;
+        if (Constants.getCurrentQuestionnaireID() == HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID) {
+            requireActivity().setTitle(R.string.title_create_hh);
+        } else if (Constants.getCurrentQuestionnaireID() == GENERAL_WASHINGTON_GROUP_QUESTIONNAIRE_ID) {
+            requireActivity().setTitle(R.string.title_qnn_washington);
+        } else if (Constants.getCurrentQuestionnaireID() == MOBILITY_QUESTIONNAIRE_ID) {
+            requireActivity().setTitle(R.string.title_qnn_mobility);
+        } else if (Constants.getCurrentQuestionnaireID() == PATIENT_BASIC_INFORMATION_QUESTIONNAIRE) {
+            requireActivity().setTitle(R.string.title_create_patient);
+        } else if (Constants.getCurrentQuestionnaireID() == VISION_QUESTIONNAIRE_ID)  {
+            requireActivity().setTitle(R.string.title_asmt_peek);
+        } else if (Constants.getCurrentQuestionnaireID() == HEARING_QUESTIONNAIRE_ID) {
+            requireActivity().setTitle(R.string.title_asmt_hearx);
+        } else {
+            requireActivity().setTitle("Questionnaire/Assessment");
         }
     }
 
@@ -86,26 +81,20 @@ public class QuestionnaireFinishFragment extends Fragment {
 
     private void setPrompt() {
 
-        switch (Constants.getCurrentQuestionnaireID()) {
-            case (HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID):
-                txtPrompt.setText(R.string.hh_finish_prompt);
-                break;
-
-            case (GENERAL_WASHINGTON_GROUP_QUESTIONNAIRE_ID):
-                txtPrompt.setText(R.string.washington_finish_prompt);
-                break;
-
-            case (MOBILITY_QUESTIONNAIRE_ID):
-                txtPrompt.setText(R.string.mobility_finish_prompt);
-                break;
-
-            case (PATIENT_BASIC_INFORMATION_QUESTIONNAIRE):
-                txtPrompt.setText(R.string.patient_finish_prompt);
-                break;
-
-            default:
-                txtPrompt.setText(R.string.default_finish_prompt);
-                break;
+        if (Constants.getCurrentQuestionnaireID() == HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID) {
+            txtPrompt.setText(R.string.hh_finish_prompt);
+        } else if (Constants.getCurrentQuestionnaireID() == GENERAL_WASHINGTON_GROUP_QUESTIONNAIRE_ID) {
+            txtPrompt.setText(R.string.washington_finish_prompt);
+        } else if (Constants.getCurrentQuestionnaireID() == MOBILITY_QUESTIONNAIRE_ID) {
+            txtPrompt.setText(R.string.mobility_finish_prompt);
+        } else if (Constants.getCurrentQuestionnaireID() == PATIENT_BASIC_INFORMATION_QUESTIONNAIRE) {
+            txtPrompt.setText(R.string.patient_finish_prompt);
+        } else if (Constants.getCurrentQuestionnaireID() == VISION_QUESTIONNAIRE_ID) {
+            txtPrompt.setText(R.string.peek_finish_prompt);
+        } else if (Constants.getCurrentQuestionnaireID() == HEARING_QUESTIONNAIRE_ID) {
+            txtPrompt.setText(R.string.hearx_finish_prompt);
+        } else {
+            txtPrompt.setText(R.string.default_finish_prompt);
         }
     }
 

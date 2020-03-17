@@ -26,4 +26,10 @@ public interface PatientAssessmentStatusDao {
 
     @Query("SELECT * FROM patient_assessment_status WHERE patient_id = :patientID AND qnnaire_id = :qnnID AND start = :startDate")
     PatientAssessmentStatusTable findExistingAssessment(String patientID, int qnnID, String startDate);
+
+    @Query("SELECT * FROM patient_assessment_status")
+    List<PatientAssessmentStatusTable> getAllAssessmentStatus();
+
+    @Query("DELETE FROM patient_assessment_status WHERE patient_id = :patientID AND qnnaire_id = :qnnID AND start = :startDate")
+    void deleteSingleAssessmentStatus(String patientID, int qnnID, String startDate);
 }

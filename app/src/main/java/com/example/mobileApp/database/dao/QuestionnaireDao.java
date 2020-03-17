@@ -20,4 +20,7 @@ public interface QuestionnaireDao {
 
     @Query("SELECT * FROM questionnaires WHERE questionnaire_id = :qnnID")
     QuestionnaireTable getSingleQuestionnaireInfo(Integer qnnID);
+
+    @Query("SELECT questionnaire_id FROM questionnaires WHERE questionnaire_type = :questionnaireType")
+    Integer getQuestionnaireID(String questionnaireType);
 }

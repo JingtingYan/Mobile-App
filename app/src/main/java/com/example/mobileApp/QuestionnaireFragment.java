@@ -59,8 +59,6 @@ public class QuestionnaireFragment extends Fragment {
 
         initViewModel();
 
-//        initData();
-
         Log.i("Questionnaire Fragment", "this qnn is existed?" + Constants.isQnnExists());  // debug
 
         loadFirstQuestion();
@@ -69,22 +67,12 @@ public class QuestionnaireFragment extends Fragment {
     }
 
     private void setActivityTitle() {
-        switch (Constants.getCurrentQuestionnaireID()) {
-            case (GENERAL_WASHINGTON_GROUP_QUESTIONNAIRE_ID):
-                requireActivity().setTitle(R.string.title_qnn_washington);
-                break;
-
-            case (MOBILITY_QUESTIONNAIRE_ID):
-                requireActivity().setTitle(R.string.title_qnn_mobility);
-                break;
-
-            case (PATIENT_BASIC_INFORMATION_QUESTIONNAIRE):
-                requireActivity().setTitle(R.string.title_create_patient);
-                break;
-
-            default:
-                requireActivity().setTitle("Questionnaire/Assessment");
-                break;
+        if (Constants.getCurrentQuestionnaireID() == GENERAL_WASHINGTON_GROUP_QUESTIONNAIRE_ID) {
+            requireActivity().setTitle(R.string.title_qnn_washington);
+        } else if (Constants.getCurrentQuestionnaireID() == MOBILITY_QUESTIONNAIRE_ID) {
+            requireActivity().setTitle(R.string.title_qnn_mobility);
+        } else {
+            requireActivity().setTitle("Questionnaire/Assessment");
         }
     }
 
@@ -94,12 +82,6 @@ public class QuestionnaireFragment extends Fragment {
         questionnaireViewModel.qnInstruction.observe(getViewLifecycleOwner(), this::updateQnInstruction);
         questionnaireViewModel.qnString.observe(getViewLifecycleOwner(), this::updateQnString);
     }
-
-//    // update relevant data fields in Constants that need to be stored in db later
-//    private void initData() {
-//        Constants.setCurrentQuestionnaireID(GENERAL_WASHINGTON_GROUP_QUESTIONNAIRE_ID);
-//        Constants.setWashingtonQuestionnaireStartDate(LocalDate.now().toString());
-//    }
 
     private void updateQnInstruction(String qnInstruction) {
         txtQnInstruction.setText(qnInstruction);

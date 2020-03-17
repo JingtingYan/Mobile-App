@@ -12,7 +12,6 @@ import com.example.mobileApp.database.entity.HouseholdTable;
 import com.example.mobileApp.database.entity.PatientAssessmentStatusTable;
 import com.example.mobileApp.database.entity.PatientTable;
 import com.example.mobileApp.datatype.Answer;
-import com.example.mobileApp.datatype.AssessmentRecyclerViewItem;
 import com.example.mobileApp.datatype.Question;
 import com.example.mobileApp.datatype.Response;
 import com.example.mobileApp.utilities.Constants;
@@ -195,7 +194,9 @@ public class QuestionnaireViewModel extends AndroidViewModel {
         PatientTable patientTable = new PatientTable(Constants.getCurrentPatientID(), Constants.getCurrentStudyID(),
                 Constants.getCurrentHouseholdID());
 
-        patientTable.setExam_status("INCOMPLETE");
+        Log.i("qnn vm - storePatientInfoToDb", "size of responses used to create patient: " + allResponses.size()); // debug
+        Log.i("qnn vm - storePatientInfoToDb", "responses used to create patient: " + allResponses.toString());     // debug
+
         patientTable.setEnum_id(Constants.getEnumeratorID());
         patientTable.setDate_of_birth(allResponses.get(0));
         patientTable.setPrefix(allResponses.get(1));
@@ -204,7 +205,7 @@ public class QuestionnaireViewModel extends AndroidViewModel {
         patientTable.setLast_name(allResponses.get(4));
         patientTable.setSuffix(allResponses.get(5));
         patientTable.setCom_name(allResponses.get(6));
-        patientTable.setGender(allResponses.get(7));
+        patientTable.setGender(formatGender(allResponses.get(7)));
         patientTable.setDur_hh(allResponses.get(8));
         patientTable.setLvl_edu(allResponses.get(9));
         patientTable.setWork_status(allResponses.get(10));
@@ -223,7 +224,20 @@ public class QuestionnaireViewModel extends AndroidViewModel {
         patientTable.setProxy_rel(allResponses.get(23));
         patientTable.setNotes(allResponses.get(24));
 
+        Log.i("qnn vm - storePatientInfoToDb", "created patient is: " + patientTable.toString());   // debug
+
         repo.storePatientToDb(patientTable);
+    }
+
+    private String formatGender(String response) {
+        response = response.trim().toLowerCase();
+        if (response.equals("female")) {
+            return "F";
+        } else if (response.equals("male")) {
+            return "M";
+        } else {
+            return "O";
+        }
     }
 
     public void storeSCQResponse(Answer selectedAns) {

@@ -47,7 +47,7 @@ public class HouseholdHomeFragment extends Fragment {
         Constants.setCurrentQuestionnaireID(HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID);
         Constants.setQnnExists(false);
         HouseholdMainActivity.fragmentManager.beginTransaction()
-                .replace(R.id.household_fragment_container, new HouseholdCreateFragment())
+                .replace(R.id.household_fragment_container, new UserCreateFragment())
                 .addToBackStack(null)
                 .commit();
     }

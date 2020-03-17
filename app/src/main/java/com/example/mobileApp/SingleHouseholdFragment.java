@@ -140,6 +140,6 @@ public class SingleHouseholdFragment extends Fragment {
         Constants.setQnnExists(false);
         // Go to take the Patient Basic Information Questionnaire for this patient
         HouseholdMainActivity.fragmentManager.beginTransaction()
-                .replace(R.id.household_fragment_container, new QuestionnaireFragment()).commit();
+                .replace(R.id.household_fragment_container, new UserCreateFragment()).commit();
     }
 }

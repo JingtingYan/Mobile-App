@@ -48,6 +48,6 @@ public class SearchPatientViewModel extends AndroidViewModel {
                 patientTable.getMiddle_name().trim() + " " + patientTable.getLast_name().trim() + " " + patientTable.getSuffix().trim();
 
         return new PatientRecyclerViewItem(patientTable.getPatient_id(), patientName, patientTable.getDate_of_birth(),
-                patientTable.getExam_status(), patientTable.getStudy_id(), patientTable.getHh_id());
+                patientTable.getStudy_id(), patientTable.getHh_id());
     }
 }

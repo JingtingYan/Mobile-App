@@ -40,7 +40,7 @@ import static com.example.mobileApp.utilities.Constants.PATIENT_BASIC_INFORMATIO
 // This class is used to create new Household or new Patient;
 // these two processes share a similar logic, therefore, merge them together to reduce code redundancy.
 
-public class HouseholdCreateFragment extends Fragment implements LocationListener{
+public class UserCreateFragment extends Fragment implements LocationListener{
 
     @BindView(R.id.txt_qn_instruction) TextView txtQnInstruction;
     @BindView(R.id.txt_qn_string) TextView txtQnString;
@@ -50,7 +50,7 @@ public class HouseholdCreateFragment extends Fragment implements LocationListene
     private QuestionnaireViewModel questionnaireViewModel;
     private static FragmentManager answerFragmentManager;
 
-    public HouseholdCreateFragment() {
+    public UserCreateFragment() {
         // Empty public constructor
     }
 
@@ -89,9 +89,10 @@ public class HouseholdCreateFragment extends Fragment implements LocationListene
     private void setActivityTitle() {
         if (Constants.getCurrentQuestionnaireID() == HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID) {
             requireActivity().setTitle(R.string.title_create_hh);
-        }
-        if (Constants.getCurrentQuestionnaireID() == PATIENT_BASIC_INFORMATION_QUESTIONNAIRE) {
+        } else if (Constants.getCurrentQuestionnaireID() == PATIENT_BASIC_INFORMATION_QUESTIONNAIRE) {
             requireActivity().setTitle(R.string.title_create_patient);
+        } else {
+            requireActivity().setTitle(R.string.title_asmt_default);
         }
     }
 

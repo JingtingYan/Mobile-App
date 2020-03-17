@@ -39,6 +39,7 @@ import static com.example.mobileApp.utilities.Constants.GET_QA_URL;
 import static com.example.mobileApp.utilities.Constants.GET_QUESTIONNAIRE_URL;
 import static com.example.mobileApp.utilities.Constants.GET_QUESTION_RELATION_URL;
 import static com.example.mobileApp.utilities.Constants.GET_QUESTION_URL;
+import static com.example.mobileApp.utilities.Constants.POST_ASSESSMENT_STATUS_URL;
 import static com.example.mobileApp.utilities.Constants.POST_HOUSEHOLD_URL;
 import static com.example.mobileApp.utilities.Constants.POST_PATIENT_URL;
 import static com.example.mobileApp.utilities.Constants.POST_RESPONSE_URL;
@@ -146,9 +147,10 @@ public class DataSyncActivity extends NavigationDrawerActivity {
     @OnClick(R.id.bn_data_sync_upload_data) void onClickUpload() {
         Toast.makeText(getApplicationContext(), "Data upload is in progress...", Toast.LENGTH_SHORT).show();
 
-        uploadResponseData();
-        //uploadHouseholdData();
-        //uploadPatientData();
+//        uploadResponseData();
+//        uploadHouseholdData();
+//        uploadPatientData();
+        uploadAssessmentStatusData();
 
         Toast.makeText(getApplicationContext(), "Data upload is done!", Toast.LENGTH_SHORT).show();
     }
@@ -191,6 +193,9 @@ public class DataSyncActivity extends NavigationDrawerActivity {
      * It proceeds to Location Selection Activity.
      */
     @OnClick(R.id.bn_data_sync_next) void onClickNext() {
+        // set up Questionnaire ID for each type of questionnaire stored locally
+        setQuestionnaireIDInfo();
+
         Intent intent = new Intent(this, LocationActivity.class);
         startActivity(intent);
     }
@@ -377,26 +382,26 @@ public class DataSyncActivity extends NavigationDrawerActivity {
         Log.i("datasync activity - uploadResponseData", "size of all responses is: " + size);   // debug
 
         int counter = 0;
-        while (counter + 30 < size) {
-            JSONArray responseJsonArray = dataSyncViewModel.getResponseJSONArray(counter, counter + 30);
+        while (counter + 20 < size) {
+            JSONArray responseJsonArray = dataSyncViewModel.getResponseJSONArray(counter, counter + 20);
             uploadBatchOfResponseData(responseJsonArray);
-            Log.i("datasync activity - uploadResponseData", "successfully upload batch of responses from " + counter + " to " + (counter+29));  // debug
-            counter += 30;
+            Log.i("datasync activity - uploadResponseData", "successfully upload batch of responses from " + counter + " to " + (counter+19));  // debug
+            counter += 20;
         }
-        // upload the rest responses (will be less than 30)
+        // upload the rest responses (will be less than 20)
         JSONArray responseJsonArray = dataSyncViewModel.getResponseJSONArray(counter, size - counter);
         uploadBatchOfResponseData(responseJsonArray);
         Log.i("datasync activity - uploadResponseData", "successfully upload batch of responses from " + counter + " to " + size);  // debug
     }
 
-    // upload a batch of Response data with max size of 30
+    // upload a batch of Response data with max size of 20
     private void uploadBatchOfResponseData(JSONArray responseJsonArray) {
         Log.i("datesync activity - uploadBatchOfResponseData", "response json array to upload: " + responseJsonArray.toString());  // debug
 
         JsonArrayRequest responseUploadRequest = new JsonArrayRequest(Request.Method.POST, POST_RESPONSE_URL, responseJsonArray,
                 response -> {
                     Toast.makeText(getApplicationContext(),
-                            "Successfully uploaded a batch of responsess.", Toast.LENGTH_SHORT).show();
+                            "Successfully uploaded a batch of responses.", Toast.LENGTH_SHORT).show();
                     Log.i("datesync activity - uploadBatchOfResponseData", "received response from server" + response);     // debug
 
                     // delete local Response table
@@ -423,15 +428,34 @@ public class DataSyncActivity extends NavigationDrawerActivity {
 
     private void deleteConfirmedResponseData(JSONArray response) throws JSONException {
         dataSyncViewModel.deleteConfirmedResponseData(response);
+        Log.i("datasync activity - deleteConfirmedResponseData", "local data deleted: " + response.toString());     // debug
     }
 
+
     private void uploadHouseholdData() {
-        JSONArray householdJsonArray = dataSyncViewModel.getHouseholdJSONArray();
-        Log.i("datesync activity - uploadHouseholdData", "hh json array to upload: " + householdJsonArray.toString());  // debug
+        dataSyncViewModel.getAllHouseholds();
+        int size = dataSyncViewModel.allHouseholds.size();
+        Log.i("datasync activity - uploadHouseholdData", "size of all households is " + size);
+
+        int counter = 0;
+        while (counter + 20 < size) {
+            JSONArray householdJsonArray = dataSyncViewModel.getHouseholdJSONArray(counter, counter + 20);
+            uploadBatchOfHouseholdData(householdJsonArray);
+            Log.i("datasync activity - uploadHouseholdData", "successfully upload batch of households from " + counter + " to " + (counter+19));  // debug
+            counter += 20;
+        }
+        // upload the rest households (will be less than 20)
+        JSONArray householdJsonArray = dataSyncViewModel.getHouseholdJSONArray(counter, size - counter);
+        uploadBatchOfHouseholdData(householdJsonArray);
+        Log.i("datasync activity - uploadHouseholdData", "successfully upload batch of households from " + counter + " to " + size);  // debug
+    }
+
+    private void uploadBatchOfHouseholdData(JSONArray householdJsonArray) {
+        Log.i("datesync activity - uploadBatchOfHouseholdData", "hh json array to upload: " + householdJsonArray.toString());  // debug
 
         JsonArrayRequest householdUploadRequest = new JsonArrayRequest(Request.Method.POST, POST_HOUSEHOLD_URL, householdJsonArray,
                 response -> {
-                    Toast.makeText(getApplicationContext(), "Successfully uploaded households data.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Successfully uploaded a batch of households data.", Toast.LENGTH_SHORT).show();
 
                     //Log.i("confirmed household response", response.toString());     // debug
 
@@ -452,21 +476,40 @@ public class DataSyncActivity extends NavigationDrawerActivity {
                         return headers;
                     }
                 };
-        householdUploadRequest.setTag("Upload Household Table Data to Server Db");
+//        householdUploadRequest.setTag("Upload Household Table Data to Server Db");
         MySingleton.getInstance(this.getApplicationContext()).addToRequestQueue(householdUploadRequest);
     }
 
     private void deleteConfirmedHouseholdData(JSONArray response) throws JSONException {
         dataSyncViewModel.deleteConfirmedHouseholdData(response);
+        Log.i("datasync activity - deleteConfirmedHouseholdData", "local data deleted: " + response.toString());     // debug
     }
 
+
     private void uploadPatientData() {
-        JSONArray patientJSONArray = dataSyncViewModel.getPatientJSONArray();
+        dataSyncViewModel.getAllPatients();
+        int size = dataSyncViewModel.allPatients.size();
+        Log.i("datasync activity - uploadPatientData", "size of all patients is: " + size);   // debug
+
+        int counter = 0;
+        while (counter + 20 < size) {
+            JSONArray patientJsonArray = dataSyncViewModel.getPatientJSONArray(counter, counter + 20);
+            uploadBatchOfPatientData(patientJsonArray);
+            Log.i("datasync activity - uploadPatientData", "successfully upload batch of patients from " + counter + " to " + (counter+19));  // debug
+            counter += 20;
+        }
+        // upload the rest patients (will be less than 20)
+        JSONArray patientJsonArray = dataSyncViewModel.getPatientJSONArray(counter, size - counter);
+        uploadBatchOfPatientData(patientJsonArray);
+        Log.i("datasync activity - uploadPatientData", "successfully upload batch of patients from " + counter + " to " + size);  // debug
+    }
+
+    private void uploadBatchOfPatientData(JSONArray patientJSONArray) {
         Log.i("datesync activity - uploadPatientData", "patient json array to upload: " + patientJSONArray.toString());  // debug
 
         JsonArrayRequest patientUploadRequest = new JsonArrayRequest(Request.Method.POST, POST_PATIENT_URL, patientJSONArray,
                 response -> {
-                    Toast.makeText(getApplicationContext(), "Successfully uploaded patients data.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Successfully uploaded a batch of patients data.", Toast.LENGTH_SHORT).show();
 
                     // delete Local Patient table
                     try {
@@ -485,12 +528,65 @@ public class DataSyncActivity extends NavigationDrawerActivity {
                         return headers;
                     }
                 };
-        patientUploadRequest.setTag("Upload Patient Table Data to Server Db");
+//        patientUploadRequest.setTag("Upload Patient Table Data to Server Db");
         MySingleton.getInstance(this.getApplicationContext()).addToRequestQueue(patientUploadRequest);
     }
 
     private void deleteConfirmedPatientData(JSONArray response) throws JSONException {
         dataSyncViewModel.deleteConfirmedPatientData(response);
+        Log.i("datasync activity - deleteConfirmedPatientData", "local data deleted: " + response.toString());     // debug
+    }
+
+
+    private void uploadAssessmentStatusData() {
+        dataSyncViewModel.getAllAssessmentStatus();
+        int size = dataSyncViewModel.allAssessmentStatus.size();
+        Log.i("datasync activity - uploadAssessmentStatusData", "size of all asmt status is: " + size);   // debug
+
+        int counter = 0;
+        while (counter + 20 < size) {
+            JSONArray asmtStatusJsonArray = dataSyncViewModel.getAssessmentStatusJsonArray(counter, counter + 20);
+            uploadBatchOfAssessmentStatusData(asmtStatusJsonArray);
+            Log.i("datasync activity - uploadAssessmentStatusData", "successfully upload batch of asmt status from " + counter + " to " + (counter+19));  // debug
+            counter += 20;
+        }
+        // upload the rest assessment status (will be less than 20)
+        JSONArray asmtStatusJsonArray = dataSyncViewModel.getAssessmentStatusJsonArray(counter, size - counter);
+        uploadBatchOfAssessmentStatusData(asmtStatusJsonArray);
+        Log.i("datasync activity - uploadAssessmentStatusData", "successfully upload batch of asmt status from " + counter + " to " + size);  // debug
+    }
+
+    private void uploadBatchOfAssessmentStatusData(JSONArray assessmentStatusJsonArray) {
+        Log.i("datesync activity - uploadAssessmentStatusData", "asmt status json array to upload: " + assessmentStatusJsonArray.toString());  // debug
+
+        JsonArrayRequest asmtStatusUploadRequest = new JsonArrayRequest(Request.Method.POST, POST_ASSESSMENT_STATUS_URL, assessmentStatusJsonArray,
+                response -> {
+                    Toast.makeText(getApplicationContext(), "Successfully uploaded a batch of asmt status data.", Toast.LENGTH_SHORT).show();
+
+                    // delete Local Patient table
+                    try {
+                        deleteConfirmedAssessmentStatusData(response);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }, error -> {
+                    Toast.makeText(getApplicationContext(), String.valueOf(error), Toast.LENGTH_SHORT).show();
+                    txtDebug.setText(String.valueOf(error));    // debug
+                }) {
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> headers = new HashMap<>();
+                        headers.put("Authorization", "Token " + Constants.getToken());
+                        return headers;
+                    }
+                };
+//        asmtStatusUploadRequest.setTag("Upload Assessment Status Table Data to Server Db");
+        MySingleton.getInstance(this.getApplicationContext()).addToRequestQueue(asmtStatusUploadRequest);
+    }
+
+    private void deleteConfirmedAssessmentStatusData(JSONArray response) throws JSONException {
+        dataSyncViewModel.deleteConfirmedAssessmentStatusData(response);
+        Log.i("datasync activity - deleteConfirmedAssessmentStatusData", "local data deleted: " + response.toString());     // debug
     }
 
 
@@ -583,6 +679,10 @@ public class DataSyncActivity extends NavigationDrawerActivity {
      */
     private void addQnRelData(String jsonArray) {
         dataSyncViewModel.addQuestionRelationData(jsonArray);
+    }
+
+    private void setQuestionnaireIDInfo() {
+        dataSyncViewModel.setQuestionnaireIDInfo();
     }
 
 

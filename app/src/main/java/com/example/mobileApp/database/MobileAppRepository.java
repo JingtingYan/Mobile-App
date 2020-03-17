@@ -26,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -177,8 +178,9 @@ public class MobileAppRepository {
             Integer questionnaire_id = questionnaire.getInt("questionnaireID");
             String questionnaire_name = questionnaire.getString("questionnaireName");
             String questionnaire_version = questionnaire.getString("questionnaireVersion");
+            String questionnaire_type = questionnaire.getString("questionnaireType");
 
-            questionnaireTables.add(new QuestionnaireTable(questionnaire_id, questionnaire_name, questionnaire_version));
+            questionnaireTables.add(new QuestionnaireTable(questionnaire_id, questionnaire_name, questionnaire_version, questionnaire_type));
         }
 
         return questionnaireTables;
@@ -307,6 +309,11 @@ public class MobileAppRepository {
         return questionRelationTables;
     }
 
+    public Integer getQuestionnaireID(String questionnaireType) throws ExecutionException, InterruptedException {
+        Future<Integer> task = executor.submit(() -> db.questionnaireDao().getQuestionnaireID(questionnaireType));
+        return task.get();
+    }
+
     public List<ResponseTable> getAllResponses() throws ExecutionException, InterruptedException {
         Future<List<ResponseTable>> task = executor.submit(() -> db.responseDao().getAllResponses());
         return task.get();
@@ -322,6 +329,11 @@ public class MobileAppRepository {
         return task.get();
     }
 
+    public List<PatientAssessmentStatusTable> getAllAssessmentStatus() throws ExecutionException, InterruptedException {
+        Future<List<PatientAssessmentStatusTable>> task = executor.submit(() -> db.patientAssessmentStatusDao().getAllAssessmentStatus());
+        return task.get();
+    }
+
     public void deleteSingleHousehold(String householdID) {
         executor.execute(() -> db.householdDao().deleteSingleHousehold(householdID));
     }
@@ -333,6 +345,10 @@ public class MobileAppRepository {
 
     public void deleteSinglePatient(String patientID) {
         executor.execute(() -> db.patientDao().deleteSinglePatient(patientID));
+    }
+
+    public void deleteSingleAssessmentStatus(String patientID, int qnnID, String startDate) {
+        executor.execute(() -> db.patientAssessmentStatusDao().deleteSingleAssessmentStatus(patientID, qnnID, startDate));
     }
 
 
@@ -397,7 +413,7 @@ public class MobileAppRepository {
     }
 
 
-    /* methods used to load data for HouseholdCreateFragment */
+    /* methods used to load data for UserCreateFragment */
     public Question loadFirstQuestion(Integer qnnID) throws ExecutionException, InterruptedException {
 
         Log.i("repo - loadFirstQuestion, currQnnID", String.valueOf(qnnID));    // debug
@@ -620,13 +636,13 @@ public class MobileAppRepository {
             HouseholdTable householdTable = new HouseholdTable(household_id, parent_loc_id, enum_id, date, gps_latitude, gps_longitude);
             householdTable.setVillage_street_name(household.getString("village_street_name"));
             householdTable.setAvailability(household.getString("availability"));
-            householdTable.setReason_refusal(household.getString("reason_refusal"));
+            householdTable.setReason_refusal(household.optString("reason_refusal", ""));
             householdTable.setVisit_num(household.getInt("visit_num"));
             householdTable.setKey_informer(household.getString("key_informer"));
-            householdTable.setTel1_num(household.getString("tel1_num"));
-            householdTable.setTel1_owner(household.getString("tel1_owner"));
-            householdTable.setTel2_num(household.getString("tel2_num"));
-            householdTable.setTel2_owner(household.getString("tel2_owner"));
+            householdTable.setTel1_num(household.optString("tel1_num", ""));
+            householdTable.setTel1_owner(household.optString("tel1_owner", ""));
+            householdTable.setTel2_num(household.optString("tel2_num", ""));
+            householdTable.setTel2_owner(household.optString("tel2_owner", ""));
             householdTable.setConsent(household.getString("consent"));
             householdTable.setA2_q1(household.getString("a2q1"));
             householdTable.setA2_q2(household.getString("a2q2"));
@@ -649,6 +665,8 @@ public class MobileAppRepository {
     }
 
     public void addPatientData(String jsonArray) throws JSONException {
+        Log.i("repo - addPatientData", "patient json array received: " + jsonArray.toString());     // debug
+
         List<PatientTable> patientTables = parsePatientJSONArray(jsonArray);
         executor.execute(() -> db.patientDao().insertAll(patientTables));
     }
@@ -665,22 +683,36 @@ public class MobileAppRepository {
             String hh_id = patient.getString("householdID");
 
             PatientTable patientTable = new PatientTable(patient_id, study_id, hh_id);
+
             patientTable.setDate_of_birth(patient.getString("date_of_birth"));
-            patientTable.setPrefix(patient.getString("prefix"));
+            patientTable.setPrefix(patient.optString("prefix", ""));
             patientTable.setFirst_name(patient.getString("firstName"));
-            patientTable.setMiddle_name(patient.getString("middleName"));
+            patientTable.setMiddle_name(patient.optString("middleName", ""));
             patientTable.setLast_name(patient.getString("lastName"));
-            patientTable.setSuffix(patient.getString("suffix"));
-            patientTable.setCom_name(patient.getString("com_name"));
+            patientTable.setSuffix(patient.optString("suffix", ""));
+            patientTable.setCom_name(patient.optString("com_name", ""));
             patientTable.setGender(patient.getString("gender"));
             patientTable.setDur_hh(patient.getString("dur_hh"));
-            patientTable.setExam_status(patient.getString("exam_status"));
-            patientTable.setNotes(patient.getString("notes"));
+            patientTable.setNotes(patient.optString("notes", ""));
             patientTable.setLvl_edu(patient.getString("lvl_edu"));
             patientTable.setWork_status(patient.getString("work_status"));
             patientTable.setMarital_status(patient.getString("marital_status"));
+            patientTable.setMother_first(patient.optString("motherFirstName"));
+            patientTable.setMother_last(patient.optString("motherLastName", ""));
+            patientTable.setTel1_num(patient.optString("tel1_num", ""));
+            patientTable.setTel1_owner(patient.optString("tel1_owner", ""));
+            patientTable.setTel1_owner_rel(patient.optString("tel1_owner_rel", ""));
+            patientTable.setTel2_num(patient.optString("tel2_num", ""));
+            patientTable.setTel2_owner(patient.optString("tel2_owner", ""));
+            patientTable.setTel2_owner_rel(patient.optString("tel2_owner_rel", ""));
+            patientTable.setEnum_id(patient.getString("enumeratorID"));
+            patientTable.setNational_id(patient.optString("nationalID", ""));
+            patientTable.setDeceased(patient.optInt("deceased", 0));
+            patientTable.setDeceased_date(patient.optString("deceased_date", ""));
+            patientTable.setResponder(patient.getString("responder"));
+            patientTable.setProxy_name(patient.optString("proxy_name", ""));
+            patientTable.setProxy_rel(patient.optString("proxy_rel", ""));
 
-            // unfinished, should have more attributes sent from server db
             Log.i("repo - created patientTable object", patientTable.toString());   // debug
             patientTables.add(patientTable);
         }
@@ -705,7 +737,7 @@ public class MobileAppRepository {
             Integer qnnaire_id = assessment.getInt("assess_questionnaireID");
             String qnnaire_status = assessment.getString("questionnaireStatus");
             String start = assessment.getString("start");
-            String end = assessment.getString("start");
+            String end = assessment.optString("end", "");
             Integer lastAnsweredQnID = assessment.optInt("last_answered_qn", -1);
 
             patientAssessmentStatusTables.add(new PatientAssessmentStatusTable(index, patient_id, qnnaire_id, qnnaire_status, start, end, lastAnsweredQnID));
@@ -729,8 +761,8 @@ public class MobileAppRepository {
             Integer index = response.getInt("index");
             String patientID = response.getString("patientID");
             Integer questionID = response.getInt("questionID");
-            Integer answerID = response.getInt("answerID");
-            String answerText = response.getString("text");
+            Integer answerID = response.optInt("answerID", -1);
+            String answerText = response.optString("text", "");
             Integer questionnaireID = response.getInt("questionnaireID");
             String date = response.getString("date");
 

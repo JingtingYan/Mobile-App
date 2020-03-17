@@ -33,7 +33,7 @@ public class PatientRecyclerAdapter extends RecyclerView.Adapter<PatientRecycler
 
     static class PatientViewHolder extends RecyclerView.ViewHolder {
 
-        TextView patientID, patientName, patientDOB, patientAssessmentStatus, studyID, householdID;
+        TextView patientID, patientName, patientDOB, studyID, householdID;
 
         PatientViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
@@ -41,7 +41,6 @@ public class PatientRecyclerAdapter extends RecyclerView.Adapter<PatientRecycler
             patientID = itemView.findViewById(R.id.recycler_item_patient_id);
             patientName = itemView.findViewById(R.id.recycler_item_patient_name);
             patientDOB = itemView.findViewById(R.id.recycler_item_patient_dob);
-            patientAssessmentStatus = itemView.findViewById(R.id.recycler_item_patient_status);
             studyID = itemView.findViewById(R.id.recycler_item_patient_study);
             householdID = itemView.findViewById(R.id.recycler_item_patient_hh);
 
@@ -75,7 +74,6 @@ public class PatientRecyclerAdapter extends RecyclerView.Adapter<PatientRecycler
         holder.patientID.setText(item.getPatientID());
         holder.patientName.setText(item.getPatientName());
         holder.patientDOB.setText(item.getPatientDOB());
-        holder.patientAssessmentStatus.setText(item.getPatientAssessmentStatus());
         holder.studyID.setText(item.getStudyID());
         holder.householdID.setText(item.getHouseholdID());
     }

@@ -32,7 +32,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.example.mobileApp.utilities.Constants.GENERAL_WASHINGTON_GROUP_QUESTIONNAIRE_ID;
+import static com.example.mobileApp.utilities.Constants.HEARING_QUESTIONNAIRE_ID;
 import static com.example.mobileApp.utilities.Constants.MOBILITY_QUESTIONNAIRE_ID;
+import static com.example.mobileApp.utilities.Constants.VISION_QUESTIONNAIRE_ID;
 
 
 /**
@@ -170,11 +172,23 @@ public class SinglePatientFragment extends Fragment {
     }
 
     @OnClick(R.id.bn_hearx) void onClickHearX() {
+        Constants.setCurrentQuestionnaireID(HEARING_QUESTIONNAIRE_ID);
+        Constants.setCurrentQuestionnaireStartDate(LocalDate.now().toString());
+        Constants.setQnnExists(false);
 
+        // Go to the Placeholder Fragment for HearX
+        HouseholdMainActivity.fragmentManager.beginTransaction()
+                .replace(R.id.household_fragment_container, new AssessmentPlaceholderFragment()).commit();
     }
 
     @OnClick(R.id.bn_peek) void onClickPEEK() {
+        Constants.setCurrentQuestionnaireID(VISION_QUESTIONNAIRE_ID);
+        Constants.setCurrentQuestionnaireStartDate(LocalDate.now().toString());
+        Constants.setQnnExists(false);
 
+        // Go to the Placeholder Fragment for PEEK
+        HouseholdMainActivity.fragmentManager.beginTransaction()
+                .replace(R.id.household_fragment_container, new AssessmentPlaceholderFragment()).commit();
     }
 
     @OnClick(R.id.bn_mobility) void onClickMobility() {

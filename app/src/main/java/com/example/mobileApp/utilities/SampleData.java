@@ -225,11 +225,11 @@ public class SampleData {
     public static List<QuestionnaireTable> getQuestionnaires() {
         List<QuestionnaireTable> questionnaires = new ArrayList<>();
 
-        questionnaires.add(new QuestionnaireTable(1,"Household Roster Questionnaire","1"));
-        questionnaires.add(new QuestionnaireTable(2,"General Questionnaire","1"));
-        questionnaires.add(new QuestionnaireTable(3,"Vision Questionnaire","1"));
-        questionnaires.add(new QuestionnaireTable(4,"Hearing Questionnaire","1"));
-        questionnaires.add(new QuestionnaireTable(8,"Mobility Questionnaire","1"));
+        questionnaires.add(new QuestionnaireTable(1,"Household Roster Questionnaire","1", "HOUSEHOLD"));
+        questionnaires.add(new QuestionnaireTable(2,"General Questionnaire","1", "GENERAL"));
+        questionnaires.add(new QuestionnaireTable(3,"Vision Questionnaire","1", "VISION"));
+        questionnaires.add(new QuestionnaireTable(4,"Hearing Questionnaire","1", "HEARING"));
+        questionnaires.add(new QuestionnaireTable(8,"Mobility Questionnaire","1", "MOBILITY"));
 
         return questionnaires;
     }

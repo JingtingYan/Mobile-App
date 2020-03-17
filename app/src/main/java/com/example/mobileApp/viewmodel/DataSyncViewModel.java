@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import com.example.mobileApp.database.MobileAppRepository;
 import com.example.mobileApp.database.entity.HouseholdTable;
+import com.example.mobileApp.database.entity.PatientAssessmentStatusTable;
 import com.example.mobileApp.database.entity.PatientTable;
 import com.example.mobileApp.database.entity.ResponseTable;
 import com.example.mobileApp.utilities.Constants;
@@ -24,6 +25,9 @@ public class DataSyncViewModel extends AndroidViewModel {
 
     private MobileAppRepository repo;
     public volatile List<ResponseTable> allResponses = new ArrayList<>();
+    public volatile List<HouseholdTable> allHouseholds = new ArrayList<>();
+    public volatile List<PatientTable> allPatients = new ArrayList<>();
+    public volatile List<PatientAssessmentStatusTable> allAssessmentStatus = new ArrayList<>();
 
     public DataSyncViewModel(@NonNull Application application) {
         super(application);
@@ -70,24 +74,26 @@ public class DataSyncViewModel extends AndroidViewModel {
         return result;
     }
 
-    public JSONArray getHouseholdJSONArray() {
+
+    public JSONArray getHouseholdJSONArray(int startIndex, int endIndex) {
         JSONArray result = new JSONArray();
-        List<HouseholdTable> householdTables = new ArrayList<>();
 
-        try {
-            householdTables.addAll(repo.getAllHouseholds());
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        for (HouseholdTable householdTable : householdTables) {
+        for (int i = startIndex; i < endIndex; i++) {
             try {
-                result.put(householdTableConverter(householdTable));
+                result.put(householdTableConverter(allHouseholds.get(i)));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
         return result;
+    }
+
+    public void getAllHouseholds() {
+        try {
+            allHouseholds.addAll(repo.getAllHouseholds());
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private JSONObject householdTableConverter(HouseholdTable householdTable) throws JSONException {
@@ -128,25 +134,27 @@ public class DataSyncViewModel extends AndroidViewModel {
         return result;
     }
 
-    public JSONArray getPatientJSONArray() {
+
+    public JSONArray getPatientJSONArray(int startIndex, int endIndex) {
         JSONArray result = new JSONArray();
-        List<PatientTable> patientTables = new ArrayList<>();
 
-        try {
-            patientTables.addAll(repo.getAllPatients());
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        for (PatientTable patientTable : patientTables) {
+        for (int i = startIndex; i < endIndex; i++) {
             try {
-                result.put(patientTableConverter(patientTable));
+                result.put(patientTableConverter(allPatients.get(i)));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
         return result;
+    }
+
+    public void getAllPatients() {
+        try {
+            allPatients.addAll(repo.getAllPatients());
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private JSONObject patientTableConverter(PatientTable patientTable) throws JSONException {
@@ -156,23 +164,75 @@ public class DataSyncViewModel extends AndroidViewModel {
         result.put("studyID", patientTable.getStudy_id());
         result.put("date_of_birth", patientTable.getDate_of_birth());
         result.put("prefix", patientTable.getPrefix());
-        result.put("firstName", patientTable.getFirst_name());
-        result.put("middleName", patientTable.getMiddle_name());
-        result.put("lastName", patientTable.getLast_name());
+        result.put("first_name", patientTable.getFirst_name());
+        result.put("middle_name", patientTable.getMiddle_name());
+        result.put("last_name", patientTable.getLast_name());
         result.put("suffix", patientTable.getSuffix());
         result.put("com_name", patientTable.getCom_name());
         result.put("gender", patientTable.getGender());
         result.put("householdID", patientTable.getHh_id());
         result.put("dur_hh", patientTable.getDur_hh());
-        result.put("exam_status", patientTable.getExam_status());
         result.put("notes", patientTable.getNotes());
         result.put("lvl_edu", patientTable.getLvl_edu());
         result.put("work_status", patientTable.getWork_status());
         result.put("marital_status", patientTable.getMarital_status());
-        // ...
+        result.put("mother_first_name", patientTable.getMother_first());
+        result.put("mother_last_name", patientTable.getMother_last());
+        result.put("tel1_num", patientTable.getTel1_num());
+        result.put("tel1_owner", patientTable.getTel1_owner());
+        result.put("tel1_owner_rel", patientTable.getTel1_owner_rel());
+        result.put("tel2_num", patientTable.getTel2_num());
+        result.put("tel2_owner", patientTable.getTel2_owner());
+        result.put("tel2_owner_rel", patientTable.getTel2_owner_rel());
+        result.put("enumeratorID", patientTable.getEnum_id());
+        result.put("national_id", patientTable.getNational_id());
+        result.put("deceased", patientTable.getDeceased());
+        result.put("deceased_date", patientTable.getDeceased_date());
+        result.put("responder", patientTable.getResponder());
+        result.put("proxy_name", patientTable.getProxy_name());
+        result.put("proxy_rel", patientTable.getProxy_rel());
+
+        Log.i("datasync vm - patientTableConverter", "patient json to post" + result.toString());  // debug
 
         return result;
     }
+
+
+    public JSONArray getAssessmentStatusJsonArray(int startIndex, int endIndex) {
+        JSONArray result = new JSONArray();
+
+        for (int i = startIndex; i < endIndex; i++) {
+            try {
+                result.put(assessmentStatusTableConverter(allAssessmentStatus.get(i)));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
+    }
+
+    public void getAllAssessmentStatus() {
+        try {
+            allAssessmentStatus.addAll(repo.getAllAssessmentStatus());
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private JSONObject assessmentStatusTableConverter(PatientAssessmentStatusTable patientAssessmentStatusTable) throws JSONException {
+        JSONObject result = new JSONObject();
+
+        result.put("assess_patientID", patientAssessmentStatusTable.getPatient_id());
+        result.put("assess_questionnaireID", patientAssessmentStatusTable.getQnnaire_id());
+        result.put("questionnaireStatus", patientAssessmentStatusTable.getQnnaire_status());
+        result.put("start", patientAssessmentStatusTable.getStart());
+        result.put("end", patientAssessmentStatusTable.getEnd());
+        result.put("last_answered_qn", patientAssessmentStatusTable.getLast_answered_qn_id());
+
+        return result;
+    }
+
 
     public void deleteConfirmedHouseholdData(JSONArray response) throws JSONException {
         for (int i = 0; i < response.length(); i++) {
@@ -200,6 +260,16 @@ public class DataSyncViewModel extends AndroidViewModel {
             JSONObject patientTable = response.getJSONObject(i);
             String patientID = patientTable.getString("patientID");
             repo.deleteSinglePatient(patientID);
+        }
+    }
+
+    public void deleteConfirmedAssessmentStatusData(JSONArray response) throws JSONException {
+        for (int i = 0; i < response.length(); i++) {
+            JSONObject assessmentStatus = response.getJSONObject(i);
+            String patientID = assessmentStatus.getString("assess_patientID");
+            int qnnID = assessmentStatus.getInt("assess_questionnaireID");
+            String startDate = assessmentStatus.getString("start");
+            repo.deleteSingleAssessmentStatus(patientID, qnnID, startDate);
         }
     }
 
@@ -291,6 +361,19 @@ public class DataSyncViewModel extends AndroidViewModel {
         try {
             repo.addQuestionRelationData(jsonArray);
         } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setQuestionnaireIDInfo() {
+        try {
+            Constants.HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID = repo.getQuestionnaireID("HOUSEHOLD");
+            Constants.GENERAL_WASHINGTON_GROUP_QUESTIONNAIRE_ID = repo.getQuestionnaireID("GENERAL");
+            Constants.MOBILITY_QUESTIONNAIRE_ID = repo.getQuestionnaireID("MOBILITY");
+            Constants.PATIENT_BASIC_INFORMATION_QUESTIONNAIRE = repo.getQuestionnaireID("PATIENT_INFO");
+            Constants.VISION_QUESTIONNAIRE_ID = repo.getQuestionnaireID("VISION");
+            Constants.HEARING_QUESTIONNAIRE_ID = repo.getQuestionnaireID("HEARING");
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }

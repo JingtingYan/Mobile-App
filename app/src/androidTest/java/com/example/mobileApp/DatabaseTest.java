@@ -29,11 +29,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
@@ -179,5 +181,35 @@ public class DatabaseTest {
 
         assertFalse(boolean1);
         assertTrue(boolean2);
+    }
+
+    @Test
+    public void parseLocalDateFromJsonObject() {
+        LocalDate date = LocalDate.of(2020, 3, 16);
+        JSONObject object = new JSONObject();
+        try {
+            object.put("date" , date);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        LocalDate parsedDate = (LocalDate) object.opt("date");
+
+        assertEquals(LocalDate.of(2020, 3, 16), parsedDate);
+    }
+
+    @Test
+    public void parseNullLocalDateFromJsonObject() {
+        LocalDate date = null;
+        JSONObject object = new JSONObject();
+        try {
+            object.put("date" , date);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        LocalDate parsedDate = (LocalDate) object.opt("date");
+
+        assertNull(parsedDate);
     }
 }

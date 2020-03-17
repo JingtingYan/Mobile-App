@@ -14,6 +14,7 @@
     <string name="title_qnn_mobility">MOBILITY QUESTIONNAIRE</string>
     <string name="title_asmt_hearx">HearX ASSESSMENT</string>
     <string name="title_asmt_peek">PEEK ASSESSMENT</string>
+    <string name="title_asmt_default">Assessment/Questionnaire</string>
     <string name="title_activity_about">About</string>
 
 
@@ -42,6 +43,14 @@
     <string name="default_qn_instruction_mcq">This is a multiple choice question.
             Please select appropriate answers by ticking the checkbox then click NEXT.</string>
 
+    <!-- fragment_assessment_placeholder.xml -->
+    <string name="asmt_placeholder_peek_prompt">This is a placeholder for PEEK Assessment to be integrated at later stage. \n\n
+        After you finish the assessment, click NEXT to proceed. </string>
+    <string name="asmt_placeholder_hearx_prompt">This is a placeholder for HearX Assessment to be integrated at later stage. \n\n
+        After you finish the assessment, click NEXT to proceed. </string>
+    <string name="asmt_placeholder_default_prompt">This is a placeholder for an external Assessment to be integrated at later stage. \n\n
+        After you finish the assessment, click NEXT to proceed. </string>
+
     <!-- fragment_questionnaire_finish.xml -->
     <string name="hh_finish_prompt">You have finished all the questions in Household Roaster Questionnaire. \n\n
             Click FINISH to create this new household and go back to the Household home page.</string>
@@ -64,8 +73,5 @@
             \n\nCollaborated with London School of Hygiene &amp; Tropical Medicine.</string>
     <string name="about_developer">Jingting Yan, Nadhirah Rafidz</string>
     <string name="contact_info">jingting.yan.17@ucl.ac.uk</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

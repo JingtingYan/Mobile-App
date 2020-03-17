@@ -18,17 +18,28 @@ public class Constants {
     // API authentication
     private static String token;
     private static String enumeratorID;
+
     // location-related data
     private static Location country;
     private static Location region;
     private static Location cluster;
+
     // questionnaire-related data
+    public static int HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID;
+    public static int GENERAL_WASHINGTON_GROUP_QUESTIONNAIRE_ID;
+    public static int MOBILITY_QUESTIONNAIRE_ID;
+    public static int PATIENT_BASIC_INFORMATION_QUESTIONNAIRE;
+    public static int VISION_QUESTIONNAIRE_ID;
+    public static int HEARING_QUESTIONNAIRE_ID;
+
     private static Integer currentQuestionnaireID;
     private static String currentQuestionnaireStartDate;
+
     // assessment-related data
     private static String currentStudyID;
     private static String currentPatientID;
     private static String currentHouseholdID;
+
     // two shared variables used to update AssessmentStatus table
     private static boolean qnnExists = false;
     private static AssessmentRecyclerViewItem selectedAssessment;
@@ -184,13 +195,9 @@ public class Constants {
     public static final String POST_RESPONSE_URL = "http://10.0.2.2:8000/tables/Response/";
     public static final String POST_HOUSEHOLD_URL = "http://10.0.2.2:8000/tables/Household/";
     public static final String POST_PATIENT_URL = "http://localhost:8000/tables/Patients/";
+    public static final String POST_ASSESSMENT_STATUS_URL = "http://10.0.2.2:8000/tables/PatientAssessment/";
     // add other APIs route here in the future
 
-    // Questionnaires
-    public static final int HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID = 1;
-    public static final int GENERAL_WASHINGTON_GROUP_QUESTIONNAIRE_ID = 2;
-    public static final int MOBILITY_QUESTIONNAIRE_ID = 3;
-    public static final int PATIENT_BASIC_INFORMATION_QUESTIONNAIRE = 4;
 
     public static final String DEFAULT_QN_INSTRUCTION_TEXT_ENTRY = "This is a text entry question. Please enter the response in the text field then click NEXT.";
     public static final String DEFAULT_QN_INSTRUCTION_SCQ = "This is a single choice question. Please select one answer choice from the dropdown list then click NEXT.";

@@ -2,16 +2,10 @@ package com.example.mobileApp.database.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-import com.example.mobileApp.database.entity.EnumeratorTable;
-import com.example.mobileApp.database.entity.HouseholdTable;
-
 import java.time.LocalDate;
-
-import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "patients",
         indices = { @Index(value={"patient_id", "hh_id"}),
@@ -54,8 +48,6 @@ public class PatientTable {
     //    REQUIRED
     private String dur_hh;
 
-    private String exam_status;
-
     private String lvl_edu;
 
     private String work_status;
@@ -94,9 +86,9 @@ public class PatientTable {
     private String notes;
 
     // This two fields are created in case future usage
-    private Integer deceased = 0;
+    private Integer deceased;
 
-    private LocalDate deceased_date = null;
+    private String deceased_date;
 
 
     /* Select several unique IDs to be the constructor attributes of PatientTable object. */
@@ -203,14 +195,6 @@ public class PatientTable {
 
     public void setDur_hh(String dur_hh) {
         this.dur_hh = dur_hh;
-    }
-
-    public String getExam_status() {
-        return exam_status;
-    }
-
-    public void setExam_status(String exam_status) {
-        this.exam_status = exam_status;
     }
 
     public String getLvl_edu() {
@@ -357,11 +341,11 @@ public class PatientTable {
         this.deceased = deceased;
     }
 
-    public LocalDate getDeceased_date() {
+    public String getDeceased_date() {
         return deceased_date;
     }
 
-    public void setDeceased_date(LocalDate deceased_date) {
+    public void setDeceased_date(String deceased_date) {
         this.deceased_date = deceased_date;
     }
 }
