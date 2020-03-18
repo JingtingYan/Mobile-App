@@ -49,9 +49,9 @@ public class DataSyncViewModel extends AndroidViewModel {
         return result;
     }
 
-    public void getAllResponses() {
+    public void getAllResponsesToUpload() {
         try {
-            allResponses.addAll(repo.getAllResponses());
+            allResponses.addAll(repo.getAllResponsesToUpload());
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -61,7 +61,6 @@ public class DataSyncViewModel extends AndroidViewModel {
     private JSONObject responseTableConverter(ResponseTable responseTable) throws JSONException {
         JSONObject result = new JSONObject();
 
-        result.put("index", responseTable.getIndex());
         result.put("patientID", responseTable.getPatient_id());
         result.put("questionID", responseTable.getQ_id());
         result.put("answerID", responseTable.getAns_id());
@@ -88,9 +87,9 @@ public class DataSyncViewModel extends AndroidViewModel {
         return result;
     }
 
-    public void getAllHouseholds() {
+    public void getAllHouseholdsToUpload() {
         try {
-            allHouseholds.addAll(repo.getAllHouseholds());
+            allHouseholds.addAll(repo.getAllHouseholdsToUpload());
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -149,9 +148,9 @@ public class DataSyncViewModel extends AndroidViewModel {
         return result;
     }
 
-    public void getAllPatients() {
+    public void getAllPatientsToUpload() {
         try {
-            allPatients.addAll(repo.getAllPatients());
+            allPatients.addAll(repo.getAllPatientsToUpload());
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -273,6 +272,7 @@ public class DataSyncViewModel extends AndroidViewModel {
         }
     }
 
+
     public void deleteLocationData() {
         repo.deleteLocationData();
     }
@@ -308,6 +308,15 @@ public class DataSyncViewModel extends AndroidViewModel {
     public void deleteHouseholdData() {
         repo.deleteHouseholdData();
     }
+
+    public void deletePatientData() {
+        repo.deletePatientData();
+    }
+
+    public void deletePatientAssessmentData() {
+        repo.deletePatientAssessmentData();
+    }
+
 
     public void addLocationData(String jsonArray) {
         try {

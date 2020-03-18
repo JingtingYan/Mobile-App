@@ -46,25 +46,18 @@ public class HouseholdHomeFragment extends Fragment {
     @OnClick(R.id.bn_hh_home_create) void onClickCreate() {
         Constants.setCurrentQuestionnaireID(HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID);
         Constants.setQnnExists(false);
-//        Fragment currFragment = HouseholdMainActivity.fragmentManager.findFragmentByTag()
         HouseholdMainActivity.fragmentManager.beginTransaction()
-                .replace(R.id.household_fragment_container, new UserCreateFragment())
-                .addToBackStack(null)
-                .commit();
+                .replace(R.id.household_fragment_container, new UserCreateFragment()).commit();
     }
 
     @OnClick(R.id.bn_hh_home_choose) void onClickSearchHousehold() {
         HouseholdMainActivity.fragmentManager.beginTransaction()
-                .replace(R.id.household_fragment_container, new SearchHouseholdFragment())
-                .addToBackStack(null)
-                .commit();
+                .replace(R.id.household_fragment_container, new SearchHouseholdFragment()).commit();
     }
 
     @OnClick(R.id.bn_hh_home_search_patient) void onClickSearchPatient() {
         HouseholdMainActivity.fragmentManager.beginTransaction()
-                .replace(R.id.household_fragment_container, new SearchPatientFragment())
-                .addToBackStack(null)
-                .commit();
+                .replace(R.id.household_fragment_container, new SearchPatientFragment()).commit();
     }
 
 }

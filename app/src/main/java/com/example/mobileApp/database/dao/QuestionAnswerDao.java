@@ -26,8 +26,4 @@ public interface QuestionAnswerDao {
 
     @Query("SELECT MAX(`index`) FROM questions_and_answers")
     int getLastIndex();
-
-    // debug
-    @Query("SELECT COUNT(*) FROM questions_and_answers")
-    int countAllQAs();
 }

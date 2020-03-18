@@ -310,8 +310,6 @@ public class LocationActivity extends NavigationDrawerActivity {
         Constants.setCountry(country);
         Constants.setRegion(region);
         Constants.setCluster(cluster);
-        // StudyID = CountryID ++ RegionID ++ ClusterID
-        Constants.setCurrentStudyID(country.getLocationID() + String.valueOf(region.getLocationID()) + cluster.getLocationID());
 
         Intent intent = new Intent(this, HouseholdMainActivity.class);
         startActivity(intent);

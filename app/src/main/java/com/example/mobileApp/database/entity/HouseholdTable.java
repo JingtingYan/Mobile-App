@@ -92,16 +92,23 @@ public class HouseholdTable {
     //    REQUIRED
     private String a2_q13;
 
+    //    REQUIRED
+    // This field is created to support data sync
+    // 0 - means this entry is downloaded from server database and will not be synced later
+    // 1 - means this entry is newly created on the mobile app and will be synced later
+    private Integer isNew;
+
 
     // select several main attributes as the constructor for household
     public HouseholdTable(@NonNull String household_id, Integer parent_loc_id, String enum_id,
-                          String date, String gps_latitude, String gps_longitude) {
+                          String date, String gps_latitude, String gps_longitude, Integer isNew) {
         this.household_id = household_id;
         this.parent_loc_id = parent_loc_id;
         this.enum_id = enum_id;
         this.date = date;
         this.gps_latitude = gps_latitude;
         this.gps_longitude = gps_longitude;
+        this.isNew = isNew;
     }
 
     /* getter and setter */
@@ -135,16 +142,8 @@ public class HouseholdTable {
         return gps_latitude;
     }
 
-    public void setGps_latitude(String gps_latitude) {
-        this.gps_latitude = gps_latitude;
-    }
-
     public String getGps_longitude() {
         return gps_longitude;
-    }
-
-    public void setGps_longitude(String gps_longitude) {
-        this.gps_longitude = gps_longitude;
     }
 
     public String getAvailability() {
@@ -321,5 +320,9 @@ public class HouseholdTable {
 
     public void setA2_q13(String a2_q13) {
         this.a2_q13 = a2_q13;
+    }
+
+    public Integer getIsNew() {
+        return isNew;
     }
 }

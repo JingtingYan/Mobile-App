@@ -46,55 +46,28 @@ public class PatientAssessmentStatusTable {
         return index;
     }
 
-    public void setIndex(@NonNull Integer index) {
-        this.index = index;
-    }
-
     public String getPatient_id() {
         return patient_id;
-    }
-
-    public void setPatient_id(String patient_id) {
-        this.patient_id = patient_id;
     }
 
     public Integer getQnnaire_id() {
         return qnnaire_id;
     }
 
-    public void setQnnaire_id(Integer qnnaire_id) {
-        this.qnnaire_id = qnnaire_id;
-    }
-
     public String getQnnaire_status() {
         return qnnaire_status;
-    }
-
-    public void setQnnaire_status(String qnnaire_status) {
-        this.qnnaire_status = qnnaire_status;
     }
 
     public String getStart() {
         return start;
     }
 
-    public void setStart(String start) {
-        this.start = start;
-    }
-
     public String getEnd() {
         return end;
-    }
-
-    public void setEnd(String end) {
-        this.end = end;
     }
 
     public Integer getLast_answered_qn_id() {
         return last_answered_qn_id;
     }
 
-    public void setLast_answered_qn_id(Integer last_answered_qn_id) {
-        this.last_answered_qn_id = last_answered_qn_id;
-    }
 }

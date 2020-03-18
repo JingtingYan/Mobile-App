@@ -23,22 +23,20 @@ public interface ResponseDao
             "responses.date = :date")
     void deleteSingleResponse(String patientID, Integer questionID, Integer answerID, String answerText, Integer qnnaireID, String date);
 
-//    Used in "next" stored procedure
-    @Query("SELECT * FROM responses WHERE responses.patient_id = :patientID AND responses.q_id = :currentQuestion AND responses.qnnaire_id = :currentQnn")
-    List<ResponseTable> getResponse(int patientID, int currentQuestion, int currentQnn);
-
-    @Query("SELECT COUNT(*) FROM responses WHERE responses.patient_id = :patientID AND responses.q_id = :currentQuestion AND responses.qnnaire_id = :currentQnn")
+    @Query("SELECT COUNT(*) FROM responses WHERE responses.patient_id = :patientID AND " +
+            "responses.q_id = :currentQuestion AND responses.qnnaire_id = :currentQnn")
     int getResponseCount(int patientID, int currentQuestion, int currentQnn);
 
     @Query("SELECT MAX(`index`) FROM responses")
     int getLastIndex();
 
-    @Query("SELECT * FROM responses")
-    List<ResponseTable> getAllResponses();
+    @Query("SELECT * FROM responses WHERE isNew = 1")
+    List<ResponseTable> getAllResponsesToUpload();
 
     @Query("DELETE FROM responses")
     void deleteAll();
 
-    @Query("SELECT ans_id FROM responses AS resp WHERE resp.patient_id = :patientID AND resp.q_id = :currQnID AND resp.qnnaire_id = :currQnnID")
+    @Query("SELECT ans_id FROM responses AS resp WHERE resp.patient_id = :patientID AND " +
+            "resp.q_id = :currQnID AND resp.qnnaire_id = :currQnnID")
     List<Integer> getResponsesForCurrQuestion(String patientID, int currQnID, int currQnnID);
 }

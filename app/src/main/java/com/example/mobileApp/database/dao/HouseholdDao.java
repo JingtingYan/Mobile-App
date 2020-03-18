@@ -27,8 +27,8 @@ public interface HouseholdDao
     @Query("SELECT COUNT(*) FROM households")
     int countAllHouseholds();
 
-    @Query("SELECT * FROM households")
-    List<HouseholdTable> getAllHouseholds();
+    @Query("SELECT * FROM households WHERE isNew = 1")
+    List<HouseholdTable> getAllHouseholdsToUpload();
 
     @Query("DELETE FROM households")
     void deleteAll();

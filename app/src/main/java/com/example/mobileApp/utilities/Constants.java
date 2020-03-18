@@ -36,7 +36,6 @@ public class Constants {
     private static String currentQuestionnaireStartDate;
 
     // assessment-related data
-    private static String currentStudyID;
     private static String currentPatientID;
     private static String currentHouseholdID;
 
@@ -91,14 +90,6 @@ public class Constants {
 
     public static void setCurrentQuestionnaireID(Integer currentQuestionnaireID) {
         Constants.currentQuestionnaireID = currentQuestionnaireID;
-    }
-
-    public static String getCurrentStudyID() {
-        return currentStudyID;
-    }
-
-    public static void setCurrentStudyID(String currentStudyID) {
-        Constants.currentStudyID = currentStudyID;
     }
 
     public static String getCurrentPatientID() {
@@ -165,7 +156,7 @@ public class Constants {
 
     public static final String POST_RESPONSE_URL = "http://10.0.2.2:8000/tables/Response/";
     public static final String POST_HOUSEHOLD_URL = "http://10.0.2.2:8000/tables/Household/";
-    public static final String POST_PATIENT_URL = "http://localhost:8000/tables/Patients/";
+    public static final String POST_PATIENT_URL = "http://10.0.2.2:8000/tables/Patients/";
     public static final String POST_ASSESSMENT_STATUS_URL = "http://10.0.2.2:8000/tables/PatientAssessment/";
     // add other APIs route here in the future
 
@@ -174,6 +165,4 @@ public class Constants {
     public static final String DEFAULT_QN_INSTRUCTION_SCQ = "This is a single choice question. Please select one answer choice from the dropdown list then click NEXT.";
     public static final String DEFAULT_QN_INSTRUCTION_MCQ = "This is a multiple choice question. Please select appropriate answers by ticking the checkbox then click NEXT.";
 
-    // some tags
-    public static final String HOUSEHOLD_HOME_FRAGMENT_TAG = "household_home_fragment";
 }

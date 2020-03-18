@@ -32,4 +32,7 @@ public interface PatientAssessmentStatusDao {
 
     @Query("DELETE FROM patient_assessment_status WHERE patient_id = :patientID AND qnnaire_id = :qnnID AND start = :startDate")
     void deleteSingleAssessmentStatus(String patientID, int qnnID, String startDate);
+
+    @Query("DELETE FROM patient_assessment_status")
+    void deleteAll();
 }

@@ -1,5 +1,7 @@
 package com.example.mobileApp;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -106,6 +109,7 @@ public class QuestionnaireFragment extends Fragment {
 
         if (questionnaireViewModel.hasNextQuestion()) {
             loadNextQuestion();
+            hideKeyboard(requireActivity());
         } else {
             Log.i("qnn fragment - onClickNext", "reached the last qn in qnn");    // debug
             // move to the end page of Questionnaire/Assessment
@@ -168,5 +172,18 @@ public class QuestionnaireFragment extends Fragment {
         // move to the Patient home page
         HouseholdMainActivity.fragmentManager.beginTransaction()
                 .replace(R.id.household_fragment_container, new SinglePatientFragment()).commit();
+    }
+
+    // hide keyboard when switching to next question fragment
+    private void hideKeyboard(Activity activity) {
+        InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        // check if no view has focus:
+        View currentFocusedView = activity.getCurrentFocus();
+        if (currentFocusedView != null) {
+            if (inputManager != null) {
+                inputManager.hideSoftInputFromWindow(currentFocusedView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
     }
 }

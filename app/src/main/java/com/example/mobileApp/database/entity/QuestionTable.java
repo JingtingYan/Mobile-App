@@ -2,14 +2,8 @@ package com.example.mobileApp.database.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
-
-import com.example.mobileApp.database.entity.QuestionTypeTable;
-import com.example.mobileApp.database.entity.QuestionnaireTable;
-
-import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "questions",
         indices = {@Index(value= {"question_id", "qnnaire_id"}),

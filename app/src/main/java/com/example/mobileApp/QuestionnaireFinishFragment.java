@@ -115,7 +115,7 @@ public class QuestionnaireFinishFragment extends Fragment {
             HouseholdMainActivity.fragmentManager.beginTransaction()
                     .replace(R.id.household_fragment_container, new SingleHouseholdFragment()).commit();
 
-        } else {// otherwise, store the responses into Response table and update Assessment status
+        } else {    // otherwise, store the responses into Response table and update Assessment status
             // mark this patient's Assessment Status on the undertaking questionnaire/assessment to be COMPLETE
             if (Constants.isQnnExists()) {
                 questionnaireViewModel.updateExistingAssessmentToComplete(Constants.getSelectedAssessment().getStartDate());

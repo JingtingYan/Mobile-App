@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -21,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -105,6 +107,9 @@ public class UserCreateFragment extends Fragment implements LocationListener{
 
     // update relevant data fields that need to be stored in db later
     private void initData() {
+        // clear prev responses stored
+        questionnaireViewModel.allResponses.clear();
+
         Constants.setCurrentQuestionnaireStartDate(LocalDate.now().toString());
         if (Constants.getCurrentQuestionnaireID() == PATIENT_BASIC_INFORMATION_QUESTIONNAIRE) {
             Constants.setCurrentPatientID(questionnaireViewModel.generateNewPatientID());
@@ -138,6 +143,7 @@ public class UserCreateFragment extends Fragment implements LocationListener{
 
         if (questionnaireViewModel.hasNextQuestion()) {
             loadNextQuestion();
+            hideKeyboard(requireActivity());
         } else {
             // move to the end page of the Questionnaire
             HouseholdMainActivity.fragmentManager.beginTransaction()
@@ -218,5 +224,18 @@ public class UserCreateFragment extends Fragment implements LocationListener{
     public void onProviderDisabled(String provider) {
         Toast.makeText(requireActivity(), "Please Enable GPS", Toast.LENGTH_SHORT).show();
         getGPSCoordinates();
+    }
+
+    // hide keyboard when switching to next question fragment
+    private void hideKeyboard(Activity activity) {
+        InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        // check if no view has focus:
+        View currentFocusedView = activity.getCurrentFocus();
+        if (currentFocusedView != null) {
+            if (inputManager != null) {
+                inputManager.hideSoftInputFromWindow(currentFocusedView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
     }
 }

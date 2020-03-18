@@ -5,8 +5,6 @@ import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-import java.time.LocalDate;
-
 @Entity(tableName = "patients",
         indices = { @Index(value={"patient_id", "hh_id"}),
                     @Index("hh_id"),
@@ -86,16 +84,23 @@ public class PatientTable {
     private String notes;
 
     // This two fields are created in case future usage
-    private Integer deceased;
+    private Integer deceased = 0;
 
-    private String deceased_date;
+    private String deceased_date = "0001-01-01";
+
+    //    REQUIRED
+    // This field is created to support data sync
+    // 0 - means this entry is downloaded from server database and will not be synced later
+    // 1 - means this entry is newly created on the mobile app and will be synced later
+    private Integer isNew;
 
 
     /* Select several unique IDs to be the constructor attributes of PatientTable object. */
-    public PatientTable(@NonNull String patient_id, String study_id, String hh_id) {
+    public PatientTable(@NonNull String patient_id, String study_id, String hh_id, Integer isNew) {
         this.patient_id = patient_id;
         this.study_id = study_id;
         this.hh_id = hh_id;
+        this.isNew = isNew;
     }
 
     /* getter and setter */
@@ -105,16 +110,8 @@ public class PatientTable {
         return patient_id;
     }
 
-    public void setPatient_id(@NonNull String patient_id) {
-        this.patient_id = patient_id;
-    }
-
     public String getStudy_id() {
         return study_id;
-    }
-
-    public void setStudy_id(String study_id) {
-        this.study_id = study_id;
     }
 
     public String getDate_of_birth() {
@@ -183,10 +180,6 @@ public class PatientTable {
 
     public String getHh_id() {
         return hh_id;
-    }
-
-    public void setHh_id(String hh_id) {
-        this.hh_id = hh_id;
     }
 
     public String getDur_hh() {
@@ -347,5 +340,9 @@ public class PatientTable {
 
     public void setDeceased_date(String deceased_date) {
         this.deceased_date = deceased_date;
+    }
+
+    public Integer getIsNew() {
+        return isNew;
     }
 }

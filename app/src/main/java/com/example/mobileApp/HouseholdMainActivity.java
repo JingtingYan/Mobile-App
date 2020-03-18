@@ -62,8 +62,8 @@ public class HouseholdMainActivity extends NavigationDrawerActivity {
             if (savedInstanceState != null){
                 return;
             }
-            fragmentManager.beginTransaction().add(R.id.household_fragment_container, new HouseholdHomeFragment(),
-                    "HouseholdHomeFragment").commit();
+            fragmentManager.beginTransaction().add(R.id.household_fragment_container, new HouseholdHomeFragment())
+                    .addToBackStack(null).commit();
         }
 
     }
@@ -75,5 +75,15 @@ public class HouseholdMainActivity extends NavigationDrawerActivity {
         projectLocation.get(0).setText(Constants.getCountry().getLocationName());
         projectLocation.get(1).setText(Constants.getRegion().getLocationName());
         projectLocation.get(2).setText(Constants.getCluster().getLocationName());
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(getFragmentManager().getBackStackEntryCount() > 0){
+            getFragmentManager().popBackStack();
+        }
+        else{
+            super.onBackPressed();
+        }
     }
 }

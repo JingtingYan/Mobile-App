@@ -141,6 +141,15 @@ public class MobileAppRepository {
         executor.execute(() -> db.householdDao().deleteAll());
     }
 
+    public void deletePatientData() {
+        executor.execute(() -> db.patientDao().deleteAll());
+    }
+
+    public void deletePatientAssessmentData() {
+        executor.execute(() -> db.patientAssessmentStatusDao().deleteAll());
+    }
+
+
     public void addLocationData(String jsonArray) throws JSONException {
         List<LocationTable> locationTables = parseLocationJSONArray(jsonArray);
         executor.execute(() -> db.locationDao().insertAll(locationTables));
@@ -314,18 +323,18 @@ public class MobileAppRepository {
         return task.get();
     }
 
-    public List<ResponseTable> getAllResponses() throws ExecutionException, InterruptedException {
-        Future<List<ResponseTable>> task = executor.submit(() -> db.responseDao().getAllResponses());
+    public List<ResponseTable> getAllResponsesToUpload() throws ExecutionException, InterruptedException {
+        Future<List<ResponseTable>> task = executor.submit(() -> db.responseDao().getAllResponsesToUpload());
         return task.get();
     }
 
-    public List<HouseholdTable> getAllHouseholds() throws ExecutionException, InterruptedException {
-        Future<List<HouseholdTable>> task = executor.submit(() -> db.householdDao().getAllHouseholds());
+    public List<HouseholdTable> getAllHouseholdsToUpload() throws ExecutionException, InterruptedException {
+        Future<List<HouseholdTable>> task = executor.submit(() -> db.householdDao().getAllHouseholdsToUpload());
         return task.get();
     }
 
-    public List<PatientTable> getAllPatients() throws ExecutionException, InterruptedException {
-        Future<List<PatientTable>> task = executor.submit(() -> db.patientDao().getAllPatients());
+    public List<PatientTable> getAllPatientsToUpload() throws ExecutionException, InterruptedException {
+        Future<List<PatientTable>> task = executor.submit(() -> db.patientDao().getAllPatientsToUpload());
         return task.get();
     }
 
@@ -560,11 +569,6 @@ public class MobileAppRepository {
         return task.get();
     }
 
-    public void storeResponsesToDb(List<Response> responses) throws ExecutionException, InterruptedException {
-        List<ResponseTable> responseTables = responsesConverter(responses);
-        executor.execute(() -> db.responseDao().insertAll(responseTables));
-    }
-
     public void storeSingleResponseToDb(Response response) throws ExecutionException, InterruptedException {
         ResponseTable responseTable = responseToResponseTableConverter(response);
         executor.execute(() -> db.responseDao().insert(responseTable));
@@ -593,24 +597,11 @@ public class MobileAppRepository {
         return task.get();
     }
 
-    private List<ResponseTable> responsesConverter(List<Response> responses) throws ExecutionException, InterruptedException {
-        List<ResponseTable> result = new ArrayList<>();
-        int lastIndex = getResponseTableLastIndex();
-
-        for (int i = 0; i < responses.size(); i++) {
-            Response response = responses.get(i);
-            result.add(new ResponseTable(lastIndex + 1 + i, response.getPatientID(), response.getQnID(),
-                       response.getAnsID(), response.getAnsText(), response.getQnnID(), response.getDate().toString()));
-            Log.i("patientID", response.getPatientID());    // debug
-        }
-        return result;
-    }
-
     private ResponseTable responseToResponseTableConverter(Response response) throws ExecutionException, InterruptedException {
         int lastIndex = getResponseTableLastIndex();
         Log.i("repo - responseToResponseTableConverter", "stored response at index: " + (lastIndex + 1));     // debug
         return new ResponseTable(lastIndex + 1, response.getPatientID(), response.getQnID(),
-                response.getAnsID(), response.getAnsText(), response.getQnnID(), response.getDate().toString());
+                response.getAnsID(), response.getAnsText(), response.getQnnID(), response.getDate().toString(), 1);
     }
 
     /* Household Choose Fragment */
@@ -633,7 +624,7 @@ public class MobileAppRepository {
             String gps_latitude = household.getString("gps_latitude");
             String gps_longitude = household.getString("gps_longitude");
 
-            HouseholdTable householdTable = new HouseholdTable(household_id, parent_loc_id, enum_id, date, gps_latitude, gps_longitude);
+            HouseholdTable householdTable = new HouseholdTable(household_id, parent_loc_id, enum_id, date, gps_latitude, gps_longitude, 0);
             householdTable.setVillage_street_name(household.getString("village_street_name"));
             householdTable.setAvailability(household.getString("availability"));
             householdTable.setReason_refusal(household.optString("reason_refusal", ""));
@@ -665,7 +656,7 @@ public class MobileAppRepository {
     }
 
     public void addPatientData(String jsonArray) throws JSONException {
-        Log.i("repo - addPatientData", "patient json array received: " + jsonArray.toString());     // debug
+        Log.i("repo - addPatientData", "patient json array received: " + jsonArray);     // debug
 
         List<PatientTable> patientTables = parsePatientJSONArray(jsonArray);
         executor.execute(() -> db.patientDao().insertAll(patientTables));
@@ -682,7 +673,7 @@ public class MobileAppRepository {
             String study_id = patient.getString("studyID");
             String hh_id = patient.getString("householdID");
 
-            PatientTable patientTable = new PatientTable(patient_id, study_id, hh_id);
+            PatientTable patientTable = new PatientTable(patient_id, study_id, hh_id, 0);
 
             patientTable.setDate_of_birth(patient.getString("date_of_birth"));
             patientTable.setPrefix(patient.optString("prefix", ""));
@@ -766,7 +757,7 @@ public class MobileAppRepository {
             Integer questionnaireID = response.getInt("questionnaireID");
             String date = response.getString("date");
 
-            responseTables.add(new ResponseTable(index, patientID, questionID, answerID, answerText, questionnaireID, date));
+            responseTables.add(new ResponseTable(index, patientID, questionID, answerID, answerText, questionnaireID, date, 0));
         }
 
         return responseTables;
@@ -821,7 +812,9 @@ public class MobileAppRepository {
         return task.get();
     }
 
-    public void updateExistingAssessmentStatusTable(PatientAssessmentStatusTable patientAssessmentStatusTable) {
-        executor.execute(() -> db.patientAssessmentStatusDao().insert(patientAssessmentStatusTable));
+    public void updateExistingAssessmentStatusTable(PatientAssessmentStatusTable assessmentStatusTable) {
+        // use patientAssessmentStatusDao().insert(PatientAssessmentStatusTable table) because the onConflictStrategy is REPLACE
+        // therefore, the old entry will be replaced by the newly inserted (updated) row
+        executor.execute(() -> db.patientAssessmentStatusDao().insert(assessmentStatusTable));
     }
 }

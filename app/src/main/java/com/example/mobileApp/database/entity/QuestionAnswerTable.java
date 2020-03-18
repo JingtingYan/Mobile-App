@@ -41,31 +41,15 @@ public class QuestionAnswerTable {
         return index;
     }
 
-    public void setIndex(@NonNull Integer index) {
-        this.index = index;
-    }
-
     public Integer getQ_id() {
         return q_id;
-    }
-
-    public void setQ_id(Integer q_id) {
-        this.q_id = q_id;
     }
 
     public Integer getAns_id() {
         return ans_id;
     }
 
-    public void setAns_id(Integer ans_id) {
-        this.ans_id = ans_id;
-    }
-
     public Integer getQnnaire_id() {
         return qnnaire_id;
-    }
-
-    public void setQnnaire_id(Integer qnnaire_id) {
-        this.qnnaire_id = qnnaire_id;
     }
 }

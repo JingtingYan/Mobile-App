@@ -5,25 +5,19 @@ import android.os.Bundle;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.example.mobileApp.database.dao.AnswerDao;
 import com.example.mobileApp.utilities.Constants;
 import com.example.mobileApp.utilities.MySingleton;
 import com.example.mobileApp.viewmodel.DataSyncViewModel;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,8 +59,6 @@ public class DataSyncActivity extends NavigationDrawerActivity {
     @BindView(R.id.bn_data_sync_delete_data) Button bnDelete;
     @BindView(R.id.bn_data_sync_next) Button bnNext;
 
-    @BindView(R.id.txt_data_sync_debug) TextView txtDebug;  // debug
-
     private DataSyncViewModel dataSyncViewModel;
 
 
@@ -91,6 +83,8 @@ public class DataSyncActivity extends NavigationDrawerActivity {
         DataSyncActivity.this.setTitle(R.string.title_activity_data_sync);
 
         initViewModel();
+
+        initData();
     }
 
     /**
@@ -99,6 +93,14 @@ public class DataSyncActivity extends NavigationDrawerActivity {
      */
     private void initViewModel() {
         dataSyncViewModel = new ViewModelProvider(this).get(DataSyncViewModel.class);
+    }
+
+    // clear the prev stored data
+    private void initData() {
+        dataSyncViewModel.allResponses.clear();
+        dataSyncViewModel.allHouseholds.clear();
+        dataSyncViewModel.allPatients.clear();
+        dataSyncViewModel.allAssessmentStatus.clear();
     }
 
     /**
@@ -142,14 +144,18 @@ public class DataSyncActivity extends NavigationDrawerActivity {
      * It invokes a list of methods to post all patients data gathered from the mobile app
      * to the server MySQL database via APIs.
      * The local entities required to be uploaded are:
+     *  - Household Table
+     *  - Patient Table
      *  - Response Table
+     *  - PatientAssessmentStatus Table
+     *  Note: The uploading order must satisfy: 1. Household Table; 2. Patient Table to avoid server database error
      */
     @OnClick(R.id.bn_data_sync_upload_data) void onClickUpload() {
         Toast.makeText(getApplicationContext(), "Data upload is in progress...", Toast.LENGTH_SHORT).show();
 
-//        uploadResponseData();
-//        uploadHouseholdData();
-//        uploadPatientData();
+        uploadHouseholdData();
+        uploadPatientData();
+        uploadResponseData();
         uploadAssessmentStatusData();
 
         Toast.makeText(getApplicationContext(), "Data upload is done!", Toast.LENGTH_SHORT).show();
@@ -170,20 +176,26 @@ public class DataSyncActivity extends NavigationDrawerActivity {
      *  - Question_and_Answer Table
      *  - Logic Table
      *  - Question Relation Table
+     *  - Household Table
+     *  - Patient Table
      *  - Response Table
+     *  - PatientAssessment Table
      */
     @OnClick(R.id.bn_data_sync_delete_data) void onClickDelete() {
         Toast.makeText(getApplicationContext(), "Data deletion is in progress...", Toast.LENGTH_SHORT).show();
 
-//        deleteLocationData();
-//        deleteQuestionnaireData();
-//        deleteQuestionData();
-//        deleteAnswerData();
-//        deleteQAData();
-//        deleteLogicData();
-//        deleteQuestionRelationData();
-        deleteResponseData();   // need to be modified later
-        //deleteHouseholdData();  // need to be removed later
+        deleteLocationData();
+        deleteQuestionnaireData();
+        deleteQuestionData();
+        deleteAnswerData();
+        deleteQAData();
+        deleteLogicData();
+        deleteQuestionRelationData();
+
+        deleteHouseholdData();
+        deletePatientData();
+        deleteResponseData();
+        deletePatientAssessmentData();
 
         Toast.makeText(getApplicationContext(), "Data deletion is done!", Toast.LENGTH_SHORT).show();
     }
@@ -377,7 +389,7 @@ public class DataSyncActivity extends NavigationDrawerActivity {
      *  4. Get a singleton instance of Volley RequestQueue from MySingleton class, and add this request to the RequestQueue.
      */
     private void uploadResponseData() {
-        dataSyncViewModel.getAllResponses();
+        dataSyncViewModel.getAllResponsesToUpload();
         int size = dataSyncViewModel.allResponses.size();
         Log.i("datasync activity - uploadResponseData", "size of all responses is: " + size);   // debug
 
@@ -389,7 +401,7 @@ public class DataSyncActivity extends NavigationDrawerActivity {
             counter += 20;
         }
         // upload the rest responses (will be less than 20)
-        JSONArray responseJsonArray = dataSyncViewModel.getResponseJSONArray(counter, size - counter);
+        JSONArray responseJsonArray = dataSyncViewModel.getResponseJSONArray(counter, size);
         uploadBatchOfResponseData(responseJsonArray);
         Log.i("datasync activity - uploadResponseData", "successfully upload batch of responses from " + counter + " to " + size);  // debug
     }
@@ -411,10 +423,7 @@ public class DataSyncActivity extends NavigationDrawerActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }, error -> {
-            Toast.makeText(getApplicationContext(), String.valueOf(error), Toast.LENGTH_SHORT).show();
-            txtDebug.setText(String.valueOf(error));    // debug
-        }) {
+                }, error -> Toast.makeText(getApplicationContext(), String.valueOf(error), Toast.LENGTH_SHORT).show()) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
@@ -433,7 +442,7 @@ public class DataSyncActivity extends NavigationDrawerActivity {
 
 
     private void uploadHouseholdData() {
-        dataSyncViewModel.getAllHouseholds();
+        dataSyncViewModel.getAllHouseholdsToUpload();
         int size = dataSyncViewModel.allHouseholds.size();
         Log.i("datasync activity - uploadHouseholdData", "size of all households is " + size);
 
@@ -445,7 +454,7 @@ public class DataSyncActivity extends NavigationDrawerActivity {
             counter += 20;
         }
         // upload the rest households (will be less than 20)
-        JSONArray householdJsonArray = dataSyncViewModel.getHouseholdJSONArray(counter, size - counter);
+        JSONArray householdJsonArray = dataSyncViewModel.getHouseholdJSONArray(counter, size);
         uploadBatchOfHouseholdData(householdJsonArray);
         Log.i("datasync activity - uploadHouseholdData", "successfully upload batch of households from " + counter + " to " + size);  // debug
     }
@@ -465,10 +474,8 @@ public class DataSyncActivity extends NavigationDrawerActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }, error -> {
-                    Toast.makeText(getApplicationContext(), String.valueOf(error), Toast.LENGTH_SHORT).show();
-                    txtDebug.setText(String.valueOf(error));    // debug
-                }) {
+                }, error -> Toast.makeText(getApplicationContext(), String.valueOf(error), Toast.LENGTH_SHORT).show())
+                {
                     @Override
                     public Map<String, String> getHeaders() {
                         Map<String, String> headers = new HashMap<>();
@@ -487,7 +494,7 @@ public class DataSyncActivity extends NavigationDrawerActivity {
 
 
     private void uploadPatientData() {
-        dataSyncViewModel.getAllPatients();
+        dataSyncViewModel.getAllPatientsToUpload();
         int size = dataSyncViewModel.allPatients.size();
         Log.i("datasync activity - uploadPatientData", "size of all patients is: " + size);   // debug
 
@@ -499,7 +506,7 @@ public class DataSyncActivity extends NavigationDrawerActivity {
             counter += 20;
         }
         // upload the rest patients (will be less than 20)
-        JSONArray patientJsonArray = dataSyncViewModel.getPatientJSONArray(counter, size - counter);
+        JSONArray patientJsonArray = dataSyncViewModel.getPatientJSONArray(counter, size);
         uploadBatchOfPatientData(patientJsonArray);
         Log.i("datasync activity - uploadPatientData", "successfully upload batch of patients from " + counter + " to " + size);  // debug
     }
@@ -517,10 +524,8 @@ public class DataSyncActivity extends NavigationDrawerActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }, error -> {
-                    Toast.makeText(getApplicationContext(), String.valueOf(error), Toast.LENGTH_SHORT).show();
-                    txtDebug.setText(String.valueOf(error));    // debug
-                }) {
+                }, error -> Toast.makeText(getApplicationContext(), String.valueOf(error), Toast.LENGTH_SHORT).show())
+                {
                     @Override
                     public Map<String, String> getHeaders() {
                         Map<String, String> headers = new HashMap<>();
@@ -551,7 +556,7 @@ public class DataSyncActivity extends NavigationDrawerActivity {
             counter += 20;
         }
         // upload the rest assessment status (will be less than 20)
-        JSONArray asmtStatusJsonArray = dataSyncViewModel.getAssessmentStatusJsonArray(counter, size - counter);
+        JSONArray asmtStatusJsonArray = dataSyncViewModel.getAssessmentStatusJsonArray(counter, size);
         uploadBatchOfAssessmentStatusData(asmtStatusJsonArray);
         Log.i("datasync activity - uploadAssessmentStatusData", "successfully upload batch of asmt status from " + counter + " to " + size);  // debug
     }
@@ -569,10 +574,8 @@ public class DataSyncActivity extends NavigationDrawerActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }, error -> {
-                    Toast.makeText(getApplicationContext(), String.valueOf(error), Toast.LENGTH_SHORT).show();
-                    txtDebug.setText(String.valueOf(error));    // debug
-                }) {
+                }, error -> Toast.makeText(getApplicationContext(), String.valueOf(error), Toast.LENGTH_SHORT).show())
+                {
                     @Override
                     public Map<String, String> getHeaders() {
                         Map<String, String> headers = new HashMap<>();
@@ -755,5 +758,13 @@ public class DataSyncActivity extends NavigationDrawerActivity {
 
     private void deleteHouseholdData() {
         dataSyncViewModel.deleteHouseholdData();
+    }
+
+    private void deletePatientData() {
+        dataSyncViewModel.deletePatientData();
+    }
+
+    private void deletePatientAssessmentData() {
+        dataSyncViewModel.deletePatientAssessmentData();
     }
 }

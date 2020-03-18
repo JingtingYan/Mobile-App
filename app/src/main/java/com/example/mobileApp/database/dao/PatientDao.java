@@ -18,18 +18,24 @@ public interface PatientDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<PatientTable> patients);
 
+    @Query("SELECT * FROM patients")
+    List<PatientTable> getAllPatients();
+
     @Query("SELECT * FROM patients WHERE hh_id = :hh_id")
     List<PatientTable> getPatientsForHousehold(String hh_id);
 
     @Query("SELECT * FROM patients WHERE patient_id = :patientID")
     PatientTable getSinglePatient(String patientID);
 
-    @Query("SELECT * FROM patients")
-    List<PatientTable> getAllPatients();
+    @Query("SELECT * FROM patients WHERE isNew = 1")
+    List<PatientTable> getAllPatientsToUpload();
 
     @Query("SELECT COUNT(*) FROM patients")
     Integer countAllPatients();
 
     @Query("DELETE FROM patients WHERE patient_id = :patientID")
     void deleteSinglePatient(String patientID);
+
+    @Query("DELETE FROM patients")
+    void deleteAll();
 }

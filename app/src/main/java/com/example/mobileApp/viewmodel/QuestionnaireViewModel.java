@@ -79,6 +79,11 @@ public class QuestionnaireViewModel extends AndroidViewModel {
         return Constants.getCurrentHouseholdID() + Constants.getEnumeratorID().substring(0,3) + (lastPatientIndex + 1);
     }
 
+    // studyID = ClusterID ++ HouseholdID ++ PatientID
+    private String generateStudyID() {
+        return Constants.getCluster().getLocationID() + Constants.getCurrentHouseholdID() + Constants.getCurrentPatientID();
+    }
+
     /**
      * This method is used to set question instruction for a certain question.
      * If not specified, the app would set the pre-defined question instruction for each type of question.
@@ -161,7 +166,7 @@ public class QuestionnaireViewModel extends AndroidViewModel {
 
     public void storeHouseholdResponsesToDb() {
         HouseholdTable householdTable = new HouseholdTable(Constants.getCurrentHouseholdID(), Constants.getCluster().getLocationID(),
-                Constants.getEnumeratorID(), Constants.getCurrentQuestionnaireStartDate(), gpsLatitude, gpsLongitude);
+                Constants.getEnumeratorID(), Constants.getCurrentQuestionnaireStartDate(), gpsLatitude, gpsLongitude, 1);
 
         householdTable.setVillage_street_name(allResponses.get(0));
         householdTable.setAvailability(allResponses.get(1));
@@ -191,8 +196,8 @@ public class QuestionnaireViewModel extends AndroidViewModel {
     }
 
     public void storePatientInfoToDb() {
-        PatientTable patientTable = new PatientTable(Constants.getCurrentPatientID(), Constants.getCurrentStudyID(),
-                Constants.getCurrentHouseholdID());
+        PatientTable patientTable = new PatientTable(Constants.getCurrentPatientID(), generateStudyID(),
+                Constants.getCurrentHouseholdID(), 1);
 
         Log.i("qnn vm - storePatientInfoToDb", "size of responses used to create patient: " + allResponses.size()); // debug
         Log.i("qnn vm - storePatientInfoToDb", "responses used to create patient: " + allResponses.toString());     // debug
@@ -243,21 +248,18 @@ public class QuestionnaireViewModel extends AndroidViewModel {
     public void storeSCQResponse(Answer selectedAns) {
         storeSingleResponseToDb(new Response(Constants.getCurrentPatientID(), currQn.getQuestionID(),
                 selectedAns.getAnswerID(), Constants.getCurrentQuestionnaireID(), "", LocalDate.now()));
-//        allResponses.add(response);
     }
 
     public void storeMCQResponse(List<Answer> selectedAns) {
         for (Answer answer : selectedAns) {
             storeSingleResponseToDb(new Response(Constants.getCurrentPatientID(), currQn.getQuestionID(),
                     answer.getAnswerID(), Constants.getCurrentQuestionnaireID(), "", LocalDate.now()));
-//            allResponses.add(response);
         }
     }
 
     public void storeTextQnResponse(String responseString) {
         storeSingleResponseToDb(new Response(Constants.getCurrentPatientID(), currQn.getQuestionID(),
                 -1, Constants.getCurrentQuestionnaireID(), responseString, LocalDate.now()));
-//        allResponses.add(response);
     }
 
     private void storeSingleResponseToDb (Response response) {
