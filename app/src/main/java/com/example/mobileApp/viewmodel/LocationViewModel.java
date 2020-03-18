@@ -34,20 +34,20 @@ public class LocationViewModel extends AndroidViewModel {
         repo = MobileAppRepository.getInstance(application.getApplicationContext());
     }
 
+    public List<Location> getSpinnerCountries() {
+        return spinnerCountries;
+    }
 
     public List<Location> loadCountrySpinner() {
+        // create a new Location object for Country spinner hint with meaningless locationID '-2'
+        spinnerCountries.add(new Location(-2, SELECT_COUNTRY_PROMPT));
         try {
             spinnerCountries.addAll(repo.getSpinnerCountries());
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
 
-        List<Location> countries = new ArrayList<>();
-        // create a new Location object for Country spinner hint with meaningless locationID '-2'
-        countries.add(new Location(-2, SELECT_COUNTRY_PROMPT));
-        countries.addAll(spinnerCountries);
-
-        return countries;
+        return spinnerCountries;
     }
 
     public void loadRegionSpinner(Integer countryID) {

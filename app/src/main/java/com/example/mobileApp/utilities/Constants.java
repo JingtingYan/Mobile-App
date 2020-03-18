@@ -117,38 +117,6 @@ public class Constants {
         Constants.currentQuestionnaireStartDate = currentQuestionnaireStartDate;
     }
 
-    //    public static String getHouseholdRosterQuestionnaireDate() {
-//        return HouseholdRosterQuestionnaireDate;
-//    }
-//
-//    public static void setHouseholdRosterQuestionnaireDate(String householdRosterQuestionnaireStartDate) {
-//        HouseholdRosterQuestionnaireDate = householdRosterQuestionnaireStartDate;
-//    }
-//
-//    public static String getWashingtonQuestionnaireStartDate() {
-//        return WashingtonQuestionnaireStartDate;
-//    }
-//
-//    public static void setWashingtonQuestionnaireStartDate(String washingtonQuestionnaireStartDate) {
-//        WashingtonQuestionnaireStartDate = washingtonQuestionnaireStartDate;
-//    }
-//
-//    public static String getMobilityQuestionnaireStartDate() {
-//        return MobilityQuestionnaireStartDate;
-//    }
-//
-//    public static void setMobilityQuestionnaireStartDate(String mobilityQuestionnaireStartDate) {
-//        MobilityQuestionnaireStartDate = mobilityQuestionnaireStartDate;
-//    }
-//
-//    public static String getPatientBasicInformationQuestionnaireStartDate() {
-//        return PatientBasicInformationQuestionnaireStartDate;
-//    }
-//
-//    public static void setPatientBasicInformationQuestionnaireStartDate(String patientBasicInformationQuestionnaireStartDate) {
-//        PatientBasicInformationQuestionnaireStartDate = patientBasicInformationQuestionnaireStartDate;
-//    }
-
     public static String getCurrentHouseholdID() {
         return currentHouseholdID;
     }
@@ -176,6 +144,9 @@ public class Constants {
 
     /* Other static final constants */
 
+    // some keys
+    public static final String INITIALISATION_KEY = "initialisation_key";
+
     // Authentication API
     public static final String LOGIN_URL = "http://10.0.2.2:8000/tables/login/";
 
@@ -198,9 +169,11 @@ public class Constants {
     public static final String POST_ASSESSMENT_STATUS_URL = "http://10.0.2.2:8000/tables/PatientAssessment/";
     // add other APIs route here in the future
 
-
+    // some default prompts
     public static final String DEFAULT_QN_INSTRUCTION_TEXT_ENTRY = "This is a text entry question. Please enter the response in the text field then click NEXT.";
     public static final String DEFAULT_QN_INSTRUCTION_SCQ = "This is a single choice question. Please select one answer choice from the dropdown list then click NEXT.";
     public static final String DEFAULT_QN_INSTRUCTION_MCQ = "This is a multiple choice question. Please select appropriate answers by ticking the checkbox then click NEXT.";
-    // add other questionnaires' ID here in the future
+
+    // some tags
+    public static final String HOUSEHOLD_HOME_FRAGMENT_TAG = "household_home_fragment";
 }

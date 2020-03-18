@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.mobileApp">
     <!-- Used for AppSpector -->
     <!-- <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> -->
@@ -26,7 +27,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".DataSyncActivity" />
         </activity>
-        <activity android:name=".HouseholdMainActivity" />
+        <activity
+            android:name=".HouseholdMainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
+            tools:ignore="LockedOrientationActivity">
+        </activity>
         <activity android:name=".DataSyncActivity" />
         <activity android:name=".LocationActivity" />
         <activity android:name=".MainActivity">

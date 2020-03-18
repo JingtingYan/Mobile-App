@@ -12,8 +12,6 @@ import com.example.mobileApp.utilities.MySingleton;
 import com.example.mobileApp.viewmodel.LocationViewModel;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
@@ -25,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +37,7 @@ import static com.example.mobileApp.utilities.Constants.GET_HOUSEHOLD_FOR_CLUSTE
 import static com.example.mobileApp.utilities.Constants.GET_PATIENT_ASSESSMENT_FOR_CLUSTER_URL;
 import static com.example.mobileApp.utilities.Constants.GET_PATIENT_FOR_CLUSTER_URL;
 import static com.example.mobileApp.utilities.Constants.GET_RESPONSE_FOR_CLUSTER_URL;
+import static com.example.mobileApp.utilities.Constants.INITIALISATION_KEY;
 
 /**
  * The LocationActivity class initialises layout components and adds functions for views in activity_location.xml.
@@ -63,6 +63,7 @@ public class LocationActivity extends NavigationDrawerActivity {
 
     private LocationViewModel locationViewModel;
     private static Location country, region, cluster;
+    private boolean isInitialised;
 
     /**
      * This method is called when the Location Activity is first created.
@@ -87,6 +88,10 @@ public class LocationActivity extends NavigationDrawerActivity {
         country = null;
         region = null;
         cluster = null;
+
+        if (savedInstanceState != null) {
+            isInitialised = savedInstanceState.getBoolean(INITIALISATION_KEY);
+        }
 
         initViewModel();
 
@@ -115,6 +120,13 @@ public class LocationActivity extends NavigationDrawerActivity {
         locationViewModel.spinnerClusters.observe(this, this::updateClusterSpinner);
     }
 
+    // deal with screen orientation - save the previous state in this activity after the screen is orientated.
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(INITIALISATION_KEY, true);
+        super.onSaveInstanceState(outState);
+    }
+
     /**
      * This method is called to initialise the contents in countrySpinner (a Spinner object).
      * The the spinner choices are provided through an ArrayAdapter.
@@ -123,8 +135,15 @@ public class LocationActivity extends NavigationDrawerActivity {
         // Create an ArrayAdapter of Location data type. This adapter uses a default spinner layout,
         // and the spinner choices come from the return value of method 'loadCountrySpinner' (defined
         // in LocationViewModel).
+        List<Location> countriesToAdd;
+        if (!isInitialised) {   // if there's no screen orientation change in this activity previously
+            countriesToAdd = new ArrayList<>(locationViewModel.loadCountrySpinner());
+        } else {
+            countriesToAdd = locationViewModel.getSpinnerCountries();
+        }
+
         ArrayAdapter<Location> countryAdapter = new ArrayAdapter<Location>(
-                this, android.R.layout.simple_spinner_item, locationViewModel.loadCountrySpinner()) {
+                this, android.R.layout.simple_spinner_item, countriesToAdd) {
 
             @Override
             public boolean isEnabled(int position){

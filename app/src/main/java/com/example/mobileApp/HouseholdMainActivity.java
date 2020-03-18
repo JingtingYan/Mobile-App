@@ -62,7 +62,8 @@ public class HouseholdMainActivity extends NavigationDrawerActivity {
             if (savedInstanceState != null){
                 return;
             }
-            fragmentManager.beginTransaction().add(R.id.household_fragment_container, new HouseholdHomeFragment()).commit();
+            fragmentManager.beginTransaction().add(R.id.household_fragment_container, new HouseholdHomeFragment(),
+                    "HouseholdHomeFragment").commit();
         }
 
     }

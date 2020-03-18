@@ -2,64 +2,71 @@
 
 <!-- This xml file defines the layout and content for Household Home Fragment. -->
 
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2C8E918A"
+    android:fillViewport="true"
     tools:context=".HouseholdHomeFragment">
 
-    <Button
-        android:id="@+id/bn_hh_home_create"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="70dp"
-        android:background="#3C03A9F4"
-        android:gravity="center"
-        android:text="Create new household"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="HardcodedText" />
+        android:paddingBottom="20dp">
 
-    <Button
-        android:id="@+id/bn_hh_home_choose"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="70dp"
-        android:background="#3C03A9F4"
-        android:gravity="center"
-        android:text="Choose A Household"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bn_hh_home_create"
-        tools:ignore="HardcodedText" />
+        <Button
+            android:id="@+id/bn_hh_home_create"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="64dp"
+            android:layout_marginEnd="70dp"
+            android:background="#3C03A9F4"
+            android:gravity="center"
+            android:text="Create new household"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText" />
 
-    <Button
-        android:id="@+id/bn_hh_home_search_patient"
-        android:layout_width="0dp"
-        android:layout_height="65dp"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="70dp"
-        android:background="#3C03A9F4"
-        android:gravity="center"
-        android:text="Search for existing patient"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bn_hh_home_choose"
-        tools:ignore="HardcodedText" />
+        <Button
+            android:id="@+id/bn_hh_home_choose"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="70dp"
+            android:background="#3C03A9F4"
+            android:gravity="center"
+            android:text="Choose A Household"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bn_hh_home_create"
+            tools:ignore="HardcodedText" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/bn_hh_home_search_patient"
+            android:layout_width="0dp"
+            android:layout_height="65dp"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="70dp"
+            android:background="#3C03A9F4"
+            android:gravity="center"
+            android:text="Search for existing patient"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bn_hh_home_choose"
+            tools:ignore="HardcodedText" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

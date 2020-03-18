@@ -16,10 +16,11 @@
 
         <TextView
             android:id="@+id/textView24"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:gravity="start"
             android:text="Assessment: "
             android:textColor="@color/design_default_color_on_secondary"
             android:textStyle="bold"
@@ -29,10 +30,11 @@
 
         <TextView
             android:id="@+id/textView25"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:gravity="start"
             android:text="Assessment Status: "
             android:textColor="@color/design_default_color_on_secondary"
             android:textStyle="bold"
@@ -42,94 +44,113 @@
 
         <TextView
             android:id="@+id/textView26"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:gravity="start"
             android:text="Start Date: "
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView28"
+            app:layout_constraintTop_toBottomOf="@+id/txt_recycler_item_assessment_id"
             tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/textView27"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="start"
             android:text="End Date: "
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView26"
+            app:layout_constraintTop_toBottomOf="@+id/txt_recycler_item_assessment_start"
             tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/textView28"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:gravity="start"
             android:text="Assessment ID: "
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView25"
+            app:layout_constraintTop_toBottomOf="@+id/txt_recycler_item_assessment_status"
             tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/txt_recycler_item_assessment_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="start"
             android:maxEms="16"
             android:singleLine="false"
             android:textColor="@color/design_default_color_primary_dark"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView24"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/txt_recycler_item_assessment_status"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="start"
             android:textColor="@color/design_default_color_primary_dark"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView25"
             app:layout_constraintTop_toBottomOf="@+id/txt_recycler_item_assessment_name" />
 
         <TextView
             android:id="@+id/txt_recycler_item_assessment_id"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="8dp"
-            android:text=""
+            android:layout_marginEnd="8dp"
+            android:gravity="start"
             android:textColor="@color/design_default_color_primary_dark"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView28"
             app:layout_constraintTop_toBottomOf="@+id/txt_recycler_item_assessment_status" />
 
         <TextView
             android:id="@+id/txt_recycler_item_assessment_start"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="8dp"
-            android:text=""
+            android:layout_marginEnd="8dp"
+            android:gravity="start"
             android:textColor="@color/design_default_color_primary_dark"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView26"
             app:layout_constraintTop_toBottomOf="@+id/txt_recycler_item_assessment_id" />
 
         <TextView
             android:id="@+id/txt_recycler_item_assessment_end"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="8dp"
-            android:text=""
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="start"
             android:textColor="@color/design_default_color_primary_dark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView27"
             app:layout_constraintTop_toBottomOf="@+id/txt_recycler_item_assessment_start" />
 
