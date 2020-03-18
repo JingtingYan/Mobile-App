@@ -1,7 +1,6 @@
 package com.example.mobileApp.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -25,8 +24,6 @@ public class SearchPatientViewModel extends AndroidViewModel {
     }
 
     public List<PatientRecyclerViewItem> loadAllPatients() {
-        Log.i("search patient vm", "loadAllPatients() is called");      // debug
-
         List<PatientRecyclerViewItem> items = new ArrayList<>();
         List<PatientTable> patientTables = new ArrayList<>();
 

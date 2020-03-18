@@ -1,7 +1,5 @@
 package com.example.mobileApp.datatype;
 
-import com.example.mobileApp.datatype.Answer;
-
 import java.util.List;
 
 public class Question {
@@ -9,8 +7,6 @@ public class Question {
     private String questionString;
     private String questionInstruction;
     private Integer questionType;
-    //private Integer ansMin;
-    //private Integer ansMax;
     private List<Answer> answers;
     private String questionMedia;
 
@@ -19,8 +15,6 @@ public class Question {
         this.questionString = questionString;
         this.questionInstruction = questionInstruction;
         this.questionType = questionType;
-        //this.ansMin = ansMin;
-        //this.ansMax = ansMax;
         this.answers = answers;
         this.questionMedia = questionMedia;
     }

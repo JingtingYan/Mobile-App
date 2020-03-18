@@ -1,7 +1,6 @@
 package com.example.mobileApp;
 
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -29,6 +28,7 @@ public class TextAnsFragment extends Fragment {
     public TextAnsFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

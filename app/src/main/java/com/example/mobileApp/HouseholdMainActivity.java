@@ -65,7 +65,6 @@ public class HouseholdMainActivity extends NavigationDrawerActivity {
             fragmentManager.beginTransaction().add(R.id.household_fragment_container, new HouseholdHomeFragment())
                     .addToBackStack(null).commit();
         }
-
     }
 
     /**

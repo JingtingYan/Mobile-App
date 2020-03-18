@@ -364,6 +364,7 @@ public class LocationActivity extends NavigationDrawerActivity {
     }
 
     private void loadResponsesForCluster() {
+        // pass parameter 'clusterID' to url
         String url = GET_RESPONSE_FOR_CLUSTER_URL + "?clusterID=" + Constants.getCluster().getLocationID();
         StringRequest loadResponseRequest = new StringRequest(Request.Method.GET, url, this::addResponseData,
                 error -> Toast.makeText(this, String.valueOf(error), Toast.LENGTH_SHORT).show()) {
@@ -379,22 +380,18 @@ public class LocationActivity extends NavigationDrawerActivity {
     }
 
     private void addHouseholdData(String jsonArray) {
-        //Log.i("received household data", jsonArray);    // debug
         locationViewModel.addHouseholdData(jsonArray);
     }
 
     private void addPatientData(String jsonArray) {
-        Log.i("received patient data", jsonArray);    // debug
         locationViewModel.addPatientData(jsonArray);
     }
 
     private void addPatientAssessmentData(String jsonArray) {
-        Log.i("received patient assessment data", jsonArray);   // debug
         locationViewModel.addPatientAssessmentData(jsonArray);
     }
 
     private void addResponseData(String jsonArray) {
-        Log.i("received response data", jsonArray);     // debug
         locationViewModel.addResponseData(jsonArray);
     }
 }

@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,7 +35,6 @@ import static com.example.mobileApp.utilities.Constants.HEARING_QUESTIONNAIRE_ID
 import static com.example.mobileApp.utilities.Constants.MOBILITY_QUESTIONNAIRE_ID;
 import static com.example.mobileApp.utilities.Constants.VISION_QUESTIONNAIRE_ID;
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -60,6 +58,7 @@ public class SinglePatientFragment extends Fragment {
     public SinglePatientFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -114,7 +113,6 @@ public class SinglePatientFragment extends Fragment {
 
         adapter.setOnItemClickListener(position -> {
             AssessmentRecyclerViewItem selectedItem = assessmentItems.get(position);
-            Toast.makeText(requireContext(), "clicked questionnaire: " + selectedItem.getQuestionnaireName(), Toast.LENGTH_SHORT).show();    // debug
 
             if (selectedItem.getStatus().equals("COMPLETE")) {
                 Toast.makeText(requireContext(), "This assessment has been completed.", Toast.LENGTH_SHORT).show();
@@ -124,9 +122,6 @@ public class SinglePatientFragment extends Fragment {
                 Constants.setCurrentQuestionnaireID(selectedItem.getQuestionnaireID());
                 Constants.setSelectedAssessment(selectedItem);
                 Constants.setQnnExists(true);
-
-                Log.i("single patient fragment - onclick", "continue with existing qnn: " + selectedItem.getQuestionnaireID() +
-                        " & prev_answered_qn_id: " + selectedItem.getLastAnsweredQnID());   // debug
 
                 HouseholdMainActivity.fragmentManager.beginTransaction()
                         .replace(R.id.household_fragment_container, new QuestionnaireFragment()).commit();

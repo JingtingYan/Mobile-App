@@ -18,12 +18,12 @@
     <string name="title_activity_about">About</string>
 
 
-    <!-- activity_main.xml (login page) -->
+    <!-- activity_main (login page) -->
     <string name="login_instruction">User login</string>
     <string name="login_username_hint">Username</string>
     <string name="login_password_hint">Password</string>
 
-    <!-- activity_location.xml -->
+    <!-- activity_location -->
     <string name="selection_location_instruction">Select a Project\'s country, region and cluster</string>
     <string name="project_country">Project Country: </string>
     <string name="project_region">Project Region: </string>
@@ -32,7 +32,7 @@
     <string name="project_region_prompt">Select a region…</string>
     <string name="project_cluster_prompt">Select a cluster…</string>
 
-    <!-- fragment_questionnaire.xml -->
+    <!-- fragment_questionnaire -->
     <string name="qn_instruction">Question Instruction</string>
     <string name="qn_string">Question String</string>
     <string name="ans_text_entry">Enter your answer here</string>
@@ -43,7 +43,7 @@
     <string name="default_qn_instruction_mcq">This is a multiple choice question.
             Please select appropriate answers by ticking the checkbox then click NEXT.</string>
 
-    <!-- fragment_assessment_placeholder.xml -->
+    <!-- fragment_assessment_placeholder -->
     <string name="asmt_placeholder_peek_prompt">This is a placeholder for PEEK Assessment to be integrated at later stage. \n\n
         After you finish the assessment, click NEXT to proceed. </string>
     <string name="asmt_placeholder_hearx_prompt">This is a placeholder for HearX Assessment to be integrated at later stage. \n\n
@@ -51,7 +51,7 @@
     <string name="asmt_placeholder_default_prompt">This is a placeholder for an external Assessment to be integrated at later stage. \n\n
         After you finish the assessment, click NEXT to proceed. </string>
 
-    <!-- fragment_questionnaire_finish.xml -->
+    <!-- fragment_questionnaire_finish -->
     <string name="hh_finish_prompt">You have finished all the questions in Household Roaster Questionnaire. \n\n
             Click FINISH to create this new household and go back to the Household home page.</string>
     <string name="patient_finish_prompt">You have finished all the questions in Patient Basic Information Questionnaire. \n\n
@@ -67,7 +67,7 @@
     <string name="default_finish_prompt">You have finished all the questions in this Questionnaire/Assessment. \n\n
             Click FINISH to update patient assessment status and go back to the Patient home page.</string>
 
-    <!-- activity_about.xml -->
+    <!-- activity_about -->
     <string name="app_version">1.0.0</string>
     <string name="about_organisation">Created by University College London, Dept of Computer Science.
             \n\nCollaborated with London School of Hygiene &amp; Tropical Medicine.</string>

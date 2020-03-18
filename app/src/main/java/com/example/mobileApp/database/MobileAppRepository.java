@@ -1,9 +1,6 @@
 package com.example.mobileApp.database;
 
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.util.Log;
 
 import com.example.mobileApp.database.entity.AnswerTable;
 import com.example.mobileApp.database.entity.HouseholdTable;
@@ -20,13 +17,11 @@ import com.example.mobileApp.datatype.Answer;
 import com.example.mobileApp.datatype.Location;
 import com.example.mobileApp.datatype.Question;
 import com.example.mobileApp.datatype.Response;
-import com.example.mobileApp.utilities.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -42,9 +37,6 @@ public class MobileAppRepository {
 
     private MobileAppDatabase db;
     private ExecutorService executor = Executors.newFixedThreadPool(1);
-
-    // class-scope variables used to implement skip logic
-    private static int is_done;
 
     public static MobileAppRepository getInstance(Context context) {
         if (repoInstance == null) {
@@ -268,7 +260,6 @@ public class MobileAppRepository {
 
     public void addLogicData(String jsonArray) throws JSONException {
         List<LogicTable> logicTables = parseLogicJSONArray(jsonArray);
-        Log.i("repo - addLogicData", "parsed LogicTable objects: " + logicTables.size());   // debug
         executor.execute(() -> db.logicDao().insertAll(logicTables));
     }
 
@@ -425,11 +416,8 @@ public class MobileAppRepository {
     /* methods used to load data for UserCreateFragment */
     public Question loadFirstQuestion(Integer qnnID) throws ExecutionException, InterruptedException {
 
-        Log.i("repo - loadFirstQuestion, currQnnID", String.valueOf(qnnID));    // debug
         Integer firstQnID = getFirstQnID(qnnID);
-        Log.i("repo - loadFirstQuestion, firstQnID", String.valueOf(firstQnID));    // debug
         List<Answer> answers = getQnAns(firstQnID, qnnID);
-        Log.i("repo - loadFirstQuestion, firstQnAns", answers.toString());    // debug
 
         Future<Question> task = executor.submit(() -> {
             QuestionTable questionTable = db.questionDao().getQuestion(firstQnID, qnnID);
@@ -475,16 +463,6 @@ public class MobileAppRepository {
         });
         return task.get();
     }
-//
-//    // this method needs to be modified later - include AND, OR type
-//    public Integer getNextQnID(Integer currQnID, Integer currQnnID) throws ExecutionException, InterruptedException {
-//        Future<Integer> task = executor.submit(() -> {
-//            List<Integer> qnsID = db.logicDao().getNextQnsID(currQnID, currQnnID);
-//            return qnsID.get(0);
-//        });
-//
-//        return task.get();
-//    }
 
     public Integer getNextQnID(String patientID, int currQnID, int currQnnID) throws ExecutionException, InterruptedException {
         List<LogicTable> logicObjects = getLogicObjects(currQnID, currQnnID);
@@ -494,7 +472,6 @@ public class MobileAppRepository {
         for (LogicTable logic : logicObjects) {
             switch (logic.getRel_type()) {
                 case ("NEXT"):
-                    Log.i("repo - getNextQnID, nextQnType", "NEXT");    // debug
                     if (satisfyNEXTLogic(logic.getRel_ans_id(), currQnID, patientID, currQnnID)) {
                         if ((logic.getSequence_num() < resultSeqNum) || (resultSeqNum == 0)) {
                             nextQnID = logic.getNext_q_id();
@@ -504,7 +481,6 @@ public class MobileAppRepository {
                     break;
 
                 case ("AND"):
-                    Log.i("repo - getNextQnID, nextQnType", "AND");    // debug
                     if (satisfyANDLogic(logic.getRel_id(), currQnID, currQnnID, patientID)) {
                         if ((logic.getSequence_num() < resultSeqNum) || (resultSeqNum == 0)) {
                             nextQnID = logic.getNext_q_id();
@@ -514,7 +490,6 @@ public class MobileAppRepository {
                     break;
 
                 case ("OR"):
-                    Log.i("repo - getNextQnID, nextQnType", "OR");    // debug
                     if (satisfyORLogic(logic.getRel_id(), currQnID, currQnnID, patientID)) {
                         if ((logic.getSequence_num() < resultSeqNum) || (resultSeqNum == 0)) {
                             nextQnID = logic.getNext_q_id();
@@ -524,7 +499,6 @@ public class MobileAppRepository {
                     break;
 
                 default:    // no skip logic
-                    Log.i("repo - getNextQnID, nextQnType", "INSEQ");    // debug
                     if ((logic.getSequence_num() < resultSeqNum) || (resultSeqNum == 0)) {
                         nextQnID = logic.getNext_q_id();
                         resultSeqNum = logic.getSequence_num();
@@ -532,7 +506,6 @@ public class MobileAppRepository {
                     break;
             }
         }
-        Log.i("repo - getNextQnID, nextQnID", String.valueOf(nextQnID));    // debug
         return nextQnID;
     }
 
@@ -599,10 +572,10 @@ public class MobileAppRepository {
 
     private ResponseTable responseToResponseTableConverter(Response response) throws ExecutionException, InterruptedException {
         int lastIndex = getResponseTableLastIndex();
-        Log.i("repo - responseToResponseTableConverter", "stored response at index: " + (lastIndex + 1));     // debug
         return new ResponseTable(lastIndex + 1, response.getPatientID(), response.getQnID(),
                 response.getAnsID(), response.getAnsText(), response.getQnnID(), response.getDate().toString(), 1);
     }
+
 
     /* Household Choose Fragment */
     public void addHouseholdData(String jsonArray) throws JSONException {
@@ -656,8 +629,6 @@ public class MobileAppRepository {
     }
 
     public void addPatientData(String jsonArray) throws JSONException {
-        Log.i("repo - addPatientData", "patient json array received: " + jsonArray);     // debug
-
         List<PatientTable> patientTables = parsePatientJSONArray(jsonArray);
         executor.execute(() -> db.patientDao().insertAll(patientTables));
     }
@@ -704,7 +675,6 @@ public class MobileAppRepository {
             patientTable.setProxy_name(patient.optString("proxy_name", ""));
             patientTable.setProxy_rel(patient.optString("proxy_rel", ""));
 
-            Log.i("repo - created patientTable object", patientTable.toString());   // debug
             patientTables.add(patientTable);
         }
 

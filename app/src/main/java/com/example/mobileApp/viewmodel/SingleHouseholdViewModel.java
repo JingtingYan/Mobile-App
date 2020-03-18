@@ -1,7 +1,6 @@
 package com.example.mobileApp.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -34,10 +33,6 @@ public class SingleHouseholdViewModel extends AndroidViewModel {
 
         for (PatientTable patientTable : patientTables) {
             items.add(patientTableToRecyclerViewItemConverter(patientTable));
-
-            Log.i("single hh vm - patient table", patientTable.toString());   // debug
-            Log.i("single hh vm - patient item", patientTableToRecyclerViewItemConverter(patientTable).toString());   // debug
-
         }
         return items;
     }
@@ -49,10 +44,6 @@ public class SingleHouseholdViewModel extends AndroidViewModel {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-
-        Log.i("single hh vm - current hh ID ", Constants.getCurrentHouseholdID());  // debug
-        Log.i("single hh vm - patient tables", patientTables.toString());   // debug
-
         return patientTables;
     }
 

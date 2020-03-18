@@ -1,7 +1,6 @@
 package com.example.mobileApp.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -68,8 +67,6 @@ public class DataSyncViewModel extends AndroidViewModel {
         result.put("questionnaireID", responseTable.getQnnaire_id());
         result.put("date", responseTable.getDate());
 
-        Log.i("datasync vm - responseTableConverter", "response json to post" + result.toString());  // debug
-
         return result;
     }
 
@@ -127,8 +124,6 @@ public class DataSyncViewModel extends AndroidViewModel {
         result.put("a2q11", householdTable.getA2_q11());
         result.put("a2q12", householdTable.getA2_q12());
         result.put("a2q13", householdTable.getA2_q13());
-
-        Log.i("datasync vm - householdTableConverter", "hh json to post" + result.toString());  // debug
 
         return result;
     }
@@ -190,8 +185,6 @@ public class DataSyncViewModel extends AndroidViewModel {
         result.put("responder", patientTable.getResponder());
         result.put("proxy_name", patientTable.getProxy_name());
         result.put("proxy_rel", patientTable.getProxy_rel());
-
-        Log.i("datasync vm - patientTableConverter", "patient json to post" + result.toString());  // debug
 
         return result;
     }

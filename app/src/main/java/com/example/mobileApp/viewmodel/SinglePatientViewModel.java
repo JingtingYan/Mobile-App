@@ -1,7 +1,6 @@
 package com.example.mobileApp.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -32,7 +31,6 @@ public class SinglePatientViewModel extends AndroidViewModel {
     public void loadCurrentPatient() {
         try {
             currentPatient = repo.getCurrentPatient(Constants.getCurrentPatientID());
-            //Log.i("single patient vm - load current patient", currentPatient.toString());   // debug
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -75,14 +73,12 @@ public class SinglePatientViewModel extends AndroidViewModel {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-        Log.i("single patient vm - loaded assessment status", assessmentStatusTables.toString());   // debug
         return assessmentStatusTables;
     }
 
     private String getQuestionnaireName(int questionnaireID) {
         try {
             QuestionnaireTable questionnaireTable = repo.getQuestionnaireInfo(questionnaireID);
-            Log.i("single patient vm - loaded single qnn" , questionnaireTable.toString());   // debug
             String qnnName = questionnaireTable.getQuestionnaire_name().trim();
             String qnnVersion = questionnaireTable.getQuestionnaire_version().trim();
             return qnnName + " (version: " + qnnVersion + ")";

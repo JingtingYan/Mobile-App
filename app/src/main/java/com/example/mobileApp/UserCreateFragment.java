@@ -18,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +54,7 @@ public class UserCreateFragment extends Fragment implements LocationListener{
     public UserCreateFragment() {
         // Empty public constructor
     }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -113,13 +113,10 @@ public class UserCreateFragment extends Fragment implements LocationListener{
         Constants.setCurrentQuestionnaireStartDate(LocalDate.now().toString());
         if (Constants.getCurrentQuestionnaireID() == PATIENT_BASIC_INFORMATION_QUESTIONNAIRE) {
             Constants.setCurrentPatientID(questionnaireViewModel.generateNewPatientID());
-            Log.i("hh create fragment - initData", "generated new patient id is: " + Constants.getCurrentPatientID());    // debug
         }
 
         if (Constants.getCurrentQuestionnaireID() == HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID) {
             Constants.setCurrentHouseholdID(questionnaireViewModel.generateNewHouseholdID());
-            Log.i("hh create fragment - initData", "generated new hh id is: " + Constants.getCurrentHouseholdID());    // debug
-
             getGPSCoordinates();
         }
     }

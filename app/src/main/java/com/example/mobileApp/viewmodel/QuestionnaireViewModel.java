@@ -59,7 +59,6 @@ public class QuestionnaireViewModel extends AndroidViewModel {
         int lastHHIndex = -1;
         try {
             lastHHIndex = repo.getHouseholdTableLastIndex();
-            Log.i("qnn vm - generateNewHouseholdID", "lastHHIndex is: " + lastHHIndex);     // debug
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -72,7 +71,6 @@ public class QuestionnaireViewModel extends AndroidViewModel {
         int lastPatientIndex = -1;
         try {
             lastPatientIndex = repo.getPatientTableLastIndex();
-            Log.i("qnn vm - generateNewPatientID", "lastPatientIndex is: " + lastPatientIndex);     // debug
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -108,7 +106,6 @@ public class QuestionnaireViewModel extends AndroidViewModel {
     public void loadFirstQuestion() {
         try {
             currQn = repo.loadFirstQuestion(Constants.getCurrentQuestionnaireID());
-            Log.i("qnn vm - loadFirstQuestion", "currQn is: " + currQn.toString());   // debug
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -120,7 +117,6 @@ public class QuestionnaireViewModel extends AndroidViewModel {
     public void loadLastAnsweredQuestion() {
         try {
             currQn = repo.loadThisQuestion(Constants.getSelectedAssessment().getLastAnsweredQnID(), Constants.getCurrentQuestionnaireID());
-            Log.i("qnn vm - loadLastAnsweredQuestion", "this qn continues with: " + currQn.getQuestionID());    // debug
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -149,7 +145,6 @@ public class QuestionnaireViewModel extends AndroidViewModel {
         }
         // if nextQnID is -1 then the current question is the last question in this questionnaire
         // otherwise there is a next question
-        Log.i("hh create vm - hasNextQuestion", "next qn id is: " + nextQnID);  // debug
         return (nextQnID != -1) && (nextQnID != -2);
     }
 
@@ -199,9 +194,6 @@ public class QuestionnaireViewModel extends AndroidViewModel {
         PatientTable patientTable = new PatientTable(Constants.getCurrentPatientID(), generateStudyID(),
                 Constants.getCurrentHouseholdID(), 1);
 
-        Log.i("qnn vm - storePatientInfoToDb", "size of responses used to create patient: " + allResponses.size()); // debug
-        Log.i("qnn vm - storePatientInfoToDb", "responses used to create patient: " + allResponses.toString());     // debug
-
         patientTable.setEnum_id(Constants.getEnumeratorID());
         patientTable.setDate_of_birth(allResponses.get(0));
         patientTable.setPrefix(allResponses.get(1));
@@ -228,8 +220,6 @@ public class QuestionnaireViewModel extends AndroidViewModel {
         patientTable.setProxy_name(allResponses.get(22));
         patientTable.setProxy_rel(allResponses.get(23));
         patientTable.setNotes(allResponses.get(24));
-
-        Log.i("qnn vm - storePatientInfoToDb", "created patient is: " + patientTable.toString());   // debug
 
         repo.storePatientToDb(patientTable);
     }

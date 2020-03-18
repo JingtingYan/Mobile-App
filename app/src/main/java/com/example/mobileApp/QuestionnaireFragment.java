@@ -10,19 +10,15 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.mobileApp.utilities.Constants;
 import com.example.mobileApp.viewmodel.QuestionnaireViewModel;
-
-import java.time.LocalDate;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,7 +26,6 @@ import butterknife.OnClick;
 
 import static com.example.mobileApp.utilities.Constants.GENERAL_WASHINGTON_GROUP_QUESTIONNAIRE_ID;
 import static com.example.mobileApp.utilities.Constants.MOBILITY_QUESTIONNAIRE_ID;
-import static com.example.mobileApp.utilities.Constants.PATIENT_BASIC_INFORMATION_QUESTIONNAIRE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +44,7 @@ public class QuestionnaireFragment extends Fragment {
         // Required empty public constructor
     }
 
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -62,8 +58,6 @@ public class QuestionnaireFragment extends Fragment {
 
         initViewModel();
 
-        Log.i("Questionnaire Fragment", "this qnn is existed?" + Constants.isQnnExists());  // debug
-
         loadFirstQuestion();
 
         return view;
@@ -75,7 +69,7 @@ public class QuestionnaireFragment extends Fragment {
         } else if (Constants.getCurrentQuestionnaireID() == MOBILITY_QUESTIONNAIRE_ID) {
             requireActivity().setTitle(R.string.title_qnn_mobility);
         } else {
-            requireActivity().setTitle("Questionnaire/Assessment");
+            requireActivity().setTitle(R.string.title_asmt_default);
         }
     }
 
@@ -111,7 +105,6 @@ public class QuestionnaireFragment extends Fragment {
             loadNextQuestion();
             hideKeyboard(requireActivity());
         } else {
-            Log.i("qnn fragment - onClickNext", "reached the last qn in qnn");    // debug
             // move to the end page of Questionnaire/Assessment
             HouseholdMainActivity.fragmentManager.beginTransaction()
                     .replace(R.id.household_fragment_container, new QuestionnaireFinishFragment()).commit();
@@ -146,15 +139,12 @@ public class QuestionnaireFragment extends Fragment {
         // store directly to Response table
         switch (qnType) {
             case (1):
-                Toast.makeText(requireContext(), "SCQ Response is: " + SCQAnsFragment.selectedAns.toString(), Toast.LENGTH_SHORT).show();
                 questionnaireViewModel.storeSCQResponse(SCQAnsFragment.selectedAns);
                 break;
             case (2):
-                Toast.makeText(requireContext(), "MCQ Response is: " + MCQAnsFragment.getSelectedAns().toString(), Toast.LENGTH_SHORT).show();
                 questionnaireViewModel.storeMCQResponse(MCQAnsFragment.getSelectedAns());
                 break;
             case (3):
-                Toast.makeText(requireContext(), "TextQn Response is: " + TextAnsFragment.responseString, Toast.LENGTH_SHORT).show();
                 questionnaireViewModel.storeTextQnResponse(TextAnsFragment.responseString);
                 TextAnsFragment.responseString = "";    // reset
                 break;

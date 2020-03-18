@@ -1,6 +1,5 @@
 package com.example.mobileApp;
 
-
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -26,7 +25,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -41,6 +39,7 @@ public class SearchHouseholdFragment extends Fragment {
     public SearchHouseholdFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,7 +79,6 @@ public class SearchHouseholdFragment extends Fragment {
 
         adapter.setOnItemClickListener(position -> {
             Constants.setCurrentHouseholdID(hhItems.get(position).getHouseholdID());
-            //Toast.makeText(requireContext(), "clicked hh ID: " + hhItems.get(position).getHouseholdID(), Toast.LENGTH_SHORT).show();    // debug
 
             // display patients information for the selected household
             HouseholdMainActivity.fragmentManager.beginTransaction()

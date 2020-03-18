@@ -7,7 +7,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -141,17 +140,14 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             // select the About action in the overflow menu
-            case (R.id.action_about):
-                Toast.makeText(this, "clicked About", Toast.LENGTH_SHORT).show();   // debug
-                // Go to the About page
+            case (R.id.action_about):   // Go to the About page
                 Intent aboutIntent = new Intent(this, AboutActivity.class);
                 startActivity(aboutIntent);
                 return true;
 
             // select the Log out action in the overflow menu
             case (R.id.action_logout):
-                Toast.makeText(this, "clicked Logout", Toast.LENGTH_SHORT).show();  // debug
-                if (Constants.getToken() != null) { // check if has already login
+                if (Constants.getToken() != null) {  // check if has already login
                     Constants.setToken(null);
                     // successfully logged out - go back to Log in page
                     Intent mainIntent = new Intent(this, MainActivity.class);

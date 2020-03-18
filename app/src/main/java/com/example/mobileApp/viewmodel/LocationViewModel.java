@@ -7,7 +7,6 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.mobileApp.database.MobileAppRepository;
-import com.example.mobileApp.database.entity.HouseholdTable;
 import com.example.mobileApp.datatype.Location;
 
 import org.json.JSONException;

@@ -45,35 +45,4 @@ public class Response {
     public LocalDate getDate() {
         return date;
     }
-
-    public void setPatientID(String patientID) {
-        this.patientID = patientID;
-    }
-
-    public void setQnID(Integer qnID) {
-        this.qnID = qnID;
-    }
-
-    public void setAnsID(Integer ansID) {
-        this.ansID = ansID;
-    }
-
-    public void setQnnID(Integer qnnID) {
-        this.qnnID = qnnID;
-    }
-
-    public void setAnsText(String ansText) {
-        this.ansText = ansText;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    // debugging
-    @NonNull
-    @Override
-    public String toString() {
-        return ansID + " " + ansText;
-    }
 }

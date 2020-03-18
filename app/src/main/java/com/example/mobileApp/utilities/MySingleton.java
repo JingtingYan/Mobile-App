@@ -27,7 +27,7 @@ public class MySingleton {
         return instance;
     }
 
-    public RequestQueue getRequestQueue() {
+    private RequestQueue getRequestQueue() {
         if (requestQueue == null) {
             // RequestQueue is instantiated with the Application context
             // This ensures that the RequestQueue will last for the lifetime of your app

@@ -9,13 +9,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.mobileApp.datatype.PatientRecyclerViewItem;
 import com.example.mobileApp.utilities.Constants;
@@ -26,7 +24,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +39,7 @@ public class SearchPatientFragment extends Fragment {
     public SearchPatientFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,7 +66,6 @@ public class SearchPatientFragment extends Fragment {
 
     private void initRecyclerView() {
         List<PatientRecyclerViewItem> patientItems = searchPatientViewModel.loadAllPatients();
-        Log.i("search patient fragment - loaded patientItems", patientItems.toString());    // debug
 
         patientsRecyclerView.setHasFixedSize(true);
 
@@ -81,9 +78,6 @@ public class SearchPatientFragment extends Fragment {
         adapter.setOnItemClickListener(position -> {
             Constants.setCurrentPatientID(patientItems.get(position).getPatientID());
             Constants.setCurrentHouseholdID(patientItems.get(position).getHouseholdID());
-
-            // debug
-            Toast.makeText(requireContext(), "clicked patient id: " + patientItems.get(position).getPatientID(), Toast.LENGTH_SHORT).show();    // debug
 
             // display patient information for the selected patient
             HouseholdMainActivity.fragmentManager.beginTransaction()

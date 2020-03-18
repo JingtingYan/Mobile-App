@@ -1,6 +1,5 @@
 package com.example.mobileApp;
 
-
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -19,7 +18,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemSelected;
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -34,12 +32,12 @@ public class SCQAnsFragment extends Fragment {
         // Required empty public constructor
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_scq_ans, container, false);
-        //Toast.makeText(getActivity(), "inside SCQAnsFragment", Toast.LENGTH_SHORT).show(); // debug
 
         ButterKnife.bind(this, view);
 

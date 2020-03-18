@@ -5,7 +5,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,17 +55,14 @@ public class OverflowMenuActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case (R.id.action_about):
-                Toast.makeText(this, "clicked About", Toast.LENGTH_SHORT).show();   // debug
                 // Go to the About page
                 Intent aboutIntent = new Intent(this, AboutActivity.class);
                 startActivity(aboutIntent);
                 return true;
 
             case (R.id.action_logout):
-                // reset token, enumeratorID
-                Toast.makeText(this, "clicked Logout", Toast.LENGTH_SHORT).show();  // debug
                 if (Constants.getToken() != null) { // check if has already login
-                    Constants.setToken(null);
+                    resetConstants();
                     // successfully logged out - go back to Log in page
                     Intent mainIntent = new Intent(this, MainActivity.class);
                     startActivity(mainIntent);
@@ -76,5 +72,11 @@ public class OverflowMenuActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    // reset token, enumeratorID
+    private void resetConstants() {
+        Constants.setToken(null);
+        Constants.setEnumeratorID(null);
     }
 }

@@ -16,14 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.mobileApp.datatype.PatientRecyclerViewItem;
 import com.example.mobileApp.utilities.Constants;
 import com.example.mobileApp.viewmodel.PatientRecyclerAdapter;
 import com.example.mobileApp.viewmodel.SingleHouseholdViewModel;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import butterknife.BindView;
@@ -31,7 +29,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.example.mobileApp.utilities.Constants.PATIENT_BASIC_INFORMATION_QUESTIONNAIRE;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,6 +47,7 @@ public class SingleHouseholdFragment extends Fragment {
     public SingleHouseholdFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -100,7 +98,6 @@ public class SingleHouseholdFragment extends Fragment {
 
         adapter.setOnItemClickListener(position -> {
             Constants.setCurrentPatientID(patientItems.get(position).getPatientID());
-            Toast.makeText(requireContext(), "clicked patient id: " + patientItems.get(position).getPatientID(), Toast.LENGTH_SHORT).show();    // debug
 
             // display patient information for the selected patient
             HouseholdMainActivity.fragmentManager.beginTransaction()
