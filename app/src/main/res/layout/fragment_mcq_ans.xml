@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- This xml file defines the layout for Multiple Choice Question Answer Choices Fragment.
-     The top-level layout container is a ConstraintLayout. It contains a ListView which is
-     defined by a customised customised Adapter (in MCQAnsAdapter.java) and is a placeholder
-     to dynamically load SCQ answer choices (as checkboxes). -->
+<!-- This XML file defines the layout for MCQAnsFragment.
+     It is used to dynamically display Multiple Choice Question Answer Choices.
+     The top-level layout container is a ConstraintLayout. It contains a ListView defined by
+     a customised customised Adapter (MCQAnsAdapter.java), and it is a placeholder to dynamically
+     load SCQ answer choices (as checkboxes). -->
 
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"

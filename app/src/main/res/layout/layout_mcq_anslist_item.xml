@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- This xml file defines the layout of a single MCQ answer choice item.
-     Each MCQ answer choice is a checkbox along with answer string. -->
+<!-- This XML file defines the layout of a single MCQ answer choice item.
+     Each MCQ answer choice is a checkbox along with the answer string. -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"

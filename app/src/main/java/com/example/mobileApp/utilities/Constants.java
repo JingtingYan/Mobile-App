@@ -139,25 +139,25 @@ public class Constants {
     public static final String INITIALISATION_KEY = "initialisation_key";
 
     // Authentication API
-    public static final String LOGIN_URL = "http://10.0.2.2:8000/tables/login/";
+    public static final String LOGIN_URL = "https://system-engineering.herokuapp.com/tables/login/";
 
     // Data Sync APIs
-    public static final String GET_LOCATION_URL = "http://10.0.2.2:8000/tables/Location/";
-    public static final String GET_QUESTIONNAIRE_URL = "http://10.0.2.2:8000/tables/Questionnaire/";
-    public static final String GET_QUESTION_URL = "http://10.0.2.2:8000/tables/Question/";
-    public static final String GET_ANSWER_URL = "http://10.0.2.2:8000/tables/Answer/";
-    public static final String GET_QA_URL = "http://10.0.2.2:8000/tables/QA/";
-    public static final String GET_LOGIC_URL = "http://10.0.2.2:8000/tables/Logic/";
-    public static final String GET_QUESTION_RELATION_URL = "http://10.0.2.2:8000/tables/QRel/";
-    public static final String GET_HOUSEHOLD_FOR_CLUSTER_URL = "http://10.0.2.2:8000/tables/Household/";
-    public static final String GET_PATIENT_FOR_CLUSTER_URL = "http://10.0.2.2:8000/tables/Patients/";
-    public static final String GET_PATIENT_ASSESSMENT_FOR_CLUSTER_URL = "http://10.0.2.2:8000/tables/PatientAssessment/";
-    public static final String GET_RESPONSE_FOR_CLUSTER_URL = "http://10.0.2.2:8000/tables/Response/";
+    public static final String GET_LOCATION_URL = "https://system-engineering.herokuapp.com/tables/Location/";
+    public static final String GET_QUESTIONNAIRE_URL = "https://system-engineering.herokuapp.com/tables/Questionnaire/";
+    public static final String GET_QUESTION_URL = "https://system-engineering.herokuapp.com/tables/Question/";
+    public static final String GET_ANSWER_URL = "https://system-engineering.herokuapp.com/tables/Answer/";
+    public static final String GET_QA_URL = "https://system-engineering.herokuapp.com/tables/QA/";
+    public static final String GET_LOGIC_URL = "https://system-engineering.herokuapp.com/tables/Logic/";
+    public static final String GET_QUESTION_RELATION_URL = "https://system-engineering.herokuapp.com/tables/QRel/";
+    public static final String GET_HOUSEHOLD_FOR_CLUSTER_URL = "https://system-engineering.herokuapp.com/tables/Household/";
+    public static final String GET_PATIENT_FOR_CLUSTER_URL = "https://system-engineering.herokuapp.com/tables/Patients/";
+    public static final String GET_PATIENT_ASSESSMENT_FOR_CLUSTER_URL = "https://system-engineering.herokuapp.com/tables/PatientAssessment/";
+    public static final String GET_RESPONSE_FOR_CLUSTER_URL = "https://system-engineering.herokuapp.com/tables/Response/";
 
-    public static final String POST_RESPONSE_URL = "http://10.0.2.2:8000/tables/Response/";
-    public static final String POST_HOUSEHOLD_URL = "http://10.0.2.2:8000/tables/Household/";
-    public static final String POST_PATIENT_URL = "http://10.0.2.2:8000/tables/Patients/";
-    public static final String POST_ASSESSMENT_STATUS_URL = "http://10.0.2.2:8000/tables/PatientAssessment/";
+    public static final String POST_RESPONSE_URL = "https://system-engineering.herokuapp.com/tables/Response/";
+    public static final String POST_HOUSEHOLD_URL = "https://system-engineering.herokuapp.com/tables/Household/";
+    public static final String POST_PATIENT_URL = "https://system-engineering.herokuapp.com/tables/Patients/";
+    public static final String POST_ASSESSMENT_STATUS_URL = "https://system-engineering.herokuapp.com/tables/PatientAssessment/";
     // add other APIs route here in the future
 
     // some default prompts

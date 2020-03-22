@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- This xml file defines the main contents for Location Selection Activity.
-     This page only contains a toolbar (with a back button that navigates back to User Login page). -->
+<!-- This XML file defines the layout and contents for Location Selection Activity.
+     It contains both the toolbar and the navigation drawer, which are added in the
+     LocationActivity.java by extending NavigationDrawerActivity.java.-->
 
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"

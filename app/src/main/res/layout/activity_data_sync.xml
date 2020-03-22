@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- This xml file defines the layout and contents for Data Sync Activity.
-     It should contain both the toolbar and the navigation drawer, which are added in the
+<!-- This XML file defines the layout and contents for Data Sync Activity.
+     It contains both the toolbar and the navigation drawer, which are added in the
      DataSyncActivity.java by extending NavigationDrawerActivity.java. -->
 
 <ScrollView
@@ -19,7 +19,6 @@
         android:layout_height="wrap_content"
         android:paddingBottom="20dp">
 
-        <!-- Add the contents of Data Sync Activity -->
         <Button
             android:id="@+id/bn_data_sync_download_data"
             android:layout_width="0dp"

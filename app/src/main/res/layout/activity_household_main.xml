@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- This xml file defines the overall layout for Household Main Activity.
-     It mainly contains three parts:
-      1. It should contain both the toolbar and the navigation drawer, which are added
-         in the HouseholdMainActivity.java by extending NavigationDrawerActivity.java.
-      2. It includes the project header which defines the location information for a survey
+<!-- This XML file defines the overall layout for Household Main Activity.
+     It consists of three parts:
+      1. It contains both the toolbar and the navigation drawer, which are added in the
+         HouseholdMainActivity.java by extending NavigationDrawerActivity.java.
+      2. It includes the project header which defines the location information for a selected survey
          (the location information are from the Location Selection page).
-      3. It contains a placeholder (FrameLayout) to dynamically load contents of Household Fragments
-         (4 Fragments: Household Home, Household Create, Household Search, Household CreateFinish). -->
+      3. It contains a placeholder (FrameLayout) to dynamically load reusable Fragments.
+         (List of Fragments that can be loaded here:
+            Household Home, Search Household, Search Patient, Single Household, Single Patient,
+            User Create, Questionnaire, Questionnaire Finish, Assessment Placeholder). -->
 
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -44,7 +46,8 @@
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/include3"></FrameLayout>
+            app:layout_constraintTop_toBottomOf="@+id/include3">
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

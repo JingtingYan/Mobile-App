@@ -41,6 +41,11 @@ import static com.example.mobileApp.utilities.Constants.PATIENT_BASIC_INFORMATIO
 // This class is used to create new Household or new Patient;
 // these two processes share a similar logic, therefore, merge them together to reduce code redundancy.
 
+/**
+ * The UserCreateFragment initialises layout components and adds functions for views defined in fragment_questionnaire.xml.
+ * It follows the recommended Android Architecture Components: UI Controller - ViewModel - Repository - RoomDatabase.
+ * The relevant classes are: DataSyncActivity, /viewmodel/DataSyncViewModel, /database/MobileAppRepository, and database package.
+ */
 public class UserCreateFragment extends Fragment implements LocationListener{
 
     @BindView(R.id.txt_qn_instruction) TextView txtQnInstruction;

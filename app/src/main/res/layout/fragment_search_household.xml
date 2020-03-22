@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- This XML file defines the overall layout for Search Household Fragment.
+     It contains a RecyclerView defined by a customised Adapter (HouseholdRecyclerAdapter.java),
+     and it is a placeholder to dynamically load a list of existing households (as CardView items). -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"

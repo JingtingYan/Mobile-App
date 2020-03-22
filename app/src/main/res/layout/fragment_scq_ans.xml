@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- This xml file defines the layout for Single Choice Question Answer Choices Fragment.
-     The top-level layout container is a ConstraintLayout. It contains a Spinner (a dropdown
-     list) which is defined by a customised ArrayAdapter (in SCQAnsFragment.java) and is a
-     placeholder to dynamically load SCQ answer choices (as dropdown list items). -->
+<!-- This XML file defines the layout for SCQAnsFragment.
+     It is used to dynamically display Single Choice Question Answer Choices.
+     The top-level layout container is a ConstraintLayout. It contains a Spinner defined by
+     a customised ArrayAdapter (in SCQAnsFragment.java), and it is a placeholder to
+     dynamically load SCQ answer choices (as dropdown list items). -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ans_container_scq"
@@ -14,23 +16,16 @@
     android:fillViewport="true"
     tools:context=".SCQAnsFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <Spinner
+        android:id="@+id/spinner_qn_single_ans"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingBottom="20dp">
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <Spinner
-            android:id="@+id/spinner_qn_single_ans"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

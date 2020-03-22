@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- This xml file defines the layout and contents for User Login Activity.
+<!-- This XML file defines the layout and contents for Main Activity (the user login page).
      This page only contains a toolbar. -->
 
 <ScrollView

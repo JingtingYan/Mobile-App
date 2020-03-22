@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- This XML file defines the overall layout for Single Household Fragment.
+     It consists of three parts:
+     1. TextViews that can dynamically load relevant information for a selected household.
+     2. A RecyclerView, defined by a customised Adapter (PatientRecyclerAdapter.java), to dynamically
+        load a list of registered patients (as CardView items) live in that household.
+     3. Button used for navigation. -->
+
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

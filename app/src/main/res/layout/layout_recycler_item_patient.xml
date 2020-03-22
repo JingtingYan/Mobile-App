@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- This XML file defines the layout for a single Patient RecyclerView item.
+     The top-level layout container is a CardView. It contains TextViews to dynamically display
+     relevant information for a single patient (in a selected household). -->
+
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"

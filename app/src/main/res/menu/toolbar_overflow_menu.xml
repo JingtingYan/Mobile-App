@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- This xml file defines the items inside the overflow menu of the toolbar-->
+<!-- This XML file defines the items inside the app's toolbar.
+     The vector icons used are stored in /res/drawable -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- The SearchView -->
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search"
@@ -14,12 +16,14 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         tools:ignore="HardcodedText" />
 
+    <!-- Inside the overflow menu -->
     <item
         android:id="@+id/action_logout"
         android:title="Log out"
         app:showAsAction="never"
         tools:ignore="HardcodedText" />
 
+    <!-- Inside the overflow menu -->
     <item
         android:id="@+id/action_about"
         android:title="About"

@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- This XML file defines the overall layout for Single Patient Fragment.
+     It consists of three parts:
+     1. TextViews that can dynamically load relevant information for a selected patient.
+     2. A RecyclerView, defined by a customised Adapter (AssessmentRecyclerAdapter.java),
+        to dynamically load the patient's assessment status (as CardView items).
+     3. Buttons used for navigation. -->
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"

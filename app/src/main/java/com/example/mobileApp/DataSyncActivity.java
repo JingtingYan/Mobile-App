@@ -12,7 +12,6 @@ import com.example.mobileApp.viewmodel.DataSyncViewModel;
 
 import androidx.lifecycle.ViewModelProvider;
 
-import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 

@@ -1,5 +1,8 @@
 <resources>
 
+    <!-- This XML file includes a list of single strings that are referenced from the application
+         or from other resource files (such as an XML layout, an Activity/Fragment Java class). -->
+
     <!-- Corresponding toolbar title for each Activity or Fragment -->
     <string name="app_name">Mobile App</string>
     <string name="title_activity_main">User Login</string>

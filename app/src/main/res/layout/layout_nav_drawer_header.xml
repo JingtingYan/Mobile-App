@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- This xml file defines the content and render of the header of the navigation drawer.
-     The top-level layout is a LinearLayout. -->
+<!-- This XML file defines the contents and render for the navigation drawer header. -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
