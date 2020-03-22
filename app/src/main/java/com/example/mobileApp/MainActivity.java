@@ -80,6 +80,8 @@ public class MainActivity extends OverflowMenuActivity{
         String username = txtUsername.getText().toString();
         String password = txtPassword.getText().toString();
 
+        Toast.makeText(this, "Logging in... Please wait...", Toast.LENGTH_LONG).show();
+
         /* POST json object (username & password) to server */
         JSONObject object = new JSONObject();
         try {
