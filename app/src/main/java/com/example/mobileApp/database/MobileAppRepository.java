@@ -29,8 +29,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-/* MobileAppRepository class is singleton */
-
+/**
+ * The MobileAppRepository class is the communication centre between RoomDatabase and ViewModels.
+ * It is singleton.
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
+ */
 public class MobileAppRepository {
 
     private static MobileAppRepository repoInstance;

@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey;
 
 import java.time.LocalDate;
 
+// The EnumeratorTable has NOT been used so far.
 
 @Entity(tableName = "enumerators")
 public class EnumeratorTable {

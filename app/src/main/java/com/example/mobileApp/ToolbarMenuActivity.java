@@ -13,26 +13,25 @@ import androidx.appcompat.widget.SearchView;
 import com.example.mobileApp.utilities.Constants;
 
 /**
- * The OverflowMenuActivity class extends AppCompatActivity class and is extended by MainActivity and LocationActivity.
+ * The ToolbarMenuActivity class extends AppCompatActivity class and is extended by MainActivity.
  * It contains common functions required to implement the app's toolbar (not including navigation drawer).
  *
  * @author Jingting Yan
  * @version 1.0
  * @since March 2020
  */
-public class OverflowMenuActivity extends AppCompatActivity {
+public class ToolbarMenuActivity extends AppCompatActivity {
 
     /**
      * This method is overridden to customise the contents of the app's toolbar (options menu).
-     * The toolbar menu resources are defined in /res/menu/toolbar_overflow_menu.xml.
+     * The toolbar menu resources are defined in /res/menu/toolbar_menu.xml
      * @param menu The option menu that contains customised menu items.
-     * @return boolean This returns true for the options menu to be displayed;
-     *                              false for not showing the options menu.
+     * @return boolean This returns true for the options menu to be displayed; false for not showing the options menu.
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.toolbar_overflow_menu, menu);
+        menuInflater.inflate(R.menu.toolbar_menu, menu);
 
         // set the SearchView to be invisible
         final MenuItem searchItem = menu.findItem(R.id.action_search);

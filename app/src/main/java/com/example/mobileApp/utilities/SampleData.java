@@ -10,7 +10,7 @@ import com.example.mobileApp.database.entity.QuestionnaireTable;
 import java.util.ArrayList;
 import java.util.List;
 
-/* Pre-populate the database at the development stage -- used for testing */
+/* Pre-populate some dummy data into SQLite database before data sync is done -- used for testing */
 
 public class SampleData {
 

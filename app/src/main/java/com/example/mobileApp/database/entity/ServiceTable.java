@@ -11,6 +11,8 @@ import com.example.mobileApp.database.entity.QuestionnaireTable;
 
 import static androidx.room.ForeignKey.CASCADE;
 
+// The ServiceTable has NOT been used so far.
+
 @Entity(tableName = "services",
         indices = {@Index(value = {"question_service_id", "qnnaire_id"}, unique = true),
                    @Index("qnnaire_id")},

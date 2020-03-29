@@ -38,16 +38,23 @@ import butterknife.OnClick;
 import static com.example.mobileApp.utilities.Constants.HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID;
 import static com.example.mobileApp.utilities.Constants.PATIENT_BASIC_INFORMATION_QUESTIONNAIRE;
 
-// This class is used to create new Household or new Patient;
-// these two processes share a similar logic, therefore, merge them together to reduce code redundancy.
-
 /**
- * The UserCreateFragment initialises layout components and adds functions for views defined in fragment_questionnaire.xml.
- * It follows the recommended Android Architecture Components: UI Controller - ViewModel - Repository - RoomDatabase.
- * The relevant classes are: DataSyncActivity, /viewmodel/DataSyncViewModel, /database/MobileAppRepository, and database package.
+ * The UserCreateFragment class initialises and adds functions for views defined in fragment_questionnaire.xml.
+ * It follows the recommended Android Architecture: UI Controller - ViewModel - Repository - RoomDatabase.
+ * The relevant classes are: UserCreateFragment, /viewmodel/QuestionnaireViewModel, /database/MobileAppRepository, and database package.
+ *
+ * Functions:
+ *  1. It is used to load Household Roster Questionnaire to create new household
+ *  2. It is used to load Patient Basic Information Questionnaire to create new patient
+ *  (these two processes share a similar logic, therefore, merge them together to reduce code redundancy.)
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
  */
 public class UserCreateFragment extends Fragment implements LocationListener{
 
+    /* views */
     @BindView(R.id.txt_qn_instruction) TextView txtQnInstruction;
     @BindView(R.id.txt_qn_string) TextView txtQnString;
     @BindView(R.id.bn_qnn_next) Button bnNext;
@@ -106,6 +113,7 @@ public class UserCreateFragment extends Fragment implements LocationListener{
     private void initViewModel() {
         questionnaireViewModel = new ViewModelProvider(requireActivity()).get(QuestionnaireViewModel.class);
 
+        // register observers to observe the two MutableLiveData<String> variables defined in QuestionnaireViewModel
         questionnaireViewModel.qnInstruction.observe(getViewLifecycleOwner(), this::updateQnInstruction);
         questionnaireViewModel.qnString.observe(getViewLifecycleOwner(), this::updateQnString);
     }
@@ -120,16 +128,19 @@ public class UserCreateFragment extends Fragment implements LocationListener{
             Constants.setCurrentPatientID(questionnaireViewModel.generateNewPatientID());
         }
 
+        // Household Roster Questionnaire requires to collect GPS coordinates
         if (Constants.getCurrentQuestionnaireID() == HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID) {
             Constants.setCurrentHouseholdID(questionnaireViewModel.generateNewHouseholdID());
             getGPSCoordinates();
         }
     }
 
+    // the view 'txtQnInstruction' is observing the MutableLiveData<String> object 'qnInstruction'
     private void updateQnInstruction(String qnInstruction) {
         txtQnInstruction.setText(qnInstruction);
     }
 
+    // the view 'txtQnString' is observing the MutableLiveData<String> object 'qnString'
     private void updateQnString(String qnString) {
         txtQnString.setText(qnString);
     }
@@ -194,6 +205,7 @@ public class UserCreateFragment extends Fragment implements LocationListener{
         }
     }
 
+    /* Register a Location Listener (listen to GPS coordinates) for the Location Manager and override 4 functions */
     private void getGPSCoordinates() {
         try {
             LocationManager locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
@@ -232,7 +244,7 @@ public class UserCreateFragment extends Fragment implements LocationListener{
     private void hideKeyboard(Activity activity) {
         InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        // check if no view has focus:
+        // check if no view has focus
         View currentFocusedView = activity.getCurrentFocus();
         if (currentFocusedView != null) {
             if (inputManager != null) {

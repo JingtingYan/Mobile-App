@@ -47,7 +47,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".OverflowMenuActivity" />
+        <activity android:name=".ToolbarMenuActivity" />
 
         <activity android:name=".NavigationDrawerActivity" />
 

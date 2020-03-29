@@ -36,10 +36,24 @@ import static com.example.mobileApp.utilities.Constants.MOBILITY_QUESTIONNAIRE_I
 import static com.example.mobileApp.utilities.Constants.VISION_QUESTIONNAIRE_ID;
 
 /**
- * A simple {@link Fragment} subclass.
+ * The SinglePatientFragment class initialises and adds functions for views defined in fragment_single_patient.xml.
+ * It follows the recommended Android Architecture: UI Controller - ViewModel - Repository - RoomDatabase.
+ * The relevant classes are: SinglePatientFragment, /viewmodel/SinglePatientViewModel, /database/MobileAppRepository, and database package.
+ *
+ * Functions:
+ *  1. It loads an Assessment Centre for a single patient, which includes patient info, a list of patient's assessment history,
+ *     and buttons to take assessments.
+ *  2. It supports the search view for searching a particular assessment history.
+ *
+ * (this class shares a similar logic with SingleHouseholdFragment class)
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
  */
 public class SinglePatientFragment extends Fragment {
 
+    /* views */
     @BindView(R.id.txt_single_patient_name) TextView txtPatientName;
     @BindView(R.id.txt_single_patient_hh_id) TextView txtHouseholdID;
     @BindView(R.id.txt_single_patient_gender) TextView txtGender;
@@ -53,6 +67,7 @@ public class SinglePatientFragment extends Fragment {
 
     private SinglePatientViewModel singlePatientViewModel;
 
+    // the adapter for the RecyclerView of patient's previous assessment statuses
     private AssessmentRecyclerAdapter adapter;
 
     public SinglePatientFragment() {
@@ -68,6 +83,7 @@ public class SinglePatientFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
+        // refer to the current options menu (toolbar) - used to set the SearchView later
         setHasOptionsMenu(true);
 
         requireActivity().setTitle("Patient: " + Constants.getCurrentPatientID());
@@ -92,6 +108,7 @@ public class SinglePatientFragment extends Fragment {
     }
 
     private void loadAssessmentInfo() {
+        // load the current patient into SinglePatientViewModel's currentPatient variable
         singlePatientViewModel.loadCurrentPatient();
 
         txtPatientName.setText(singlePatientViewModel.loadPatientName());
@@ -103,6 +120,7 @@ public class SinglePatientFragment extends Fragment {
     private void initRecyclerView() {
         List<AssessmentRecyclerViewItem> assessmentItems = singlePatientViewModel.loadAssessmentStatusList();
 
+        // setHasFixedSize = true means the RecyclerView won't change size no matter how many items it may contain.
         assessmentRecyclerView.setHasFixedSize(true);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
@@ -111,6 +129,7 @@ public class SinglePatientFragment extends Fragment {
         assessmentRecyclerView.setLayoutManager(layoutManager);
         assessmentRecyclerView.setAdapter(adapter);
 
+        // react to clicking an assessment status card from the list
         adapter.setOnItemClickListener(position -> {
             AssessmentRecyclerViewItem selectedItem = assessmentItems.get(position);
 
@@ -123,15 +142,19 @@ public class SinglePatientFragment extends Fragment {
                 Constants.setSelectedAssessment(selectedItem);
                 Constants.setQnnExists(true);
 
+                // continue with an unfinished assessment
                 HouseholdMainActivity.fragmentManager.beginTransaction()
                         .replace(R.id.household_fragment_container, new QuestionnaireFragment()).commit();
             }
         });
     }
 
+    /**
+     * This method is called to set the SearchView to be visible in options menu (toolbar) when displaying SinglePatientFragment.
+     * @param menu The tool bar menu defined in /res/menu/toolbar_menu.xml
+     */
     @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        // set the SearchView to be visible
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) searchItem.getActionView();
         searchItem.setVisible(true);
@@ -141,13 +164,13 @@ public class SinglePatientFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // leave blank because we want to show the querying results at the real-time
+                // leave blank because we want to show the querying results in real-time
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                // dynamically pass the SearchView text into the HouseholdAdapter's filter
+                // dynamically pass the SearchView text into the AssessmentRecyclerAdapter's filter
                 adapter.getFilter().filter(newText);
                 return false;
             }
@@ -159,7 +182,7 @@ public class SinglePatientFragment extends Fragment {
     @OnClick(R.id.bn_washington) void onClickWashington() {
         Constants.setCurrentQuestionnaireID(GENERAL_WASHINGTON_GROUP_QUESTIONNAIRE_ID);
         Constants.setCurrentQuestionnaireStartDate(LocalDate.now().toString());
-        Constants.setQnnExists(false);
+        Constants.setQnnExists(false);  // this is a new assessment (not an unfinished one)
 
         // Go to take the Washington Group Questionnaire for this patient
         HouseholdMainActivity.fragmentManager.beginTransaction()
@@ -171,7 +194,7 @@ public class SinglePatientFragment extends Fragment {
         Constants.setCurrentQuestionnaireStartDate(LocalDate.now().toString());
         Constants.setQnnExists(false);
 
-        // Go to the Placeholder Fragment for HearX
+        // Go to the Assessment Placeholder Fragment for HearX
         HouseholdMainActivity.fragmentManager.beginTransaction()
                 .replace(R.id.household_fragment_container, new AssessmentPlaceholderFragment()).commit();
     }
@@ -181,7 +204,7 @@ public class SinglePatientFragment extends Fragment {
         Constants.setCurrentQuestionnaireStartDate(LocalDate.now().toString());
         Constants.setQnnExists(false);
 
-        // Go to the Placeholder Fragment for PEEK
+        // Go to the Assessment Placeholder Fragment for PEEK
         HouseholdMainActivity.fragmentManager.beginTransaction()
                 .replace(R.id.household_fragment_container, new AssessmentPlaceholderFragment()).commit();
     }

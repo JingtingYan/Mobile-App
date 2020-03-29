@@ -8,6 +8,8 @@ import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
+// The AssistiveTechnologyTable has NOT been used so far.
+
 @Entity(tableName = "AssistiveTechnologyTable",
         indices = {@Index(value = {"question_at_id", "qnnaire_id"}, unique = true),
                    @Index("qnnaire_id")},

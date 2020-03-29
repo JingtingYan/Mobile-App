@@ -26,14 +26,28 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * A simple {@link Fragment} subclass.
+ * The SearchHouseholdFragment class initialises and adds functions for views defined in fragment_search_household.xml.
+ * It follows the recommended Android Architecture: UI Controller - ViewModel - Repository - RoomDatabase.
+ * The relevant classes are: SearchHouseholdFragment, /viewmodel/SearchHouseholdViewModel, /database/MobileAppRepository, and database package.
+ *
+ * Functions:
+ *  1. It loads a list of existing households in a cluster
+ *  2. It supports the search view for searching a particular household.
+ *
+ * (this class shares a similar logic with SearchPatientFragment class)
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
  */
 public class SearchHouseholdFragment extends Fragment {
 
+    /* view */
     @BindView(R.id.recycler_view_hh) RecyclerView householdRecyclerView;
 
     private SearchHouseholdViewModel searchHouseholdViewModel;
 
+    // the adapter for the RecyclerView of households in the cluster
     private HouseholdRecyclerAdapter adapter;
 
     public SearchHouseholdFragment() {
@@ -49,7 +63,7 @@ public class SearchHouseholdFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
-        // refer to the current options menu - used to set the SearchView later
+        // refer to the current options menu (toolbar) - used to set the SearchView later
         setHasOptionsMenu(true);
 
         requireActivity().setTitle(R.string.title_choose_hh);
@@ -77,18 +91,22 @@ public class SearchHouseholdFragment extends Fragment {
         householdRecyclerView.setLayoutManager(layoutManager);
         householdRecyclerView.setAdapter(adapter);
 
+        // react to clicking a household card from the list
         adapter.setOnItemClickListener(position -> {
             Constants.setCurrentHouseholdID(hhItems.get(position).getHouseholdID());
 
-            // display patients information for the selected household
+            // go to the home page for the selected household
             HouseholdMainActivity.fragmentManager.beginTransaction()
                     .replace(R.id.household_fragment_container, new SingleHouseholdFragment()).commit();
         });
     }
 
+    /**
+     * This method is called to set the SearchView to be visible in options menu (toolbar) when displaying SearchHouseholdFragment.
+     * @param menu The tool bar menu defined in /res/menu/toolbar_menu.xml
+     */
     @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        // set the SearchView to be visible
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) searchItem.getActionView();
         searchItem.setVisible(true);
@@ -104,7 +122,7 @@ public class SearchHouseholdFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                // dynamically pass the SearchView text into the HouseholdAdapter's filter
+                // dynamically pass the SearchView text into the HouseholdRecyclerAdapter's filter
                 adapter.getFilter().filter(newText);
                 return false;
             }

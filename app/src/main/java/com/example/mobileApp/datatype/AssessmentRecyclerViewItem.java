@@ -1,5 +1,14 @@
 package com.example.mobileApp.datatype;
 
+/**
+ * The AssessmentRecyclerViewItem class is a user-defined data type which contains more general data fields
+ * than the PatientAssessmentStatusTable class.
+ * It is used to hold data related to a single assessment status record.
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
+ */
 public class AssessmentRecyclerViewItem {
 
     private String questionnaireName;

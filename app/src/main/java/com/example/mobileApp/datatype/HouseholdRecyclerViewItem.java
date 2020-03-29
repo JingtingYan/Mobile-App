@@ -1,5 +1,14 @@
 package com.example.mobileApp.datatype;
 
+/**
+ * The HouseholdRecyclerViewItem class is a user-defined data type which contains more general data fields
+ * than the HouseholdTable class.
+ * It is used to hold data related to a single household.
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
+ */
 public class HouseholdRecyclerViewItem {
 
     private String householdID;

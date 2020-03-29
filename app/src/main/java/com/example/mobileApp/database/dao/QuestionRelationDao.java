@@ -9,11 +9,19 @@ import com.example.mobileApp.database.entity.QuestionRelationTable;
 
 import java.util.List;
 
-@Dao
-public interface QuestionRelationDao
-{
+/**
+ * The QuestionRelationDao interface is a mapping of some SQL queries (for QuestionRelationTable) to
+ * Java functions that can be called in MobileAppRepository.
+ *
+ *  @author Nadhirah Rafidz
+ *  @version 1.0
+ *  @since February 2020
+ */
 
-//    Used in andLogic and orLogic -> questions cursor -> each element is checkQuestion element used in responseCount()
+@Dao
+public interface QuestionRelationDao {
+
+    // Used in AND logic and OR logic -> questions cursor -> each element is checkQuestion element used in responseCount()
     @Query("SELECT DISTINCT rel_q_id FROM question_relations AS qrel " +
             "WHERE qrel.rel_id = :relID " +
             "AND qrel.q_id = :currQnID " +
@@ -26,7 +34,7 @@ public interface QuestionRelationDao
             "AND qrel.qnnaire_id = :currQnnID")
     int getCorrectCount(int relID, int currQnID, int currQnnID);
 
-//    Used in andLogic and orLogic
+    // Used in AND logic and OR logic
     @Query("SELECT COUNT(resp.q_id) FROM responses AS resp " +
             "INNER JOIN question_relations AS qrel " +
             "ON resp.q_id = qrel.rel_q_id " +

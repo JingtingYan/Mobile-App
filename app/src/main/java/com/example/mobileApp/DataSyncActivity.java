@@ -38,13 +38,14 @@ import static com.example.mobileApp.utilities.Constants.POST_PATIENT_URL;
 import static com.example.mobileApp.utilities.Constants.POST_RESPONSE_URL;
 
 /**
- * The DataSyncActivity class initialises layout components and adds functions for views in activity_data_sync.xml.
- * It follows the recommended Android Architecture Components: UI Controller - ViewModel - Repository - RoomDatabase.
+ * The DataSyncActivity class initialises and adds functions for views defined in activity_data_sync.xml.
+ * It follows the recommended Android Architecture: UI Controller - ViewModel - Repository - RoomDatabase.
  * The relevant classes are: DataSyncActivity, /viewmodel/DataSyncViewModel, /database/MobileAppRepository, and database package.
+ *
  * Functions:
  *  1. It supports bi-directional (local SQLite <-> server MySQL) data synchronisation.
- *     [The mobile app uses Volley, an Android HTTP library, to format and schedule network requests.]
- *  2. It also extends OverflowMenuActivity class to support customised Toolbar.
+ *     [It uses Volley, an Android HTTP library, to format and schedule network requests sent to server.]
+ *  2. It extends NavigationDrawerActivity class to load customised toolbar and navigation drawer.
  *
  *  @author Jingting Yan
  *  @version 1.0
@@ -52,7 +53,7 @@ import static com.example.mobileApp.utilities.Constants.POST_RESPONSE_URL;
  */
 public class DataSyncActivity extends NavigationDrawerActivity {
 
-    /* class-scope variables */
+    /* views */
     @BindView(R.id.bn_data_sync_download_data) Button bnDownload;
     @BindView(R.id.bn_data_sync_upload_data) Button bnUpload;
     @BindView(R.id.bn_data_sync_delete_data) Button bnDelete;
@@ -87,14 +88,13 @@ public class DataSyncActivity extends NavigationDrawerActivity {
     }
 
     /**
-     * This method initialises the dataSyncViewModel instance and
-     * associates DataSyncActivity with DataSyncViewModel.
+     * This method initialises the dataSyncViewModel instance and associates DataSyncActivity with DataSyncViewModel.
      */
     private void initViewModel() {
         dataSyncViewModel = new ViewModelProvider(this).get(DataSyncViewModel.class);
     }
 
-    // clear the prev stored data
+    // clear all of the prev stored data
     private void initData() {
         dataSyncViewModel.allResponses.clear();
         dataSyncViewModel.allHouseholds.clear();
@@ -104,9 +104,9 @@ public class DataSyncActivity extends NavigationDrawerActivity {
 
     /**
      * This method is called when the DOWNLOAD DATA button is clicked.
-     * It invokes a list of methods to fetch all necessary data from server MySQL database
-     * to local SQLite database via APIs.
-     * The server entities required to be downloaded are:
+     * It invokes a list of methods to fetch all necessary data from server MySQL database to local SQLite database via APIs.
+     *
+     * The server entities required to download are:
      *  - Location Table
      *  - Questionnaire Table
      *  - Question Table
@@ -140,9 +140,9 @@ public class DataSyncActivity extends NavigationDrawerActivity {
 
     /**
      * This method is called when the UPLOAD DATA button is clicked.
-     * It invokes a list of methods to post all patients data gathered from the mobile app
-     * to the server MySQL database via APIs.
-     * The local entities required to be uploaded are:
+     * It invokes a list of methods to post all patients data gathered from the mobile app to the server MySQL database via APIs.
+     *
+     * The local entities required to upload are:
      *  - Household Table
      *  - Patient Table
      *  - Response Table
@@ -167,6 +167,7 @@ public class DataSyncActivity extends NavigationDrawerActivity {
      * Therefore, this button just aims to offer users a possibility to do data deletion manually.
      *
      * It invokes a list of method to delete data stored in all local tables.
+     *
      * The local entities required to be cleared are:
      *  - Location Table
      *  - Questionnaire Table
@@ -190,7 +191,6 @@ public class DataSyncActivity extends NavigationDrawerActivity {
         deleteQAData();
         deleteLogicData();
         deleteQuestionRelationData();
-
         deleteHouseholdData();
         deletePatientData();
         deleteResponseData();
@@ -212,22 +212,21 @@ public class DataSyncActivity extends NavigationDrawerActivity {
     }
 
 
-    /* Below is the list of methods invoked when clicking DOWNLOAD DATA.
-       (they all share a similar logic) */
+    /* Below is the list of methods invoked when clicking DOWNLOAD DATA. (they all share a similar logic) */
 
     /**
      * This method is called to download the entire Location table from server database.
-     * It contains three-step functions:
+     * It contains three steps:
      *  1. Create a StringRequest object using Volley.
      *      - The HTTP method is GET
-     *      - GET_LOCATION_URL is the API for requesting for server database's Location Table
+     *      - GET_LOCATION_URL is the API for fetching data from server's Location Table
      *         It is a static final string value stored in /utilities/Constants.GET_LOCATION_URL.
-     *      - 'this' refers to the String response received from the server
-     *         If successfully get the string response (i.e. the Location Table data string in JSON format),
-     *         call the method 'addLocationData' and pass the string response as its argument.
-     *         Otherwise, receive a VolleyError object 'error', then prompt the error message on screen.
+     *      - Add the user token in request's Authorization header.
+     *  2. Define the reactions to 'response' & 'error' from server.
+     *     If successfully get the response (i.e. the Location Table data string in JSON format),
+     *     then call the method 'addLocationData' and pass the string response as its argument.
+     *     Otherwise, it receives a VolleyError object 'error', then prompt the error message on screen.
      *      - add the user token in request's Authorization header
-     *  2. Set a tag on this StringRequest object which is convenient to track and cancel this request later.
      *  3. Get a singleton instance of Volley RequestQueue from MySingleton class, and add this request to the RequestQueue.
      *     The RequestQueue manages worker threads for running the network operations, reading from and
      *     writing to the cache, and parsing responses.
@@ -249,8 +248,6 @@ public class DataSyncActivity extends NavigationDrawerActivity {
     /**
      * This method is called to download the entire Questionnaire table from server database.
      * It shares a similar logic with the 'downloadLocationData' method.
-     * The GET_QUESTIONNAIRE_URL is the API for requesting for server database's Questionnaire Table.
-     * It is a static final string value stored in /utilities/Constants.GET_QUESTIONNAIRE_URL.
      */
     private void downloadQuestionnaireData() {
         StringRequest qnnDownloadRequest = new StringRequest(Request.Method.GET, GET_QUESTIONNAIRE_URL, this::addQuestionnaireData,
@@ -269,8 +266,6 @@ public class DataSyncActivity extends NavigationDrawerActivity {
     /**
      * This method is called to download the entire Question table from server database.
      * It shares a similar logic with the 'downloadLocationData' method.
-     * The GET_QUESTION_URL is the API for requesting for server database's Question Table.
-     * It is a static final string value stored in /utilities/Constants.GET_QUESTION_URL.
      */
     private void downloadQuestionData() {
         StringRequest qnDownloadRequest = new StringRequest(Request.Method.GET, GET_QUESTION_URL, this::addQuestionData,
@@ -289,8 +284,6 @@ public class DataSyncActivity extends NavigationDrawerActivity {
     /**
      * This method is called to download the entire Answer table from server database.
      * It shares a similar logic with the 'downloadLocationData' method.
-     * The GET_ANSWER_URL is the API for requesting for server database's Answer Table.
-     * It is a static final string value stored in /utilities/Constants.GET_ANSWER_URL.
      */
     private void downloadAnswerData() {
         StringRequest ansDownloadRequest = new StringRequest(Request.Method.GET, GET_ANSWER_URL, this::addAnswerData,
@@ -309,8 +302,6 @@ public class DataSyncActivity extends NavigationDrawerActivity {
     /**
      * This method is called to download the entire Question_and_Answer table from server database.
      * It shares a similar logic with the 'downloadLocationData' method.
-     * The GET_QA_URL is the API for requesting for server database's Question_and_Answer Table.
-     * It is a static final string value stored in /utilities/Constants.GET_QA_URL.
      */
     private void downloadQAData() {
         StringRequest qaDownloadRequest = new StringRequest(Request.Method.GET, GET_QA_URL, this::addQAData,
@@ -329,8 +320,6 @@ public class DataSyncActivity extends NavigationDrawerActivity {
     /**
      * This method is called to download the entire Logic table from server database.
      * It shares a similar logic with the 'downloadLocationData' method.
-     * The GET_LOGIC_URL is the API for requesting for server database's Logic Table.
-     * It is a static final string value stored in /utilities/Constants.GET_LOGIC_URL.
      */
     private void downloadLogicData() {
         StringRequest logicDownloadRequest = new StringRequest(Request.Method.GET, GET_LOGIC_URL, this::addLogicData,
@@ -349,8 +338,6 @@ public class DataSyncActivity extends NavigationDrawerActivity {
     /**
      * This method is called to download the entire QuestionRelation table from server database.
      * It shares a similar logic with the 'downloadLocationData' method.
-     * The GET_QUESTION_RELATION_URL is the API for requesting for server database's QuestionRelation Table.
-     * It is a static final string value stored in /utilities/Constants.GET_QUESTION_RELATION_URL.
      */
     private void downloadQuestionRelationData() {
         StringRequest qnRelDownloadRequest = new StringRequest(Request.Method.GET, GET_QUESTION_RELATION_URL, this::addQnRelData,
@@ -367,25 +354,11 @@ public class DataSyncActivity extends NavigationDrawerActivity {
     }
 
 
-    /* Below is the list of methods invoked when clicking UPLOAD DATA. */
+    /* Below is the list of methods invoked when clicking UPLOAD DATA. (they all share a similar logic) */
 
     /**
-     * This method is called to upload the entire local Response table to server database.
-     * It contains four-step functions:
-     *  1. Get the entire local Response table data and parse them into a JSON object by invoking the
-     *     method 'getResponseJSONObject' defined in DataSyncViewModel.
-     *  2. Create a JSONObjectRequest request using Volley.
-     *      - The HTTP method is POST
-     *      - POST_RESPONSE_URL is the API for sending data to server database' Response Table.
-     *         It is a static final string value stored in /utilities/Constants.POST_RESPONSE_URL.
-     *      - 'this' refers to the JSON response received from the server.
-     *         If successfully receive the JSON response (by convention, it contains the confirmation
-     *         response from the server - it sends back a list of data that has been received at the
-     *         server side), then call the method ...
-     *         Otherwise, receive a VolleyError object 'error', then prompt the error message on screen.
-     *      - Add the user token in request's Authorization header.
-     *  3. Set a tag on this JSONObjectRequest object which is convenient to track and cancel this request later.
-     *  4. Get a singleton instance of Volley RequestQueue from MySingleton class, and add this request to the RequestQueue.
+     * This method is called to upload the newly added patients' responses stored in local Response table to server database.
+     * For each time, it uploads a batch of the entire data set with a max size of 20 responses.
      */
     private void uploadResponseData() {
         dataSyncViewModel.getAllResponsesToUpload();
@@ -402,7 +375,22 @@ public class DataSyncActivity extends NavigationDrawerActivity {
         uploadBatchOfResponseData(responseJsonArray);
     }
 
-    // upload a batch of Response data with max size of 20
+    /**
+     * This method is called to upload a batch of Response data with max size of 20.
+     * It contains three steps:
+     *  1. Create a JsonArrayRequest object using Volley.
+     *      - The HTTP method is POST
+     *      - POST_RESPONSE_URL is the API for sending data to server's Response Table.
+     *         It is a static final string value stored in /utilities/Constants.POST_RESPONSE_URL.
+     *      - Add the user token in request's Authorization header.
+     *  2. Define the reactions to 'response' & 'error' from server.
+     *     If successfully receive the confirmation response (by convention, the server would sends back a list of data
+     *     that has been received at the server side), then delete the local records in Response table.
+     *     Otherwise, it receives a VolleyError object 'error', then prompt the error message on screen.
+     *  3. Get a singleton instance of Volley RequestQueue from MySingleton class, and add this request to the RequestQueue.
+     *
+     * @param responseJsonArray The batch of Json Array to upload.
+     */
     private void uploadBatchOfResponseData(JSONArray responseJsonArray) {
         JsonArrayRequest responseUploadRequest = new JsonArrayRequest(Request.Method.POST, POST_RESPONSE_URL, responseJsonArray,
                 response -> {
@@ -424,11 +412,20 @@ public class DataSyncActivity extends NavigationDrawerActivity {
         MySingleton.getInstance(this.getApplicationContext()).addToRequestQueue(responseUploadRequest);
     }
 
+    /**
+     * This method is called to delete local records stored in Response table according to server's confirmation response.
+     * @param response The confirmation response received from server. It's a JsonArray object.
+     * @throws JSONException The exception occurs when parsing JsonArray.
+     */
     private void deleteConfirmedResponseData(JSONArray response) throws JSONException {
         dataSyncViewModel.deleteConfirmedResponseData(response);
     }
 
 
+    /**
+     * The methods below are used to upload the newly added household records stored in local Household table to server database.
+     * It shares a similar logic with uploading the Response table to server.
+     */
     private void uploadHouseholdData() {
         dataSyncViewModel.getAllHouseholdsToUpload();
         int size = dataSyncViewModel.allHouseholds.size();
@@ -471,6 +468,10 @@ public class DataSyncActivity extends NavigationDrawerActivity {
     }
 
 
+    /**
+     * The methods below are used to upload the newly added patient records stored in local Patient table to server database.
+     * It shares a similar logic with uploading the Response table to server.
+     */
     private void uploadPatientData() {
         dataSyncViewModel.getAllPatientsToUpload();
         int size = dataSyncViewModel.allPatients.size();
@@ -513,6 +514,10 @@ public class DataSyncActivity extends NavigationDrawerActivity {
     }
 
 
+    /**
+     * The methods below are used to upload the newly added assessment status records stored in local PatientAssessmentStatus table to server database.
+     * It shares a similar logic with uploading the Response table to server.
+     */
     private void uploadAssessmentStatusData() {
         dataSyncViewModel.getAllAssessmentStatus();
         int size = dataSyncViewModel.allAssessmentStatus.size();
@@ -555,92 +560,35 @@ public class DataSyncActivity extends NavigationDrawerActivity {
     }
 
 
-    /* Below is the list of methods invoked when successfully receiving the string response for downloading
-       tables from server. The string response contains the table data and is in a format of JSON array.
-       This string will then be passed to corresponding method in DataSyncViewModel for parsing and
-       adding data into the local SQLite database.
+    /* Below is the list of methods invoked when successfully receiving the string response for downloading tables from server.
+       The string response 'jsonArray' contains the table data and is in a format of JSON array.
+       It will then be passed to corresponding methods defined in DataSyncViewModel for parsing and adding data into the local SQLite database.
        (The list of methods all share a similar logic) */
 
-    /**
-     * This method is called when receiving the response string from the StringRequest for downloading
-     * Location table from server. This method further invokes the 'addLocationData' method defined in
-     * DataSyncViewModel and passes the response string to its argument.
-     *
-     * @param jsonArray The response string received from the request. It is of JSON array format and
-     *                  contains the Location table data.
-     */
     private void addLocationData(String jsonArray) {
         dataSyncViewModel.addLocationData(jsonArray);
     }
 
-    /**
-     * This method is called when receiving the response string from the StringRequest for downloading
-     * Questionnaire table from server. This method further invokes the 'addQuestionnaireData' method
-     * defined in DataSyncViewModel and passes the response string to its argument.
-     *
-     * @param jsonArray The response string received from the request. It is of JSON array format and
-     *                  contains the Questionnaire table data.
-     */
     private void addQuestionnaireData(String jsonArray) {
         dataSyncViewModel.addQuestionnaireData(jsonArray);
     }
 
-    /**
-     * This method is called when receiving the response string from the StringRequest for downloading
-     * Question table from server. This method further invokes the 'addQuestionData' method defined in
-     * DataSyncViewModel and passes the response string to its argument.
-     *
-     * @param jsonArray The response string received from the request. It is of JSON array format and
-     *                  contains the Question table data.
-     */
     private void addQuestionData(String jsonArray) {
         dataSyncViewModel.addQuestionData(jsonArray);
     }
 
-    /**
-     * This method is called when receiving the response string from the StringRequest for downloading
-     * Answer table from server. This method further invokes the 'addAnswerData' method defined in
-     * DataSyncViewModel and passes the response string to its argument.
-     *
-     * @param jsonArray The response string received from the request. It is of JSON array format and
-     *                  contains the Answer table data.
-     */
     private void addAnswerData(String jsonArray) {
         dataSyncViewModel.addAnswerData(jsonArray);
     }
 
-    /**
-     * This method is called when receiving the response string from the StringRequest for downloading
-     * Question_and_Answer table from server. This method further invokes the 'addQAData' method
-     * defined in DataSyncViewModel and passes the response string to its argument.
-     *
-     * @param jsonArray The response string received from the request. It is of JSON array format and
-     *                  contains the Question_and_Answer table data.
-     */
     private void addQAData(String jsonArray) {
         dataSyncViewModel.addQAData(jsonArray);
     }
 
-    /**
-     * This method is called when receiving the response string from the StringRequest for downloading
-     * Logic table from server. This method further invokes the 'addLogicData' method defined in
-     * DataSyncViewModel and passes the response string to its argument.
-     *
-     * @param jsonArray The response string received from the request. It is of JSON array format and
-     *                  contains the Logic table data.
-     */
     private void addLogicData(String jsonArray) {
         dataSyncViewModel.addLogicData(jsonArray);
     }
 
-    /**
-     * This method is called when receiving the response string from the StringRequest for downloading
-     * QuestionRelation table from server. This method further invokes the 'addQuestionRelationData'
-     * method defined in DataSyncViewModel and passes the response string to its argument.
-     *
-     * @param jsonArray The response string received from the request. It is of JSON array format and
-     *                  contains the QuestionRelation table data.
-     */
     private void addQnRelData(String jsonArray) {
         dataSyncViewModel.addQuestionRelationData(jsonArray);
     }
@@ -651,68 +599,37 @@ public class DataSyncActivity extends NavigationDrawerActivity {
 
 
     /* Below is the list of methods invoked when clicking DELETE DATA.
+       It further invokes the corresponding methods defined in DataSyncViewModel to delete the data stored in local SQLite database.
        (they all share a similar logic) */
 
-    /**
-     * This method is called to delete all data stored in the local SQLite Location table.
-     * It further invokes the 'deleteLocationData' method defined in DataSyncViewModel to do deletion.
-     */
     private void deleteLocationData() {
         dataSyncViewModel.deleteLocationData();
     }
 
-    /**
-     * This method is called to delete all data stored in the local SQLite Questionnaire table.
-     * It further invokes the 'deleteQuestionnaireData' method defined in DataSyncViewModel to do deletion.
-     */
     private void deleteQuestionnaireData() {
         dataSyncViewModel.deleteQuestionnaireData();
     }
 
-    /**
-     * This method is called to delete all data stored in the local SQLite Question table.
-     * It further invokes the 'deleteQuestionData' method defined in DataSyncViewModel to do deletion.
-     */
     private void deleteQuestionData() {
         dataSyncViewModel.deleteQuestionData();
     }
 
-    /**
-     * This method is called to delete all data stored in the local SQLite Answer table.
-     * It further invokes the 'deleteAnswerData' method defined in DataSyncViewModel to do deletion.
-     */
     private void deleteAnswerData() {
         dataSyncViewModel.deleteAnswerData();
     }
 
-    /**
-     * This method is called to delete all data stored in the local SQLite Question_and_Answer table.
-     * It further invokes the 'deleteQAData' method defined in DataSyncViewModel to do deletion.
-     */
     private void deleteQAData() {
         dataSyncViewModel.deleteQAData();
     }
 
-    /**
-     * This method is called to delete all data stored in the local SQLite Logic table.
-     * It further invokes the 'deleteLogicData' method defined in DataSyncViewModel to do deletion.
-     */
     private void deleteLogicData() {
         dataSyncViewModel.deleteLogicData();
     }
 
-    /**
-     * This method is called to delete all data stored in the local SQLite QuestionRelation table.
-     * It further invokes the 'deleteQuestionRelationData' method defined in DataSyncViewModel to do deletion.
-     */
     private void deleteQuestionRelationData() {
         dataSyncViewModel.deleteQuestionRelationData();
     }
 
-    /**
-     * This method is called to delete all data stored in the local SQLite Response table.
-     * It further invokes the 'deleteResponseData' method defined in DataSyncViewModel to do deletion.
-     */
     private void deleteResponseData() {
         dataSyncViewModel.deleteResponseData();
     }
@@ -728,4 +645,5 @@ public class DataSyncActivity extends NavigationDrawerActivity {
     private void deletePatientAssessmentData() {
         dataSyncViewModel.deletePatientAssessmentData();
     }
+
 }

@@ -13,6 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * The SearchPatientViewModel class contains a list of methods used by SearchPatientFragment.
+ *
+ * Functions:
+ *  1. It is the communication centre between SearchPatientFragment and MobileAppRepository.
+ *  2. It prepares data that is going to be displayed on views inside SearchPatientFragment.
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
+ */
 public class SearchPatientViewModel extends AndroidViewModel {
 
     private MobileAppRepository repo;

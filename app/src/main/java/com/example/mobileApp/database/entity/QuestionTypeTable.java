@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+// The QuestionTypeTable has NOT been used so far.
+
 @Entity(tableName = "question_types")
 public class QuestionTypeTable {
 

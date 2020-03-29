@@ -16,6 +16,24 @@ import com.example.mobileApp.datatype.PatientRecyclerViewItem;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The PatientRecyclerAdapter defines a customised Adapter for RecyclerView used in SearchPatientFragment and SingleHouseholdFragment.
+ * (it shares a similar logic with HouseholdRecyclerAdapter and AssessmentRecyclerAdapter)
+ *
+ * Functions:
+ *  1. It defines PatientViewHolder (a customised ViewHolder for RecyclerView) that binds the views defined in
+ *     layout_recycler_item_patient.xml with a PatientRecyclerViewItem object.
+ *  2. It loads a list of PatientRecyclerViewItem objects as the data source for the RecyclerView.
+ *  3. It defines an OnItemClickListener interface to deal with item clicked event on PatientRecyclerAdapter.
+ *     This interface will pass the click to SearchPatientFragment and SingleHouseholdFragment.
+ *  4. It customises a Filter object to support the SearchView in SearchPatientFragment and SingleHouseholdFragment.
+ *
+ *  Please refer to the code comments in HouseholdRecyclerAdapter class.
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
+ */
 public class PatientRecyclerAdapter extends RecyclerView.Adapter<PatientRecyclerAdapter.PatientViewHolder> implements Filterable {
 
     private List<PatientRecyclerViewItem> items;

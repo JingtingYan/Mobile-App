@@ -31,10 +31,24 @@ import butterknife.OnClick;
 import static com.example.mobileApp.utilities.Constants.PATIENT_BASIC_INFORMATION_QUESTIONNAIRE;
 
 /**
- * A simple {@link Fragment} subclass.
+ * The SingleHouseholdFragment class initialises and adds functions for views defined in fragment_single_household.xml.
+ * It follows the recommended Android Architecture: UI Controller - ViewModel - Repository - RoomDatabase.
+ * The relevant classes are: SingleHouseholdFragment, /viewmodel/SingleHouseholdViewModel, /database/MobileAppRepository, and database package.
+ *
+ * Functions:
+ *  1. It loads a home page for a single household, which includes household info, a list of patient in that household,
+ *     and a button to add new patients.
+ *  2. It supports the search view for searching a particular patient.
+ *
+ * (this class shares a similar logic with SinglePatientFragment class)
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
  */
 public class SingleHouseholdFragment extends Fragment {
 
+    /* views */
     @BindView(R.id.txt_single_hh_loc) TextView txtHouseholdLocation;
     @BindView(R.id.txt_single_hh_informant) TextView txtHouseholdInformant;
     @BindView(R.id.recycler_view_patients) RecyclerView patientsRecyclerView;
@@ -42,6 +56,7 @@ public class SingleHouseholdFragment extends Fragment {
 
     private SingleHouseholdViewModel singleHouseholdViewModel;
 
+    // the adapter for the RecyclerView of patients in this household
     private PatientRecyclerAdapter adapter;
 
     public SingleHouseholdFragment() {
@@ -57,6 +72,7 @@ public class SingleHouseholdFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
+        // refer to the current options menu (toolbar) - used to set the SearchView later
         setHasOptionsMenu(true);
 
         requireActivity().setTitle("Household: " + Constants.getCurrentHouseholdID());
@@ -79,6 +95,7 @@ public class SingleHouseholdFragment extends Fragment {
     }
 
     private void loadHouseholdInfo() {
+        // load the current household into SingleHouseholdViewModel's currentHousehold variable
         singleHouseholdViewModel.loadCurrentHousehold();
 
         txtHouseholdLocation.setText(singleHouseholdViewModel.getHouseholdLocation());
@@ -88,6 +105,7 @@ public class SingleHouseholdFragment extends Fragment {
     private void initRecyclerView() {
         List<PatientRecyclerViewItem> patientItems = singleHouseholdViewModel.loadPatients();
 
+        // setHasFixedSize = true means the RecyclerView won't change size no matter how many items it may contain.
         patientsRecyclerView.setHasFixedSize(true);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
@@ -96,18 +114,22 @@ public class SingleHouseholdFragment extends Fragment {
         patientsRecyclerView.setLayoutManager(layoutManager);
         patientsRecyclerView.setAdapter(adapter);
 
+        // react to clicking a patient card from the list
         adapter.setOnItemClickListener(position -> {
             Constants.setCurrentPatientID(patientItems.get(position).getPatientID());
 
-            // display patient information for the selected patient
+            // go to the Assessment Centre for the selected patient
             HouseholdMainActivity.fragmentManager.beginTransaction()
                     .replace(R.id.household_fragment_container, new SinglePatientFragment()).commit();
         });
     }
 
+    /**
+     * This method is called to set the SearchView to be visible in options menu (toolbar) when displaying SingleHouseholdFragment.
+     * @param menu The tool bar menu defined in /res/menu/toolbar_menu.xml
+     */
     @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        // set the SearchView to be visible
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) searchItem.getActionView();
         searchItem.setVisible(true);
@@ -117,13 +139,13 @@ public class SingleHouseholdFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // leave blank because we want to show the querying results at the real-time
+                // leave blank because we want to show the querying results in real-time
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                // dynamically pass the SearchView text into the HouseholdAdapter's filter
+                // dynamically pass the SearchView text into the PatientRecyclerAdapter's filter
                 adapter.getFilter().filter(newText);
                 return false;
             }
@@ -134,7 +156,8 @@ public class SingleHouseholdFragment extends Fragment {
 
     @OnClick(R.id.bn_hh_add_patient) void onClickAddPatient() {
         Constants.setCurrentQuestionnaireID(PATIENT_BASIC_INFORMATION_QUESTIONNAIRE);
-        Constants.setQnnExists(false);
+        Constants.setQnnExists(false);  // this is a new assessment (not an unfinished one)
+
         // Go to take the Patient Basic Information Questionnaire for this patient
         HouseholdMainActivity.fragmentManager.beginTransaction()
                 .replace(R.id.household_fragment_container, new UserCreateFragment()).commit();

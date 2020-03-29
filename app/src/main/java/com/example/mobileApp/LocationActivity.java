@@ -14,7 +14,6 @@ import com.example.mobileApp.viewmodel.LocationViewModel;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -40,13 +39,14 @@ import static com.example.mobileApp.utilities.Constants.GET_RESPONSE_FOR_CLUSTER
 import static com.example.mobileApp.utilities.Constants.INITIALISATION_KEY;
 
 /**
- * The LocationActivity class initialises layout components and adds functions for views in activity_location.xml.
- * It follows the recommended Android Architecture Components: UI Controller - ViewModel - Repository - RoomDatabase.
+ * The LocationActivity class initialises and adds functions for views defined in activity_location.xml.
+ * It follows the recommended Android Architecture: UI Controller - ViewModel - Repository - RoomDatabase.
  * The relevant classes are: LocationActivity, /viewmodel/LocationViewModel, /database/MobileAppRepository, and database package.
+ *
  * Functions:
  *  1. It supports location selection for a survey. The selected location information will be stored in
  *     /utilities/Constants and will be referenced to in later activities.
- *  2. It also extends NavigationDrawerActivity class to support customised Toolbar and navigation drawer.
+ *  2. It extends NavigationDrawerActivity class to load customised toolbar and navigation drawer.
  *
  *  @author Jingting Yan
  *  @version 1.0
@@ -54,7 +54,7 @@ import static com.example.mobileApp.utilities.Constants.INITIALISATION_KEY;
  */
 public class LocationActivity extends NavigationDrawerActivity {
 
-    /* class-scope variables */
+    /* views */
     @BindView(R.id.spinner_select_country) Spinner countrySpinner;
     @BindView(R.id.spinner_select_region) Spinner regionSpinner;
     @BindView(R.id.spinner_select_cluster) Spinner clusterSpinner;
@@ -284,6 +284,10 @@ public class LocationActivity extends NavigationDrawerActivity {
         }
     }
 
+    /**
+     * This method is called when the DOWNLOAD LOCATION button is clicked.
+     * It downloads the Household table, Patient table, Response table and PatientAssessmentStatus table from server.
+     */
     @OnClick(R.id.bn_location_download) void onClickDownload() {
         Toast.makeText(getApplicationContext(), "Location data download is in progress...", Toast.LENGTH_SHORT).show();
 
@@ -301,7 +305,8 @@ public class LocationActivity extends NavigationDrawerActivity {
     }
 
     /**
-     * This method is called when the NEXT button is clicked. It has two-step functions:
+     * This method is called when the NEXT button is clicked.
+     * It has two-step functions:
      *  1. Store selected location information in /utilities/Constants.
      *  2. Proceed to Household home page.
      */
@@ -314,6 +319,7 @@ public class LocationActivity extends NavigationDrawerActivity {
         Intent intent = new Intent(this, HouseholdMainActivity.class);
         startActivity(intent);
     }
+
 
     private void loadHouseholdsForCluster() {
         // pass parameter 'clusterID' to url
@@ -331,6 +337,11 @@ public class LocationActivity extends NavigationDrawerActivity {
         MySingleton.getInstance(this.getApplicationContext()).addToRequestQueue(loadHouseholdRequest);
     }
 
+    private void addHouseholdData(String jsonArray) {
+        locationViewModel.addHouseholdData(jsonArray);
+    }
+
+
     private void loadPatientsForCluster() {
         // pass parameter 'clusterID' to url
         String url = GET_PATIENT_FOR_CLUSTER_URL + "?clusterID=" + Constants.getCluster().getLocationID();
@@ -346,6 +357,11 @@ public class LocationActivity extends NavigationDrawerActivity {
         loadPatientRequest.setTag("Download Patient tables for cluster" + Constants.getCluster().getLocationID());
         MySingleton.getInstance(this.getApplicationContext()).addToRequestQueue(loadPatientRequest);
     }
+
+    private void addPatientData(String jsonArray) {
+        locationViewModel.addPatientData(jsonArray);
+    }
+
 
     private void loadPatientAssessmentsForCluster() {
         // pass parameter 'clusterID' to url
@@ -363,6 +379,11 @@ public class LocationActivity extends NavigationDrawerActivity {
         MySingleton.getInstance(this.getApplicationContext()).addToRequestQueue(loadPatientAssessmentRequest);
     }
 
+    private void addPatientAssessmentData(String jsonArray) {
+        locationViewModel.addPatientAssessmentData(jsonArray);
+    }
+
+
     private void loadResponsesForCluster() {
         // pass parameter 'clusterID' to url
         String url = GET_RESPONSE_FOR_CLUSTER_URL + "?clusterID=" + Constants.getCluster().getLocationID();
@@ -377,18 +398,6 @@ public class LocationActivity extends NavigationDrawerActivity {
         };
         loadResponseRequest.setTag("Download Response tables for cluster" + Constants.getCluster().getLocationID());
         MySingleton.getInstance(this.getApplicationContext()).addToRequestQueue(loadResponseRequest);
-    }
-
-    private void addHouseholdData(String jsonArray) {
-        locationViewModel.addHouseholdData(jsonArray);
-    }
-
-    private void addPatientData(String jsonArray) {
-        locationViewModel.addPatientData(jsonArray);
-    }
-
-    private void addPatientAssessmentData(String jsonArray) {
-        locationViewModel.addPatientAssessmentData(jsonArray);
     }
 
     private void addResponseData(String jsonArray) {

@@ -17,12 +17,17 @@ import butterknife.OnClick;
 
 import static com.example.mobileApp.utilities.Constants.HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID;
 
-
 /**
- * A simple {@link Fragment} subclass.
+ * The HouseholdHomeFragment class initialises and adds functions for views defined in activity_household_home.xml.
+ * Function: It serves as a home page for all of the Household Fragments.
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
  */
 public class HouseholdHomeFragment extends Fragment {
 
+    /* views */
     @BindView(R.id.bn_hh_home_create) Button createHousehold;
     @BindView(R.id.bn_hh_home_choose) Button searchHousehold;
     @BindView(R.id.bn_hh_home_search_patient) Button searchPatient;
@@ -39,12 +44,14 @@ public class HouseholdHomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_household_home, container, false);
 
         ButterKnife.bind(this, view);
+
         requireActivity().setTitle(R.string.title_activity_household_home);
 
         return view;
     }
 
     @OnClick(R.id.bn_hh_home_create) void onClickCreate() {
+        // Go to take the Household Roster Questionnaire
         Constants.setCurrentQuestionnaireID(HOUSEHOLD_ROSTER_QUESTIONNAIRE_ID);
         Constants.setQnnExists(false);
         HouseholdMainActivity.fragmentManager.beginTransaction()

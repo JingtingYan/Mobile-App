@@ -18,15 +18,23 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
 /**
- * A simple {@link Fragment} subclass.
+ * The AssessmentPlaceholderFragment class initialises and adds functions for views defined in fragment_assessment_placeholder.xml.
+ * It follows the recommended Android Architecture: UI Controller - ViewModel - Repository - RoomDatabase.
+ * The relevant classes are: AssessmentPlaceholderFragment, /viewmodel/QuestionnaireViewModel, /database/MobileAppRepository, and database package.
+ *
+ * Functions:
+ *  1. It is the placeholder for HearX assessment.
+ *  2. It is the placeholder for PEEK assessment.
+ *  (these two processes share a similar logic, therefore, merge them together to reduce code redundancy)
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
  */
-
-// this Fragment is shared with HearX and PEEK Assessment
-
 public class AssessmentPlaceholderFragment extends Fragment {
 
+    /* views */
     @BindView(R.id.txt_asmt_placeholder) TextView txtPlaceholderPrompt;
     @BindView(R.id.bn_asmt_placeholder_next) Button bnNext;
 

@@ -24,18 +24,19 @@ import butterknife.OnClick;
 import static com.example.mobileApp.utilities.Constants.LOGIN_URL;
 
 /**
- * The MainActivity class initialises layout components and adds functions for views in activity_main.xml.
+ * The MainActivity class initialises and adds functions for views defined in activity_main.xml.
+ *
  * Functions:
  *  1. It supports user login.
- *  2. It also extends OverflowMenuActivity class to support customised Toolbar.
+ *  2. It extends ToolbarMenuActivity class to load customised toolbar.
  *
  *  @author Jingting Yan
  *  @version 1.0
  *  @since March 2020
  */
-public class MainActivity extends OverflowMenuActivity{
+public class MainActivity extends ToolbarMenuActivity {
 
-    /* class-scope variables */
+    /* views */
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.txt_login_username) EditText txtUsername;
     @BindView(R.id.txt_login_password) EditText txtPassword;
@@ -51,7 +52,7 @@ public class MainActivity extends OverflowMenuActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Stetho.initializeWithDefaults(this);    // debugging - inspect the app
+        Stetho.initializeWithDefaults(this);    // debugging tool to inspect the app's SQLite database
         setContentView(R.layout.activity_main);
 
         // Call ButterKnife to automatically cast and bind the view ID with variables.

@@ -8,6 +8,8 @@ import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
+// The CauseOfDiseaseTable has NOT been used so far.
+
 @Entity(tableName = "causes_of_diseases",
         indices = {@Index(value = {"question_cod_id", "qnnaire_id"}, unique = true),
                    @Index("qnnaire_id")},

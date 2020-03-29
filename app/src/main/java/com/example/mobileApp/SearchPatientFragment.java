@@ -26,14 +26,28 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * A simple {@link Fragment} subclass.
+ * The SearchPatientFragment class initialises and adds functions for views defined in fragment_search_patient.xml.
+ * It follows the recommended Android Architecture: UI Controller - ViewModel - Repository - RoomDatabase.
+ * The relevant classes are: SearchPatientFragment, /viewmodel/SearchPatientViewModel, /database/MobileAppRepository, and database package.
+ *
+ * Functions:
+ *  1. It loads a list of existing patients in a cluster
+ *  2. It supports the search view for searching a particular patient.
+ *
+ * (this class shares a similar logic with SearchHouseholdFragment class)
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
  */
 public class SearchPatientFragment extends Fragment {
 
+    /* view */
     @BindView(R.id.recycler_view_all_patients) RecyclerView patientsRecyclerView;
 
     private SearchPatientViewModel searchPatientViewModel;
 
+    // the adapter for the RecyclerView of patients in the cluster
     private PatientRecyclerAdapter adapter;
 
     public SearchPatientFragment() {
@@ -49,6 +63,7 @@ public class SearchPatientFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
+        // refer to the current options menu (toolbar) - used to set the SearchView later
         setHasOptionsMenu(true);
 
         requireActivity().setTitle(R.string.title_choose_patient);
@@ -75,19 +90,23 @@ public class SearchPatientFragment extends Fragment {
         patientsRecyclerView.setLayoutManager(layoutManager);
         patientsRecyclerView.setAdapter(adapter);
 
+        // react to clicking a patient card from the list
         adapter.setOnItemClickListener(position -> {
             Constants.setCurrentPatientID(patientItems.get(position).getPatientID());
             Constants.setCurrentHouseholdID(patientItems.get(position).getHouseholdID());
 
-            // display patient information for the selected patient
+            // go to the Assessment Centre for the selected patient
             HouseholdMainActivity.fragmentManager.beginTransaction()
                     .replace(R.id.household_fragment_container, new SinglePatientFragment()).commit();
         });
     }
 
+    /**
+     * This method is called to set the SearchView to be visible in options menu (toolbar) when displaying SearchPatientFragment.
+     * @param menu The tool bar menu defined in /res/menu/toolbar_menu.xml
+     */
     @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        // set the SearchView to be visible
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) searchItem.getActionView();
         searchItem.setVisible(true);
@@ -103,7 +122,7 @@ public class SearchPatientFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                // dynamically pass the SearchView text into the HouseholdAdapter's filter
+                // dynamically pass the SearchView text into the PatientRecyclerAdapter's filter
                 adapter.getFilter().filter(newText);
                 return false;
             }

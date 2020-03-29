@@ -2,6 +2,14 @@ package com.example.mobileApp.datatype;
 
 import javax.annotation.Nonnull;
 
+/**
+ * The Answer class is a user-defined data type which contains more general data fields than the AnswerTable class.
+ * It is used to hold data related to a single answer choice.
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
+ */
 public class Answer {
 
     private Integer answerID;

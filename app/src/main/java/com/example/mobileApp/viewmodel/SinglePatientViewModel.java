@@ -16,6 +16,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * The SinglePatientViewModel class contains a list of methods used by SinglePatientFragment.
+ *
+ * Functions:
+ *  1. It is the communication centre between SinglePatientFragment and MobileAppRepository.
+ *  2. It prepares data that is going to be displayed on views inside SinglePatientFragment.
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
+ */
+
 public class SinglePatientViewModel extends AndroidViewModel {
 
     private MobileAppRepository repo;

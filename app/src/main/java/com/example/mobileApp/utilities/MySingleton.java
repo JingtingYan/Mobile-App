@@ -6,9 +6,14 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
-/* MySingleton class is used to create a Volley RequestQueue as a singleton
-   and make the RequestQueue last the lifetime of app. */
-
+/**
+ * The MySingleton class is used to create a Volley RequestQueue as a singleton and
+ * therefore make the RequestQueue last the lifetime of the app.
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
+ */
 public class MySingleton {
 
     private static MySingleton instance;
@@ -37,6 +42,7 @@ public class MySingleton {
         return requestQueue;
     }
 
+    // add a Volley request into requestQueue
     public <T> void addToRequestQueue(Request<T> req) {
         getRequestQueue().add(req);
     }

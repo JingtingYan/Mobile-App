@@ -14,6 +14,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * The SearchHouseholdViewModel class contains a list of methods used by SearchHouseholdFragment.
+ *
+ * Functions:
+ *  1. It is the communication centre between SearchHouseholdFragment and MobileAppRepository.
+ *  2. It prepares data that is going to be displayed on views inside SearchHouseholdFragment.
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
+ */
 public class SearchHouseholdViewModel extends AndroidViewModel {
 
     private MobileAppRepository repo;

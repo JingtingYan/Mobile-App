@@ -6,7 +6,7 @@ android {
     defaultConfig {
         applicationId "com.example.mobileApp"
 
-        minSdkVersion 26    // changed the minSDK from 15 to 26. Original is 15.
+        minSdkVersion 26    // changed the minSDK from 15 to 26 to support LocalDate. Original is 15.
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"

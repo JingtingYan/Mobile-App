@@ -1,9 +1,15 @@
 package com.example.mobileApp.datatype;
 
-import androidx.annotation.NonNull;
-
 import java.time.LocalDate;
 
+/**
+ * The Response class is a user-defined data type which contains more general data fields than the ResponseTable class.
+ * It is used to hold data related to a single patient response.
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
+ */
 public class Response {
 
     private String patientID;

@@ -21,15 +21,24 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 /**
- * A simple {@link Fragment} subclass.
+ * The MCQAnsFragment class initialises and adds functions for views defined in fragment_mcq_ans.xml.
+ * It follows the recommended Android Architecture: UI Controller - ViewModel - Repository - RoomDatabase.
+ * The relevant classes are: MCQAnsFragment, /viewmodel/QuestionnaireViewModel, /database/MobileAppRepository, and database package.
+ *
+ * Function: It loads a list of CheckBox (in a ListView) to hold the answer choices of a multiple choice question.
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
  */
 public class MCQAnsFragment extends Fragment {
 
     @BindView(R.id.mcq_button_list) ListView ansListView;
 
     private QuestionnaireViewModel questionnaireViewModel;
+
+    // the adapter for the ListView of CheckBoxes
     private static MCQAnsAdapter ansAdapter;
 
     public MCQAnsFragment() {
@@ -61,6 +70,7 @@ public class MCQAnsFragment extends Fragment {
         ansListView.setAdapter(ansAdapter);
     }
 
+    // static method called to get patient's selected answer choices
     static List<Answer> getSelectedAns() {
         List<Answer> result = new ArrayList<>();
 

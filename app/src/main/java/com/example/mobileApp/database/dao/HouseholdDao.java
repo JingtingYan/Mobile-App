@@ -9,9 +9,18 @@ import com.example.mobileApp.database.entity.HouseholdTable;
 
 import java.util.List;
 
+/**
+ * The HouseholdDao interface is a mapping of some SQL queries (for HouseholdTable) to
+ * Java functions that can be called in MobileAppRepository.
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
+ */
+
 @Dao
-public interface HouseholdDao
-{
+public interface HouseholdDao {
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(HouseholdTable household);
 

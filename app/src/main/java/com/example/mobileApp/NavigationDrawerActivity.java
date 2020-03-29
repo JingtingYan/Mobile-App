@@ -22,10 +22,8 @@ import com.google.android.material.navigation.NavigationView;
 
 /**
  * This NavigationDrawerActivity class extends AppCompatActivity class and is extended by DataSyncActivity and HouseholdMainActivity.
- * ... other activities as well
  * It contains all necessary functions required to initialise the app's Toolbar along with the navigation drawer.
- * For those activities that extend this class, a toolbar and a navigation drawer are created when that
- * Activity is created.
+ * For those activities that extend this class, a toolbar and a navigation drawer are created when that Activity is created.
  *
  * @author Jingting Yan
  * @version 1.0
@@ -33,7 +31,6 @@ import com.google.android.material.navigation.NavigationView;
  */
 public class NavigationDrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    /* class-scope and package-scope variables */
     private DrawerLayout drawerLayout;
     FrameLayout frameLayout;    // frameLayout is package-scope
 
@@ -109,15 +106,14 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 
     /**
      * This method is overridden to load the customised toolbar menu contents into toolbar layout.
-     * The toolbar menu resources are defined in /res/menu/toolbar_overflow_menu.xml.
-     * @param menu The option menu (toolbar menu) that contains customised menu items.
+     * The toolbar menu resources are defined in /res/menu/toolbar_menu  * @param menu The option menu (toolbar menu) that contains customised menu items.
      * @return boolean This returns true for the options menu to be displayed;
      *                              false for not showing the options menu.
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.toolbar_overflow_menu, menu);
+        menuInflater.inflate(R.menu.toolbar_menu, menu);
 
         // set the SearchView to be invisible
         final MenuItem searchItem = menu.findItem(R.id.action_search);

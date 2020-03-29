@@ -9,6 +9,15 @@ import com.example.mobileApp.database.entity.PatientTable;
 
 import java.util.List;
 
+/**
+ * The PatientDao interface is a mapping of some SQL queries (for PatientTable) to
+ * Java functions that can be called in MobileAppRepository.
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
+ */
+
 @Dao
 public interface PatientDao {
 

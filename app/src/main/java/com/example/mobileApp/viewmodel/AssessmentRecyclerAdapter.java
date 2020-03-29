@@ -16,6 +16,24 @@ import com.example.mobileApp.datatype.AssessmentRecyclerViewItem;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The AssessmentRecyclerAdapter defines a customised Adapter for RecyclerView used in SinglePatientFragment.
+ * (it shares a similar logic with HouseholdRecyclerAdapter and PatientRecyclerAdapter)
+ *
+ * Functions:
+ *  1. It defines AssessmentViewHolder (a customised ViewHolder for RecyclerView) that binds the views defined in
+ *     layout_recycler_item_assessment_status.xml with an AssessmentRecyclerViewItem object.
+ *  2. It loads a list of AssessmentRecyclerViewItem objects as the data source for the RecyclerView.
+ *  3. It defines an OnItemClickListener interface to deal with item clicked event on AssessmentRecyclerAdapter.
+ *     This interface will pass the click to SinglePatientFragment.
+ *  4. It customises a Filter object to support the SearchView in SinglePatientFragment.
+ *
+ *  Please refer to the code comments in HouseholdRecyclerAdapter class.
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
+ */
 public class AssessmentRecyclerAdapter extends RecyclerView.Adapter<AssessmentRecyclerAdapter.AssessmentViewHolder> implements Filterable {
 
     private List<AssessmentRecyclerViewItem> items;
@@ -23,8 +41,6 @@ public class AssessmentRecyclerAdapter extends RecyclerView.Adapter<AssessmentRe
 
     private OnItemClickListener listener;
 
-    // Define an interface to deal with item clicked event on AssessmentRecyclerView
-    // This interface will pass the click to SinglePatientFragment
     public interface OnItemClickListener{
         void onItemClick(int position);
     }

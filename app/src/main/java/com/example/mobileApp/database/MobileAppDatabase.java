@@ -54,12 +54,14 @@ import com.example.mobileApp.database.entity.LogicTable;
                       CauseOfDiseaseTable.class,
                       AssistiveTechnologyTable.class},
           exportSchema = false,
-          version = 20)
+          version = 20)     // increment the version if there're any changes made in database
 @TypeConverters({LocalDateTypeConverter.class})
 public abstract class MobileAppDatabase extends RoomDatabase {
 
     public static final String DATABASE_NAME = "app_database";
 
+    /* A list of abstract methods that return an instance of DAO interfaces.
+       The methods are abstract because some auto-generated code will consist the methods that will be called. */
     public abstract LocationDao locationDao();
     public abstract HouseholdDao householdDao();
     public abstract PatientDao patientDao();

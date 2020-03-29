@@ -15,15 +15,20 @@ import android.widget.EditText;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 /**
- * A simple {@link Fragment} subclass.
+ * The TextAnsFragment class initialises and adds functions for views defined in fragment_text_ans.xml.
+ * Function: It loads the text input field for text entry question.
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
  */
 public class TextAnsFragment extends Fragment {
 
+    /* view */
     @BindView(R.id.txt_qn_text_entry_ans) EditText txtAns;
 
-    static String responseString;
+    static String responseString;   // store user input response
 
     public TextAnsFragment() {
         // Required empty public constructor

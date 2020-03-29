@@ -16,6 +16,22 @@ import com.example.mobileApp.datatype.HouseholdRecyclerViewItem;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The HouseholdRecyclerAdapter defines a customised Adapter for RecyclerView used in SearchHouseholdFragment.
+ * (it shares a similar logic with PatientRecyclerAdapter and AssessmentRecyclerAdapter)
+ *
+ * Functions:
+ *  1. It defines HouseholdViewHolder (a customised ViewHolder for RecyclerView) that binds the views defined in
+ *     layout_recycler_item_household.xml with a HouseholdRecyclerViewItem object.
+ *  2. It loads a list of HouseholdRecyclerViewItem objects as the data source for the RecyclerView.
+ *  3. It defines an OnItemClickListener interface to deal with item clicked event on HouseholdRecyclerAdapter.
+ *     This interface will pass the click to SearchHouseholdFragment.
+ *  4. It customises a Filter object to support the SearchView in SearchHouseholdFragment.
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
+ */
 public class HouseholdRecyclerAdapter extends RecyclerView.Adapter<HouseholdRecyclerAdapter.HouseholdViewHolder> implements Filterable {
 
     private List<HouseholdRecyclerViewItem> items;
@@ -23,8 +39,6 @@ public class HouseholdRecyclerAdapter extends RecyclerView.Adapter<HouseholdRecy
 
     private OnItemClickListener listener;
 
-    // Define an interface to deal with item clicked event on HouseholdRecyclerView
-    // This interface will pass the click to SearchHouseholdFragment
     public interface OnItemClickListener{
         void onItemClick(int position);
     }
@@ -33,17 +47,19 @@ public class HouseholdRecyclerAdapter extends RecyclerView.Adapter<HouseholdRecy
         this.listener = listener;
     }
 
-    // create a view holder for this adapter
     static class HouseholdViewHolder extends RecyclerView.ViewHolder {
 
-        // variables for views defined in layout_recycler_item_hh.xml
+        // views
         TextView householdID, householdLoc, householdInformant;
 
-        // itemView is the defined CardView for a single HouseholdRecyclerView item
+        /**
+         * The is the constructor for HouseholdViewHolder which binds the views and registers the OnItemClickListener.
+         * @param itemView The CardView defined for a single HouseholdRecyclerView item.
+         * @param listener The class-scope OnItemClickListener variable 'listener'.
+         */
         HouseholdViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
 
-            // views variables
             householdID = itemView.findViewById(R.id.recycler_item_hh_id);
             householdLoc = itemView.findViewById(R.id.recycler_item_hh_loc);
             householdInformant = itemView.findViewById(R.id.recycler_item_hh_informant);
@@ -60,32 +76,33 @@ public class HouseholdRecyclerAdapter extends RecyclerView.Adapter<HouseholdRecy
         }
     }
 
-    // Constructor for HouseholdRecyclerAdapter.
-    // Need to pass in the list of recycler items that want to be displayed.
+    /**
+     * This is the constructor for HouseholdRecyclerAdapter.
+     * @param items The data source for this adapter. A list of HouseholdRecyclerViewItem objects.
+     */
     public HouseholdRecyclerAdapter(List<HouseholdRecyclerViewItem> items) {
         this.items = items;
         this.itemsFull = new ArrayList<>(items);    // create an independent copy of 'items'
     }
 
     /**
-     * This method is used to pass the layout for the views (the recycler item).
-     * The recycler item's layout is defined in /res/layout/layout_recycler_item_hh.
-     * @param parent
-     * @param viewType
-     * @return
+     * This method is used to create a new HouseholdViewHolder and pass the layout used by it.
+     * It is called because the RecyclerView needs a HouseholdViewHolder to represent its recycler view item.
+     * @param parent The ViewGroup into which the new View will be added after it is bound to an adapter position.
+     * @param viewType The view type of the new View.
+     * @return A new HouseholdViewHolder that holds the item's layout and an OnItemClickListener.
      */
     @NonNull
     @Override
     public HouseholdViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_recycler_item_hh, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_recycler_item_household, parent, false);
         return new HouseholdViewHolder(view, listener);
     }
 
     /**
      * This method is used to pass information inside the views.
      * @param holder Contains all of the information about the views.
-     * @param position The position each item in the recycler view.
-     *                 This position matches with that in the ArrayList 'item'.
+     * @param position The position each item in the recycler view. It matches with the position in the ArrayList 'item'.
      */
     @Override
     public void onBindViewHolder(@NonNull HouseholdViewHolder holder, int position) {
@@ -97,7 +114,7 @@ public class HouseholdRecyclerAdapter extends RecyclerView.Adapter<HouseholdRecy
     }
 
     /**
-     * This method defined how many items will be inside the RecyclerView
+     * This method gets how many items will be inside the RecyclerView
      * @return The size of ArrayList 'item' that is used to create this HouseholdRecyclerView
      */
     @Override
@@ -105,6 +122,10 @@ public class HouseholdRecyclerAdapter extends RecyclerView.Adapter<HouseholdRecy
         return items.size();
     }
 
+    /**
+     * This method gets a customised filter used by HouseholdRecyclerAdapter.
+     * @return A filter that can be used to constrain data with a filtering pattern.
+     */
     @Override
     public Filter getFilter() {
         return householdFilter;
@@ -138,6 +159,11 @@ public class HouseholdRecyclerAdapter extends RecyclerView.Adapter<HouseholdRecy
             return results;
         }
 
+        /**
+         * This method is called to publish the filtering results in the user interface.
+         * @param constraint The constraint used to filter the data.
+         * @param results The results of the filtering operation.
+         */
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             // update the 'items' list to contain only the filtered items

@@ -14,13 +14,13 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 
 /**
- * The HouseholdMainActivity class initialises layout components for views in activity_household_main.xml.
+ * The HouseholdMainActivity class initialises and adds functions for views defined in activity_household_main.xml.
  * Functions:
  *  1. It servers as a template and container for the set of Household Fragments.
  *      - Contain the project header which includes the location information selected from Location selection page.
  *        (the layout for project header is defined in /res/layout/layout_project_header.xml)
  *      - Instantiate a FragmentManager object which manages transactions between Household Fragments.
- *  2. It also extends NavigationDrawerActivity class to support customised Toolbar and navigation drawer.
+ *  2. It extends NavigationDrawerActivity class to load customised toolbar and navigation drawer.
  *
  *  @author Jingting Yan
  *  @version 1.0
@@ -28,11 +28,12 @@ import butterknife.ButterKnife;
  */
 public class HouseholdMainActivity extends NavigationDrawerActivity {
 
-    /* class-scope and package-scope variables */
+    /* views */
     @BindViews({R.id.txt_hh_home_country, R.id.txt_hh_home_region, R.id.txt_hh_home_cluster})
+
     List<TextView> projectLocation;
 
-    public static FragmentManager fragmentManager;  // fragmentManager is package-scope
+    public static FragmentManager fragmentManager;
 
     /**
      * This method is called when the HouseholdMain Activity is first created.
@@ -76,6 +77,7 @@ public class HouseholdMainActivity extends NavigationDrawerActivity {
         projectLocation.get(2).setText(Constants.getCluster().getLocationName());
     }
 
+    // deal with the Fragments stack when clicking the back press on an Android device
     @Override
     public void onBackPressed() {
         if(getFragmentManager().getBackStackEntryCount() > 0){

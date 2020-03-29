@@ -7,10 +7,14 @@ import androidx.room.TypeConverter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-
-// SQLite DB stores Dates as Strings in YYYY-MM-DD format
-// This type converter methods can only be used at Target API level 26
-
+/**
+ * The LocalDateTypeConverter is used to convert a LocalData object into a String in YYYY-MM-DD format and vice versa.
+ * This type converter methods can only be used at Target API level 26.
+ *
+ *  @author Nadhirah Rafidz
+ *  @version 1.0
+ *  @since February 2020
+ */
 public class LocalDateTypeConverter {
     @TypeConverter @TargetApi(26)
     public static LocalDate toLocalDate(String dateString) {

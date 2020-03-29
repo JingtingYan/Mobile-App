@@ -9,10 +9,19 @@ import com.example.mobileApp.database.entity.QuestionAnswerTable;
 
 import java.util.List;
 
+/**
+ * The QuestionAnswerDao interface is a mapping of some SQL queries (for QuestionAnswerTable) to
+ * Java functions that can be called in MobileAppRepository.
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
+ */
+
 @Dao
 public interface QuestionAnswerDao {
 
-    // get id for each answer choice for a question
+    // get answerID for each answer choice for a question
     @Query("SELECT DISTINCT ans_id FROM questions_and_answers AS qa " +
            "WHERE qa.q_id = :qnID " +
            "AND qa.qnnaire_id = :qnnID")

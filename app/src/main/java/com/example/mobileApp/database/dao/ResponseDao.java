@@ -9,9 +9,18 @@ import com.example.mobileApp.database.entity.ResponseTable;
 
 import java.util.List;
 
+/**
+ * The ResponseDao interface is a mapping of some SQL queries (for ResponseTable) to
+ * Java functions that can be called in MobileAppRepository.
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
+ */
+
 @Dao
-public interface ResponseDao
-{
+public interface ResponseDao {
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(ResponseTable response);
 
@@ -22,10 +31,6 @@ public interface ResponseDao
             "responses.ans_id = :answerID AND responses.text = :answerText AND responses.qnnaire_id = :qnnaireID AND " +
             "responses.date = :date")
     void deleteSingleResponse(String patientID, Integer questionID, Integer answerID, String answerText, Integer qnnaireID, String date);
-
-    @Query("SELECT COUNT(*) FROM responses WHERE responses.patient_id = :patientID AND " +
-            "responses.q_id = :currentQuestion AND responses.qnnaire_id = :currentQnn")
-    int getResponseCount(int patientID, int currentQuestion, int currentQnn);
 
     @Query("SELECT MAX(`index`) FROM responses")
     int getLastIndex();

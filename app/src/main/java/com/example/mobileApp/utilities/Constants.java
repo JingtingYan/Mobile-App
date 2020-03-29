@@ -40,8 +40,9 @@ public class Constants {
     private static String currentHouseholdID;
 
     // two shared variables used to update AssessmentStatus table
+    // false indicates the current assessment is a new one; true indicates the current assessment is an unfinished one
     private static boolean qnnExists = false;
-    private static AssessmentRecyclerViewItem selectedAssessment;
+    private static AssessmentRecyclerViewItem selectedAssessment;   // the selected unfinished assessment
 
 
     public static String getToken() {

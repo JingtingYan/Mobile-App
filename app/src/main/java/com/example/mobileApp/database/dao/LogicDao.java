@@ -9,6 +9,15 @@ import com.example.mobileApp.database.entity.LogicTable;
 
 import java.util.List;
 
+/**
+ * The LogicDao interface is a mapping of some SQL queries (for LogicTable) to
+ * Java functions that can be called in MobileAppRepository.
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
+ */
+
 @Dao
 public interface LogicDao {
 

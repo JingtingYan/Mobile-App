@@ -25,6 +25,22 @@ import static com.example.mobileApp.utilities.Constants.DEFAULT_QN_INSTRUCTION_M
 import static com.example.mobileApp.utilities.Constants.DEFAULT_QN_INSTRUCTION_SCQ;
 import static com.example.mobileApp.utilities.Constants.DEFAULT_QN_INSTRUCTION_TEXT_ENTRY;
 
+/**
+ * The QuestionnaireViewModel class contains a list of methods used by:
+ *  - QuestionnaireFragment
+ *  - UserCreateFragment
+ *  - QuestionnaireFinishFragment
+ *  - SCQAnsFragment
+ *  - MCQAnsFragment
+ *
+ * Functions:
+ *  1. It is the communication centre between these Fragments and MobileAppRepository.
+ *  2. It prepares data that is going to be displayed on views inside these Fragments.
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
+ */
 public class QuestionnaireViewModel extends AndroidViewModel {
 
     private MobileAppRepository repo;
@@ -39,11 +55,13 @@ public class QuestionnaireViewModel extends AndroidViewModel {
 
     public volatile List<String> allResponses = new ArrayList<>();
 
+
     public QuestionnaireViewModel(@NonNull Application application) {
         super(application);
 
         repo = MobileAppRepository.getInstance(application.getApplicationContext());
     }
+
 
     public void setGpsLatitude(String gpsLatitude) {
         this.gpsLatitude = gpsLatitude;

@@ -19,14 +19,23 @@ import butterknife.ButterKnife;
 import butterknife.OnItemSelected;
 
 /**
- * A simple {@link Fragment} subclass.
+ * The SCQAnsFragment class initialises and adds functions for views defined in fragment_scq_ans.xml.
+ * It follows the recommended Android Architecture: UI Controller - ViewModel - Repository - RoomDatabase.
+ * The relevant classes are: SCQAnsFragment, /viewmodel/QuestionnaireViewModel, /database/MobileAppRepository, and database package.
+ *
+ * Function: It loads a Spinner to hold the answer choices of a single choice question.
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
  */
 public class SCQAnsFragment extends Fragment {
 
+    /* view */
     @BindView(R.id.spinner_qn_single_ans) Spinner answerSpinner;
 
     private QuestionnaireViewModel questionnaireViewModel;
-    static Answer selectedAns;
+    static Answer selectedAns;  // store patient's selected answer choice
 
     public SCQAnsFragment() {
         // Required empty public constructor
@@ -57,10 +66,11 @@ public class SCQAnsFragment extends Fragment {
         ArrayAdapter<Answer> answerAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item,
                                                                  questionnaireViewModel.loadAnswerChoices());
 
-        answerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        answerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);   // set dropdown list layout
         answerSpinner.setAdapter(answerAdapter);
     }
 
+    // react to selecting an answer choice from the list
     @OnItemSelected(R.id.spinner_qn_single_ans) void onAnsSelected(Spinner spinner, int position) {
         selectedAns = (Answer) spinner.getItemAtPosition(position);
     }

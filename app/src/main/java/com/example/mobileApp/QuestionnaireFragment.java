@@ -28,10 +28,22 @@ import static com.example.mobileApp.utilities.Constants.GENERAL_WASHINGTON_GROUP
 import static com.example.mobileApp.utilities.Constants.MOBILITY_QUESTIONNAIRE_ID;
 
 /**
- * A simple {@link Fragment} subclass.
+ * The QuestionnaireFragment class initialises and adds functions for views defined in fragment_questionnaire.xml.
+ * It follows the recommended Android Architecture: UI Controller - ViewModel - Repository - RoomDatabase.
+ * The relevant classes are: QuestionnaireFragment, /viewmodel/QuestionnaireViewModel, /database/MobileAppRepository, and database package.
+ *
+ * Functions:
+ *  1. It is used to load General Washington Group Questionnaire.
+ *  2. It is used to load Mobility Questionnaire.
+ *  (these two processes share a similar logic, therefore, merge them together to reduce code redundancy)
+ *
+ *  @author Jingting Yan
+ *  @version 1.0
+ *  @since March 2020
  */
 public class QuestionnaireFragment extends Fragment {
 
+    /* views */
     @BindView(R.id.txt_qn_instruction) TextView txtQnInstruction;
     @BindView(R.id.txt_qn_string) TextView txtQnString;
     @BindView(R.id.bn_qnn_next) Button bnNext;
@@ -76,22 +88,25 @@ public class QuestionnaireFragment extends Fragment {
     private void initViewModel() {
         questionnaireViewModel = new ViewModelProvider(requireActivity()).get(QuestionnaireViewModel.class);
 
+        // register observers to observe the two MutableLiveData<String> variables defined in QuestionnaireViewModel
         questionnaireViewModel.qnInstruction.observe(getViewLifecycleOwner(), this::updateQnInstruction);
         questionnaireViewModel.qnString.observe(getViewLifecycleOwner(), this::updateQnString);
     }
 
+    // the view 'txtQnInstruction' is observing the MutableLiveData<String> object 'qnInstruction'
     private void updateQnInstruction(String qnInstruction) {
         txtQnInstruction.setText(qnInstruction);
     }
 
+    // the view 'txtQnString' is observing the MutableLiveData<String> object 'qnString'
     private void updateQnString(String qnString) {
         txtQnString.setText(qnString);
     }
 
     private void loadFirstQuestion() {
-        if (Constants.isQnnExists()) {
+        if (Constants.isQnnExists()) {  // if is continuing an unfinished questionnaire
             questionnaireViewModel.loadLastAnsweredQuestion();
-        } else {
+        } else {    // start a new questionnaire from beginning
             questionnaireViewModel.loadFirstQuestion();
         }
         displayQuestion(questionnaireViewModel.getQnType());
@@ -153,13 +168,14 @@ public class QuestionnaireFragment extends Fragment {
         }
     }
 
+    // if click 'EXIT AND CONTINUE LATER'
     @OnClick(R.id.bn_qnn_exit) void onClickExit() {
-        if (Constants.isQnnExists()) {
+        if (Constants.isQnnExists()) {  // if exit an unfinished questionnaire
             questionnaireViewModel.updateExistingAssessmentToIncomplete(Constants.getSelectedAssessment().getStartDate());
-        } else {
+        } else {    // if exit a new questionnaire
             questionnaireViewModel.updateNewAssessmentToIncomplete();
         }
-        // move to the Patient home page
+        // move to the patient's assessment centre page
         HouseholdMainActivity.fragmentManager.beginTransaction()
                 .replace(R.id.household_fragment_container, new SinglePatientFragment()).commit();
     }
@@ -168,7 +184,7 @@ public class QuestionnaireFragment extends Fragment {
     private void hideKeyboard(Activity activity) {
         InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        // check if no view has focus:
+        // check if no view has focus
         View currentFocusedView = activity.getCurrentFocus();
         if (currentFocusedView != null) {
             if (inputManager != null) {

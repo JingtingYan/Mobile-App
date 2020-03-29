@@ -4,7 +4,5 @@ import androidx.room.Dao;
 
 @Dao
 public interface EnumeratorDao {
-
-    // use LocalDate objects here
-
+    // unused
 }
