@@ -1,16 +1,20 @@
 package com.example.mobileApp.utilities;
 
 import com.example.mobileApp.database.entity.AnswerTable;
+import com.example.mobileApp.database.entity.HouseholdTable;
 import com.example.mobileApp.database.entity.LocationTable;
 import com.example.mobileApp.database.entity.LogicTable;
+import com.example.mobileApp.database.entity.PatientAssessmentStatusTable;
+import com.example.mobileApp.database.entity.PatientTable;
 import com.example.mobileApp.database.entity.QuestionAnswerTable;
 import com.example.mobileApp.database.entity.QuestionTable;
 import com.example.mobileApp.database.entity.QuestionnaireTable;
+import com.example.mobileApp.database.entity.ResponseTable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/* Pre-populate some dummy data into SQLite database before data sync is done -- used for testing */
+/* Pre-populate some dummy data into SQLite database -- used for instrumented testing only */
 
 public class SampleData {
 
@@ -83,9 +87,9 @@ public class SampleData {
         List<LocationTable> locations = new ArrayList<>();
 
         // pre-populate countries
-        locations.add(new LocationTable(1, "Federal Repubic of Nigeria", -1));
+        locations.add(new LocationTable(1, "Federal Republic of Nigeria", -1));
         locations.add(new LocationTable(2,"India", -1));
-        locations.add(new LocationTable(3,"Phillipenes", -1));
+        locations.add(new LocationTable(3,"Philippines", -1));
         locations.add(new LocationTable(4,"Indonesia", -1));
 
         // pre-populate regions
@@ -145,8 +149,22 @@ public class SampleData {
         logic.add(new LogicTable(26,26, 19,  -1, 20, "", -1, 2));
         logic.add(new LogicTable(27,27, 20, -1, -1, "", -1, 2));
         logic.add(new LogicTable(28,28, 14, -1, 17, "AND", 5, 2));
+        logic.add(new LogicTable(29, 1, 21, -1, 22, "", -1, 3));
+        logic.add(new LogicTable(30, 2, 22, -1, -1, "", -1, 3));
 
         return logic;
+    }
+
+
+    /* pre-populate the PatientAssessmentStatus Table */
+    public static List<PatientAssessmentStatusTable> getAssessmentStatus() {
+        List<PatientAssessmentStatusTable> statusTables = new ArrayList<>();
+
+        statusTables.add(new PatientAssessmentStatusTable(1, "001", 1, "INCOMPLETE", "2020-03-12", "", 21));
+        statusTables.add(new PatientAssessmentStatusTable(2, "001", 2, "COMPLETE", "2020-03-15", "2020-03-15", -1));
+        statusTables.add(new PatientAssessmentStatusTable(3, "002", 2, "COMPLETE", "2020-03-18", "2020-03-18", -1));
+
+        return statusTables;
     }
 
 
@@ -221,7 +239,7 @@ public class SampleData {
     }
 
 
-    /* pre-populate the QuestionAnswer Table */
+    /* pre-populate the Questionnaire Table */
     public static List<QuestionnaireTable> getQuestionnaires() {
         List<QuestionnaireTable> questionnaires = new ArrayList<>();
 
@@ -263,5 +281,50 @@ public class SampleData {
         questions.add(new QuestionTable(48,"How are you",1,1,1,"",8,""));
 
         return questions;
+    }
+
+
+    /* pre-populate the Household Table */
+    public static List<HouseholdTable> getHouseholds() {
+        List<HouseholdTable> households = new ArrayList<>();
+
+        households.add(new HouseholdTable("1",34,"123","2020-03-19","","",0));
+        households.add(new HouseholdTable("2",34,"123","2020-03-19","","",1));
+        households.add(new HouseholdTable("3",20,"124","2020-03-19","","",1));
+
+        return households;
+    }
+
+
+    /* pre-populate the Household Table */
+    public static List<PatientTable> getPatients() {
+        List<PatientTable> patients = new ArrayList<>();
+
+        patients.add(new PatientTable("1", "100100", "1", 0));
+        patients.add(new PatientTable("2", "100100", "1", 0));
+        patients.add(new PatientTable("3", "100100", "1", 0));
+        patients.add(new PatientTable("4", "100100", "1", 1));
+        patients.add(new PatientTable("5", "100100", "2", 1));
+        patients.add(new PatientTable("6", "100100", "2", 1));
+        patients.add(new PatientTable("7", "100100", "2", 1));
+
+        return patients;
+    }
+
+
+    /* pre-populate the Response Table */
+    public static List<ResponseTable> getResponses() {
+        List<ResponseTable> responses = new ArrayList<>();
+
+        responses.add(new ResponseTable(1, "001", 1, 1, "", 2, "2020-03-19", 0));
+        responses.add(new ResponseTable(2, "001", 2, 2, "", 2, "2020-03-19", 0));
+        responses.add(new ResponseTable(3, "001", 3, -1, "well", 2, "2020-03-19", 0));
+        responses.add(new ResponseTable(4, "001", 4, 10, "", 2, "2020-03-19", 1));
+        responses.add(new ResponseTable(5, "002", 5, 20, "", 1, "2020-03-19", 1));
+        responses.add(new ResponseTable(6, "002", 6, 40, "", 1, "2020-03-19", 1));
+        responses.add(new ResponseTable(7, "002", 6, 41, "", 1, "2020-03-19", 1));
+        responses.add(new ResponseTable(8, "002", 7, -1, "good", 1, "2020-03-19", 1));
+
+        return responses;
     }
 }

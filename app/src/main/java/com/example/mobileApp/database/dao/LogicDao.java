@@ -25,12 +25,12 @@ public interface LogicDao {
     @Query("SELECT * FROM logic WHERE q_id = :currQnID AND qnnaire_id = :currQnnID")
     List<LogicTable> getLogicObjects(int currQnID, int currQnnID);
 
+    @Query("SELECT * FROM logic WHERE qnnaire_id = :currQnnID AND sequence_num = 1")
+    LogicTable getFirstQn(int currQnnID);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<LogicTable> allLogic);
 
     @Query("DELETE FROM logic")
     void deleteAll();
-
-    @Query("SELECT * FROM logic WHERE qnnaire_id = :currQnID AND sequence_num = 1")
-    LogicTable getFirstQn(int currQnID);
 }

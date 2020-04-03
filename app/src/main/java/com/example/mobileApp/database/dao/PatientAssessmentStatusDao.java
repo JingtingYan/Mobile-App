@@ -21,12 +21,6 @@ import java.util.List;
 @Dao
 public interface PatientAssessmentStatusDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(PatientAssessmentStatusTable assessmentStatus);
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(List<PatientAssessmentStatusTable> assessmentStatusList);
-
     @Query("SELECT * FROM patient_assessment_status WHERE patient_id = :patientID")
     List<PatientAssessmentStatusTable> getAssessmentStatusForPatient(String patientID);
 
@@ -38,6 +32,12 @@ public interface PatientAssessmentStatusDao {
 
     @Query("SELECT * FROM patient_assessment_status")
     List<PatientAssessmentStatusTable> getAllAssessmentStatus();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(PatientAssessmentStatusTable assessmentStatus);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAll(List<PatientAssessmentStatusTable> assessmentStatusList);
 
     @Query("DELETE FROM patient_assessment_status WHERE patient_id = :patientID AND qnnaire_id = :qnnID AND start = :startDate")
     void deleteSingleAssessmentStatus(String patientID, int qnnID, String startDate);

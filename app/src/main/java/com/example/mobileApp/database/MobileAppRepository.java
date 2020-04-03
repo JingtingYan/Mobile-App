@@ -755,7 +755,7 @@ public class MobileAppRepository {
     }
 
     public HouseholdTable getCurrentHousehold(String householdID) throws ExecutionException, InterruptedException {
-        Future<HouseholdTable> task = executor.submit(() -> db.householdDao().getHouseholdForPatient(householdID));
+        Future<HouseholdTable> task = executor.submit(() -> db.householdDao().getHousehold(householdID));
         return task.get();
     }
 

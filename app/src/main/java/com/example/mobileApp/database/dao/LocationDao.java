@@ -35,8 +35,4 @@ public interface LocationDao {
 
     @Query("DELETE FROM locations")
     void deleteAll();
-
-    // debugging - used in DatabaseTest
-    @Query("SELECT COUNT(*) FROM locations WHERE parent_location_id = -1")
-    int countCountries();
 }

@@ -21,14 +21,8 @@ import java.util.List;
 @Dao
 public interface HouseholdDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(HouseholdTable household);
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll (List<HouseholdTable> households);
-
     @Query("SELECT * from households WHERE household_id = :hh_id")
-    HouseholdTable getHouseholdForPatient(String hh_id);
+    HouseholdTable getHousehold(String hh_id);
 
     @Query("SELECT * from households WHERE parent_loc_id = :clusterId")
     List<HouseholdTable> getHouseholdsForCluster(int clusterId);
@@ -38,6 +32,12 @@ public interface HouseholdDao {
 
     @Query("SELECT * FROM households WHERE isNew = 1")
     List<HouseholdTable> getAllHouseholdsToUpload();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(HouseholdTable household);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAll (List<HouseholdTable> households);
 
     @Query("DELETE FROM households")
     void deleteAll();

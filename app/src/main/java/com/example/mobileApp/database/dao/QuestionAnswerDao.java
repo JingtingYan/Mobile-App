@@ -27,12 +27,12 @@ public interface QuestionAnswerDao {
            "AND qa.qnnaire_id = :qnnID")
     List<Integer> getAllAnsID(int qnID, int qnnID);
 
+    @Query("SELECT MAX(`index`) FROM questions_and_answers")
+    int getLastIndex();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<QuestionAnswerTable> qas);
 
     @Query("DELETE FROM questions_and_answers")
     void deleteAll();
-
-    @Query("SELECT MAX(`index`) FROM questions_and_answers")
-    int getLastIndex();
 }

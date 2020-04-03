@@ -21,6 +21,16 @@ import java.util.List;
 @Dao
 public interface ResponseDao {
 
+    @Query("SELECT MAX(`index`) FROM responses")
+    int getLastIndex();
+
+    @Query("SELECT * FROM responses WHERE isNew = 1")
+    List<ResponseTable> getAllResponsesToUpload();
+
+    @Query("SELECT ans_id FROM responses AS resp WHERE resp.patient_id = :patientID AND " +
+            "resp.q_id = :currQnID AND resp.qnnaire_id = :currQnnID")
+    List<Integer> getResponsesForCurrQuestion(String patientID, int currQnID, int currQnnID);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(ResponseTable response);
 
@@ -32,16 +42,6 @@ public interface ResponseDao {
             "responses.date = :date")
     void deleteSingleResponse(String patientID, Integer questionID, Integer answerID, String answerText, Integer qnnaireID, String date);
 
-    @Query("SELECT MAX(`index`) FROM responses")
-    int getLastIndex();
-
-    @Query("SELECT * FROM responses WHERE isNew = 1")
-    List<ResponseTable> getAllResponsesToUpload();
-
     @Query("DELETE FROM responses")
     void deleteAll();
-
-    @Query("SELECT ans_id FROM responses AS resp WHERE resp.patient_id = :patientID AND " +
-            "resp.q_id = :currQnID AND resp.qnnaire_id = :currQnnID")
-    List<Integer> getResponsesForCurrQuestion(String patientID, int currQnID, int currQnnID);
 }

@@ -21,12 +21,6 @@ import java.util.List;
 @Dao
 public interface PatientDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(PatientTable patient);
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(List<PatientTable> patients);
-
     @Query("SELECT * FROM patients")
     List<PatientTable> getAllPatients();
 
@@ -41,6 +35,12 @@ public interface PatientDao {
 
     @Query("SELECT COUNT(*) FROM patients")
     Integer countAllPatients();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(PatientTable patient);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAll(List<PatientTable> patients);
 
     @Query("DELETE FROM patients WHERE patient_id = :patientID")
     void deleteSinglePatient(String patientID);
